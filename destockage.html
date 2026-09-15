@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BBHappY — Jouets & Vêtements pour enfants</title>
-<meta name="description" content="BBHappY : jouets éducatifs, vêtements en coton bio et accessoires pour enfants. Là où l'imagination rencontre le confort.">
+<title>Lots déstockage — BBHappY</title>
+<meta name="description" content="Nos lots et packs multi-produits en édition limitée, à prix déstockage, jusqu'à épuisement des stocks.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧸</text></svg>">
 </head>
-<body>
+<body data-category="destockage">
 
 <!-- ===== HEADER ===== -->
 <header class="site-header" id="siteHeader">
@@ -32,11 +32,11 @@
     </a>
 
     <nav class="main-nav" id="mainNav">
-      <a href="index.html" class="nav-link active" data-i18n="nav.home">Accueil</a>
+      <a href="index.html" class="nav-link" data-i18n="nav.home">Accueil</a>
       <a href="jouets.html" class="nav-link" data-i18n="nav.toys">Jouets</a>
       <a href="vetements.html" class="nav-link" data-i18n="nav.clothing">Vêtements</a>
       <a href="marques.html" class="nav-link" data-i18n="nav.brands">Marques</a>
-      <a href="soldes.html" class="nav-link sale" data-i18n="nav.sales">Soldes 🔥</a>
+      <a href="soldes.html" class="nav-link sale active" data-i18n="nav.sales">Soldes 🔥</a>
     </nav>
 
     <div class="search-bar">
@@ -73,128 +73,19 @@
 
 <main>
 
-  <section class="hero">
-    <div class="hero-blob blob-1"></div>
-    <div class="hero-blob blob-2"></div>
-    <div class="hero-blob blob-3"></div>
-    <div class="container hero-inner">
-      <div class="hero-text">
-        <span class="hero-tag" data-i18n="hero.tag">✨ Nouvelle collection printemps</span>
-        <h1 data-i18n="hero.title">Là où l'imagination<br>rencontre le <span class="highlight">confort</span></h1>
-        <p data-i18n="hero.desc">Des jouets qui éveillent la créativité et des vêtements doux comme un câlin, pensés pour les petites aventures du quotidien.</p>
-        <div class="hero-actions">
-          <a href="#produits" class="btn btn-primary" data-i18n="hero.cta1">Acheter maintenant</a>
-          <a href="#categories" class="btn btn-ghost" data-i18n="hero.cta2">Découvrir les univers</a>
-        </div>
-        <div class="hero-stats">
-          <div><strong>10k+</strong><span data-i18n="hero.stat1">familles conquises</span></div>
-          <div><strong>100%</strong><span data-i18n="hero.stat2">matériaux sûrs</span></div>
-          <div><strong>4.9★</strong><span data-i18n="hero.stat3">note moyenne</span></div>
-        </div>
-      </div>
-      <div class="hero-visual">
-        <div class="hero-card card-float-1">🧸<small>Peluche câline</small></div>
-        <div class="hero-card card-float-2">🚂<small>Jouet en bois</small></div>
-        <div class="hero-card card-float-3">👕<small>Coton bio</small></div>
-        <div class="hero-sun">😊</div>
-        <div class="hero-ground"></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="categories">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow" data-i18n="categories.eyebrow">Explorer</span>
-        <h2 data-i18n="categories.title">Trouver le bonheur par univers ou par âge</h2>
-        <p data-i18n="categories.desc">Filtrez notre boutique selon les envies et l'âge de votre enfant.</p>
-      </div>
-
-      <h3 class="sub-title" data-i18n="sub.byage">Par âge</h3>
-      <div class="age-grid">
-        <button class="age-card" data-filter-age="0-2">
-          <span class="age-emoji">👶</span>
-          <span data-i18n="age.0-2">0–2 ans</span>
-        </button>
-        <button class="age-card" data-filter-age="3-5">
-          <span class="age-emoji">🧒</span>
-          <span data-i18n="age.3-5">3–5 ans</span>
-        </button>
-        <button class="age-card" data-filter-age="6-12">
-          <span class="age-emoji">🧑</span>
-          <span data-i18n="age.6-12">6–12 ans</span>
-        </button>
-      </div>
-
-      <h3 class="sub-title" data-i18n="sub.byuniverse">Par univers</h3>
-      <div class="category-grid">
-        <a class="category-card" href="jouets.html?universe=educatif" style="--cat-color:#c7f0db;">
-          <span class="category-emoji">🧩</span>
-          <h4 data-i18n="uni.educatif.title">Jouets éducatifs</h4>
-          <p data-i18n="uni.educatif.desc">Apprendre en s'amusant</p>
-        </a>
-        <a class="category-card" href="jouets.html?universe=plein-air" style="--cat-color:#ffe6a7;">
-          <span class="category-emoji">🪁</span>
-          <h4 data-i18n="uni.pleinair.title">Plein air</h4>
-          <p data-i18n="uni.pleinair.desc">Aventures en extérieur</p>
-        </a>
-        <a class="category-card" href="vetements.html?universe=coton-bio" style="--cat-color:#ffd6c9;">
-          <span class="category-emoji">👕</span>
-          <h4 data-i18n="uni.cotonbio.title">Coton bio</h4>
-          <p data-i18n="uni.cotonbio.desc">Doux pour leur peau</p>
-        </a>
-        <a class="category-card" href="vetements.html?universe=chaussures" style="--cat-color:#d8e4ff;">
-          <span class="category-emoji">👟</span>
-          <h4 data-i18n="uni.chaussures.title">Chaussures</h4>
-          <p data-i18n="uni.chaussures.desc">Confort à chaque pas</p>
-        </a>
-      </div>
+  <section class="page-hero" style="background:linear-gradient(180deg,#dff3e8,var(--cream));">
+    <div class="container page-hero-inner">
+      <p class="breadcrumb"><a href="index.html" data-i18n="breadcrumb.home">Accueil</a> / <a href="soldes.html" data-i18n="nav.sales">Soldes</a> / <span data-i18n="footer.destock">Lots déstockage</span></p>
+      <span class="page-hero-emoji">📦</span>
+      <h1 data-i18n="destockage.hero.title">Lots déstockage 📦</h1>
+      <p data-i18n="destockage.hero.desc">Des packs multi-produits à prix cassés pour équiper toute la fratrie sans se ruiner, jusqu'à épuisement des stocks.</p>
     </div>
   </section>
 
   <section class="section section-alt" id="produits">
     <div class="container">
-      <div class="section-head">
-        <span class="eyebrow" data-i18n="products.eyebrow">Coups de cœur</span>
-        <h2 data-i18n="products.title">Produits vedettes</h2>
-        <p data-i18n="products.desc">Une sélection pensée avec amour pour petits explorateurs.</p>
-      </div>
-
-      <div class="filter-chips" id="filterChips">
-        <button class="chip active" data-filter="all" data-i18n="chip.all">Tout voir</button>
-        <button class="chip" data-filter="jouets" data-i18n="chip.toys">Jouets</button>
-        <button class="chip" data-filter="vetements" data-i18n="chip.clothing">Vêtements</button>
-        <button class="chip" data-filter="soldes" data-i18n="chip.sales">Soldes 🔥</button>
-      </div>
-
       <div class="product-grid" id="productGrid"></div>
-
       <p class="empty-state" id="emptyState" hidden data-i18n="empty.state">Aucun produit ne correspond à votre recherche 🧐 Essayez un autre filtre !</p>
-    </div>
-  </section>
-
-  <section class="section trust-section">
-    <div class="container trust-grid">
-      <div class="trust-item">
-        <span class="trust-icon">🚀</span>
-        <h4 data-i18n="trust.delivery.title">Livraison rapide</h4>
-        <p data-i18n="trust.delivery.desc">Expédié en 24h, chez vous en 2 à 4 jours</p>
-      </div>
-      <div class="trust-item">
-        <span class="trust-icon">🌿</span>
-        <h4 data-i18n="trust.eco.title">Emballage éco-responsable</h4>
-        <p data-i18n="trust.eco.desc">Cartons recyclés, zéro plastique à usage unique</p>
-      </div>
-      <div class="trust-item">
-        <span class="trust-icon">🛡️</span>
-        <h4 data-i18n="trust.safe.title">Matériaux 100% sûrs</h4>
-        <p data-i18n="trust.safe.desc">Certifiés CE, testés et approuvés par nos experts</p>
-      </div>
-      <div class="trust-item">
-        <span class="trust-icon">🔒</span>
-        <h4 data-i18n="trust.payment.title">Paiement sécurisé</h4>
-        <p data-i18n="trust.payment.desc">Vos données protégées, transactions cryptées</p>
-      </div>
     </div>
   </section>
 

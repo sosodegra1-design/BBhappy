@@ -17,7 +17,7 @@
 <header class="site-header" id="siteHeader">
   <div class="topbar">
     <div class="container topbar-inner">
-      <p>🚚 Livraison offerte dès 49€ &nbsp;•&nbsp; ✨ -20% sur les soldes avec le code SOLEIL</p>
+      <p data-i18n="topbar.text">🚚 Livraison offerte dès 49€ &nbsp;•&nbsp; ✨ -20% sur les soldes avec le code SOLEIL</p>
     </div>
   </div>
 
@@ -32,20 +32,25 @@
     </a>
 
     <nav class="main-nav" id="mainNav">
-      <a href="index.html" class="nav-link">Accueil</a>
-      <a href="jouets.html" class="nav-link">Jouets</a>
-      <a href="vetements.html" class="nav-link active">Vêtements</a>
-      <a href="marques.html" class="nav-link">Marques</a>
-      <a href="soldes.html" class="nav-link sale">Soldes 🔥</a>
+      <a href="index.html" class="nav-link" data-i18n="nav.home">Accueil</a>
+      <a href="jouets.html" class="nav-link" data-i18n="nav.toys">Jouets</a>
+      <a href="vetements.html" class="nav-link active" data-i18n="nav.clothing">Vêtements</a>
+      <a href="marques.html" class="nav-link" data-i18n="nav.brands">Marques</a>
+      <a href="soldes.html" class="nav-link sale" data-i18n="nav.sales">Soldes 🔥</a>
     </nav>
 
     <div class="search-bar">
-      <input type="search" id="searchInput" placeholder="Rechercher un jouet, un vêtement...">
+      <input type="search" id="searchInput" placeholder="Rechercher un jouet, un vêtement..." data-i18n-placeholder="search.placeholder">
       <button aria-label="Rechercher">🔍</button>
     </div>
 
     <div class="header-actions">
       <button class="icon-btn" id="searchToggle" aria-label="Recherche">🔍</button>
+      <button class="icon-btn lang-toggle" id="langToggle" aria-label="Changer de langue">🇬🇧 EN</button>
+      <button class="icon-btn" id="loyaltyBtn" aria-label="Carte de fidélité">
+        🎁
+        <span class="badge" id="loyaltyBadge">0</span>
+      </button>
       <button class="icon-btn" id="favBtn" aria-label="Favoris">
         ❤️
         <span class="badge" id="favCount">0</span>
@@ -57,7 +62,7 @@
     </div>
   </div>
   <div class="search-bar-mobile" id="searchBarMobile">
-    <input type="search" id="searchInputMobile" placeholder="Rechercher un jouet, un vêtement...">
+    <input type="search" id="searchInputMobile" placeholder="Rechercher un jouet, un vêtement..." data-i18n-placeholder="search.placeholder">
   </div>
 </header>
 
@@ -70,28 +75,28 @@
 
   <section class="page-hero" style="background:linear-gradient(180deg,#ffe9de,var(--cream));">
     <div class="container page-hero-inner">
-      <p class="breadcrumb"><a href="index.html">Accueil</a> / Vêtements</p>
+      <p class="breadcrumb"><a href="index.html" data-i18n="breadcrumb.home">Accueil</a> / <span data-i18n="nav.clothing">Vêtements</span></p>
       <span class="page-hero-emoji">👕</span>
-      <h1>L'univers Vêtements</h1>
-      <p>Du coton biologique tout doux aux chaussures confortables, des vêtements pensés pour le confort et les petites aventures.</p>
+      <h1 data-i18n="vetements.hero.title">L'univers Vêtements</h1>
+      <p data-i18n="vetements.hero.desc">Du coton biologique tout doux aux chaussures confortables, des vêtements pensés pour le confort et les petites aventures.</p>
     </div>
   </section>
 
   <section class="section" id="ages">
     <div class="container">
-      <h3 class="sub-title">Filtrer par âge</h3>
+      <h3 class="sub-title" data-i18n="sub.byage2">Filtrer par âge</h3>
       <div class="age-grid">
         <button class="age-card" data-filter-age="0-2">
           <span class="age-emoji">👶</span>
-          <span>0–2 ans</span>
+          <span data-i18n="age.0-2">0–2 ans</span>
         </button>
         <button class="age-card" data-filter-age="3-5">
           <span class="age-emoji">🧒</span>
-          <span>3–5 ans</span>
+          <span data-i18n="age.3-5">3–5 ans</span>
         </button>
         <button class="age-card" data-filter-age="6-12">
           <span class="age-emoji">🧑</span>
-          <span>6–12 ans</span>
+          <span data-i18n="age.6-12">6–12 ans</span>
         </button>
       </div>
     </div>
@@ -99,17 +104,17 @@
 
   <section class="section">
     <div class="container">
-      <h3 class="sub-title">Filtrer par univers</h3>
+      <h3 class="sub-title" data-i18n="sub.byuniverse2">Filtrer par univers</h3>
       <div class="category-grid" style="grid-template-columns:repeat(2,1fr);max-width:560px;margin:0 auto;">
         <button class="category-card" data-filter-universe="coton-bio" style="--cat-color:#ffd6c9;">
           <span class="category-emoji">👕</span>
-          <h4>Coton bio</h4>
-          <p>Doux pour leur peau</p>
+          <h4 data-i18n="uni.cotonbio.title">Coton bio</h4>
+          <p data-i18n="uni.cotonbio.desc">Doux pour leur peau</p>
         </button>
         <button class="category-card" data-filter-universe="chaussures" style="--cat-color:#d8e4ff;">
           <span class="category-emoji">👟</span>
-          <h4>Chaussures</h4>
-          <p>Confort à chaque pas</p>
+          <h4 data-i18n="uni.chaussures.title">Chaussures</h4>
+          <p data-i18n="uni.chaussures.desc">Confort à chaque pas</p>
         </button>
       </div>
     </div>
@@ -118,7 +123,7 @@
   <section class="section section-alt" id="produits">
     <div class="container">
       <div class="product-grid" id="productGrid"></div>
-      <p class="empty-state" id="emptyState" hidden>Aucun produit ne correspond à votre recherche 🧐 Essayez un autre filtre !</p>
+      <p class="empty-state" id="emptyState" hidden data-i18n="empty.state">Aucun produit ne correspond à votre recherche 🧐 Essayez un autre filtre !</p>
     </div>
   </section>
 
@@ -138,7 +143,7 @@
         <h3 id="modalProductName">Nom du produit</h3>
         <p class="modal-price" id="modalPrice">0,00 €</p>
         <div class="modal-qty">
-          <label for="modalQty">Quantité</label>
+          <label for="modalQty" data-i18n="modal.qty">Quantité</label>
           <div class="qty-control">
             <button id="qtyMinus" aria-label="Diminuer">−</button>
             <input id="modalQty" type="number" min="1" value="1">
@@ -146,15 +151,15 @@
           </div>
         </div>
         <div class="modal-actions">
-          <button class="btn btn-primary" id="modalAddToCart">Ajouter au panier</button>
+          <button class="btn btn-primary" id="modalAddToCart" data-i18n="modal.addtocart">Ajouter au panier</button>
           <button class="icon-btn fav-toggle" id="modalFav" aria-label="Ajouter aux favoris">🤍</button>
         </div>
 
         <div class="tabs">
           <div class="tab-headers">
-            <button class="tab-btn active" data-tab="description">Description</button>
-            <button class="tab-btn" data-tab="entretien">Entretien</button>
-            <button class="tab-btn" data-tab="tailles">Tailles/Âges</button>
+            <button class="tab-btn active" data-tab="description" data-i18n="tab.description">Description</button>
+            <button class="tab-btn" data-tab="entretien" data-i18n="tab.care">Entretien</button>
+            <button class="tab-btn" data-tab="tailles" data-i18n="tab.sizes">Tailles/Âges</button>
           </div>
           <div class="tab-panel active" data-panel="description" id="panelDescription"></div>
           <div class="tab-panel" data-panel="entretien" id="panelEntretien"></div>
@@ -165,20 +170,58 @@
   </div>
 </div>
 
+<!-- ===== CHECKOUT MODAL ===== -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal checkout-modal" role="dialog" aria-modal="true">
+    <button class="modal-close" id="checkoutClose" aria-label="Fermer">✕</button>
+    <div class="modal-body">
+      <form id="checkoutForm" class="checkout-form">
+        <h3 data-i18n="checkout.title">Finaliser la commande</h3>
+        <label for="checkoutName" data-i18n="checkout.name">Nom complet</label>
+        <input type="text" id="checkoutName" required>
+        <label for="checkoutEmail" data-i18n="checkout.email">E-mail</label>
+        <input type="email" id="checkoutEmail" required>
+        <label for="checkoutAddress" data-i18n="checkout.address">Adresse</label>
+        <input type="text" id="checkoutAddress" required>
+        <div class="checkout-row">
+          <div>
+            <label for="checkoutZip" data-i18n="checkout.zip">Code postal</label>
+            <input type="text" id="checkoutZip" required>
+          </div>
+          <div>
+            <label for="checkoutCity" data-i18n="checkout.city">Ville</label>
+            <input type="text" id="checkoutCity" required>
+          </div>
+        </div>
+        <div class="checkout-summary" id="checkoutSummary"></div>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="checkout.submit">Confirmer la commande</button>
+      </form>
+      <div class="checkout-success" id="checkoutSuccess" hidden>
+        <span class="checkout-success-icon">🎉</span>
+        <h3 data-i18n="checkout.success.title">Merci pour votre commande !</h3>
+        <p data-i18n="checkout.success.desc">Un e-mail de confirmation vous a été envoyé.</p>
+        <p><strong data-i18n="checkout.orderNumber">Numéro de commande</strong> : <span id="checkoutOrderNumber"></span></p>
+        <p class="checkout-points">+<span id="checkoutPointsEarned"></span> <span data-i18n="loyalty.points">points</span> <span data-i18n="checkout.pointsEarned">de fidélité gagnés !</span></p>
+        <button class="btn btn-primary" id="checkoutCloseSuccess" data-i18n="checkout.close">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ===== CART DRAWER ===== -->
 <div class="drawer-overlay" id="cartOverlay"></div>
 <aside class="drawer" id="cartDrawer" aria-label="Panier">
   <div class="drawer-head">
-    <h3>Votre panier</h3>
+    <h3 data-i18n="cart.title">Votre panier</h3>
     <button class="modal-close" id="cartClose" aria-label="Fermer le panier">✕</button>
   </div>
   <div class="drawer-body" id="cartItems"></div>
   <div class="drawer-footer">
     <div class="cart-total">
-      <span>Total</span>
+      <span data-i18n="cart.total">Total</span>
       <strong id="cartTotal">0,00 €</strong>
     </div>
-    <button class="btn btn-primary btn-block">Passer la commande</button>
+    <button class="btn btn-primary btn-block" id="checkoutBtn" data-i18n="cart.checkout">Passer la commande</button>
   </div>
 </aside>
 
@@ -186,10 +229,29 @@
 <div class="drawer-overlay" id="favOverlay"></div>
 <aside class="drawer" id="favDrawer" aria-label="Favoris">
   <div class="drawer-head">
-    <h3>Vos favoris</h3>
+    <h3 data-i18n="fav.title">Vos favoris</h3>
     <button class="modal-close" id="favClose" aria-label="Fermer les favoris">✕</button>
   </div>
   <div class="drawer-body" id="favItems"></div>
+</aside>
+
+<!-- ===== LOYALTY DRAWER ===== -->
+<div class="drawer-overlay" id="loyaltyOverlay"></div>
+<aside class="drawer" id="loyaltyDrawer" aria-label="Carte de fidélité">
+  <div class="drawer-head">
+    <h3 data-i18n="loyalty.title">Carte de fidélité</h3>
+    <button class="modal-close" id="loyaltyClose" aria-label="Fermer">✕</button>
+  </div>
+  <div class="drawer-body">
+    <div class="loyalty-points">
+      <span class="loyalty-points-value" id="loyaltyPointsValue">0</span>
+      <span data-i18n="loyalty.points">points</span>
+    </div>
+    <div class="loyalty-progress"><div class="loyalty-progress-bar" id="loyaltyProgressBar"></div></div>
+    <p class="loyalty-next" id="loyaltyNextText"></p>
+    <h4 data-i18n="loyalty.tiersTitle">Récompenses</h4>
+    <ul class="loyalty-tiers" id="loyaltyTiers" style="margin-top:12px;"></ul>
+  </div>
 </aside>
 
 <!-- ===== TOAST ===== -->
@@ -199,35 +261,36 @@
 <footer class="footer">
   <div class="container footer-top">
     <div class="footer-newsletter">
-      <h3>Rejoignez la famille BBHappY 💌</h3>
-      <p>Recevez -10% sur votre première commande et nos nouveautés en avant-première.</p>
+      <h3 data-i18n="newsletter.title">Rejoignez la famille BBHappY 💌</h3>
+      <p data-i18n="newsletter.desc">Recevez -10% sur votre première commande et nos nouveautés en avant-première.</p>
       <form id="newsletterForm">
-        <input type="email" required placeholder="Votre adresse e-mail">
-        <button type="submit" class="btn btn-primary">S'inscrire</button>
+        <input type="email" required placeholder="Votre adresse e-mail" data-i18n-placeholder="newsletter.placeholder">
+        <button type="submit" class="btn btn-primary" data-i18n="newsletter.button">S'inscrire</button>
       </form>
       <p class="newsletter-msg" id="newsletterMsg"></p>
     </div>
     <div class="footer-links">
       <div class="footer-col">
-        <h4>Boutique</h4>
-        <a href="jouets.html">Jouets</a>
-        <a href="vetements.html">Vêtements</a>
-        <a href="marques.html">Marques</a>
-        <a href="soldes.html">Soldes</a>
+        <h4 data-i18n="footer.shop">Boutique</h4>
+        <a href="jouets.html" data-i18n="nav.toys">Jouets</a>
+        <a href="vetements.html" data-i18n="nav.clothing">Vêtements</a>
+        <a href="marques.html" data-i18n="nav.brands">Marques</a>
+        <a href="soldes.html" data-i18n="nav.sales">Soldes</a>
+        <a href="destockage.html" data-i18n="footer.destock">Lots déstockage</a>
       </div>
       <div class="footer-col">
-        <h4>Service client</h4>
-        <a href="#">Contactez-nous</a>
-        <a href="#">Livraison &amp; retours</a>
-        <a href="#">Guide des tailles</a>
-        <a href="#">FAQ</a>
+        <h4 data-i18n="footer.service">Service client</h4>
+        <a href="#" data-i18n="footer.contact">Contactez-nous</a>
+        <a href="#" data-i18n="footer.shipping">Livraison &amp; retours</a>
+        <a href="#" data-i18n="footer.sizeguide">Guide des tailles</a>
+        <a href="#" data-i18n="footer.faq">FAQ</a>
       </div>
       <div class="footer-col">
-        <h4>À propos</h4>
-        <a href="#">Notre histoire</a>
-        <a href="#">Engagement éco-responsable</a>
-        <a href="#">Normes de sécurité</a>
-        <a href="#">Carrières</a>
+        <h4 data-i18n="footer.about">À propos</h4>
+        <a href="#" data-i18n="footer.story">Notre histoire</a>
+        <a href="#" data-i18n="footer.eco">Engagement éco-responsable</a>
+        <a href="#" data-i18n="footer.safety">Normes de sécurité</a>
+        <a href="#" data-i18n="footer.careers">Carrières</a>
       </div>
     </div>
   </div>
@@ -245,7 +308,7 @@
       <span>🅿️ PayPal</span>
       <span>🍏 Apple Pay</span>
     </div>
-    <p class="footer-copy">© 2026 BBHappY — Tous droits réservés.</p>
+    <p class="footer-copy" data-i18n="footer.copy">© 2026 BBHappY — Tous droits réservés.</p>
   </div>
 </footer>
 
