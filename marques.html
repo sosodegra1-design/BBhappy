@@ -12,6 +12,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧸</text></svg>">
 </head>
 <body>
+<a href="#main-content" class="skip-link">Aller au contenu principal</a>
 
 <!-- ===== HEADER ===== -->
 <header class="site-header" id="siteHeader">
@@ -71,7 +72,7 @@
   🛒<span class="floating-cart-badge" id="floatingCartBadge">0</span>
 </button>
 
-<main>
+<main id="main-content">
 
   <section class="page-hero" style="background:linear-gradient(180deg,#e3e9ff,var(--cream));">
     <div class="container page-hero-inner">
@@ -166,11 +167,11 @@
 
 <!-- ===== CHECKOUT MODAL ===== -->
 <div class="modal-overlay" id="checkoutModal">
-  <div class="modal checkout-modal" role="dialog" aria-modal="true">
+  <div class="modal checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
     <button class="modal-close" id="checkoutClose" aria-label="Fermer">✕</button>
     <div class="modal-body">
       <form id="checkoutForm" class="checkout-form">
-        <h3 data-i18n="checkout.title">Finaliser la commande</h3>
+        <h3 id="checkoutTitle" data-i18n="checkout.title">Finaliser la commande</h3>
         <label for="checkoutName" data-i18n="checkout.name">Nom complet</label>
         <input type="text" id="checkoutName" required>
         <label for="checkoutEmail" data-i18n="checkout.email">E-mail</label>
@@ -190,7 +191,7 @@
         <div class="checkout-summary" id="checkoutSummary"></div>
         <button type="submit" class="btn btn-primary btn-block" data-i18n="checkout.submit">Confirmer la commande</button>
       </form>
-      <div class="checkout-success" id="checkoutSuccess" hidden>
+      <div class="checkout-success" id="checkoutSuccess" hidden tabindex="-1">
         <span class="checkout-success-icon">🎉</span>
         <h3 data-i18n="checkout.success.title">Merci pour votre commande !</h3>
         <p data-i18n="checkout.success.desc">Un e-mail de confirmation vous a été envoyé.</p>
@@ -249,7 +250,7 @@
 </aside>
 
 <!-- ===== TOAST ===== -->
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!-- ===== FOOTER ===== -->
 <footer class="footer">

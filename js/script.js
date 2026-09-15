@@ -14,6 +14,23 @@ const ICONS = {
   lapin: `<svg viewBox="0 0 100 100"><ellipse cx="38" cy="20" rx="7" ry="18" fill="#fff"/><ellipse cx="60" cy="20" rx="7" ry="18" fill="#fff"/><circle cx="50" cy="46" r="24" fill="#fff"/><ellipse cx="50" cy="80" rx="26" ry="18" fill="#fff"/><circle cx="43" cy="42" r="3" fill="#4a4358" opacity=".3"/><circle cx="57" cy="42" r="3" fill="#4a4358" opacity=".3"/></svg>`,
   legging: `<svg viewBox="0 0 100 100"><path d="M30 8h40l4 30-4 54h-14l-6-40-6 40H30l-4-54z" fill="#fff"/><line x1="35" y1="20" x2="65" y2="20" stroke="#4a4358" stroke-width="2" opacity=".2"/></svg>`
 };
+// Icons are purely decorative (the product name already conveys the product); hide them from assistive tech.
+Object.keys(ICONS).forEach(key => {
+  ICONS[key] = ICONS[key].replace('<svg viewBox="0 0 100 100">', '<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">');
+});
+
+/* Human-readable names for the swatch colors used across the catalog (for screen readers). */
+const COLOR_NAMES = {
+  '#a8e6cf': { fr: 'Vert menthe', en: 'Mint green' },
+  '#ffcab1': { fr: 'Pêche', en: 'Peach' },
+  '#ffe066': { fr: 'Jaune soleil', en: 'Sun yellow' },
+  '#ffffff': { fr: 'Blanc', en: 'White' }
+};
+function colorName(hex) {
+  const entry = COLOR_NAMES[hex.toLowerCase()];
+  if (!entry) return hex;
+  return state.lang === 'en' ? entry.en : entry.fr;
+}
 
 /* ===================== DATA ===================== */
 const PRODUCTS = [
@@ -334,7 +351,7 @@ const TRANSLATIONS = {
     'cart.title': 'Votre panier', 'cart.empty': 'Votre panier est vide pour le moment 🧺',
     'cart.total': 'Total', 'cart.checkout': 'Passer la commande', 'cart.remove': 'Retirer',
     'fav.title': 'Vos favoris', 'fav.empty': 'Aucun favori pour l\'instant 💛<br>Cliquez sur le cœur d\'un produit !',
-    'fav.remove': 'Retirer des favoris', 'fav.addAria': 'Ajouter aux favoris',
+    'fav.remove': 'Retirer des favoris', 'fav.addAria': 'Ajouter aux favoris', 'fav.removeAria': 'Retirer des favoris',
     'toast.added': 'ajouté au panier 🛒',
     'badge.sale': 'Soldes', 'badge.lot': 'Lot',
     'newsletter.title': 'Rejoignez la famille BBHappY 💌',
@@ -410,7 +427,7 @@ const TRANSLATIONS = {
     'cart.title': 'Your cart', 'cart.empty': 'Your cart is empty for now 🧺',
     'cart.total': 'Total', 'cart.checkout': 'Checkout', 'cart.remove': 'Remove',
     'fav.title': 'Your favorites', 'fav.empty': 'No favorites yet 💛<br>Click the heart on a product!',
-    'fav.remove': 'Remove from favorites', 'fav.addAria': 'Add to favorites',
+    'fav.remove': 'Remove from favorites', 'fav.addAria': 'Add to favorites', 'fav.removeAria': 'Remove from favorites',
     'toast.added': 'added to cart 🛒',
     'badge.sale': 'Sale', 'badge.lot': 'Bundle',
     'newsletter.title': 'Join the BBHappY family 💌',
@@ -515,15 +532,15 @@ function renderProducts() {
     card.innerHTML = `
       <div class="product-media" style="--product-bg:${p.bg}" data-open="${p.id}">
         ${badge}
-        <button class="product-fav ${isFav ? 'active' : ''}" data-fav="${p.id}" aria-label="${t('fav.addAria')}">${isFav ? '❤️' : '🤍'}</button>
+        <button class="product-fav ${isFav ? 'active' : ''}" data-fav="${p.id}" aria-label="${isFav ? t('fav.removeAria') : t('fav.addAria')}" aria-pressed="${isFav}">${isFav ? '❤️' : '🤍'}</button>
         <div class="product-icon">${p.icon}</div>
       </div>
       <div class="product-body">
         <span class="product-age">${pf(p, 'ageLabel')}</span>
-        <h3 class="product-name" data-open="${p.id}">${pf(p, 'name')}</h3>
+        <h3><button type="button" class="product-name" data-open="${p.id}">${pf(p, 'name')}</button></h3>
         <p class="product-price">${fmtPrice(p.price)}${p.oldPrice ? `<span class="old-price">${fmtPrice(p.oldPrice)}</span>` : ''}</p>
         <div class="color-swatches">
-          ${p.colors.map((c, i) => `<span class="swatch ${i === 0 ? 'selected' : ''}" style="background:${c}" data-color="${c}" data-product="${p.id}"></span>`).join('')}
+          ${p.colors.map((c, i) => `<button type="button" class="swatch ${i === 0 ? 'selected' : ''}" style="background:${c}" data-color="${c}" data-product="${p.id}" aria-label="${colorName(c)}" aria-pressed="${i === 0}"></button>`).join('')}
         </div>
         <button class="add-cart-btn" data-add="${p.id}">${t('modal.addtocart')}</button>
       </div>
@@ -536,6 +553,8 @@ function renderProducts() {
 function openProductModal(id) {
   const p = PRODUCTS.find(x => x.id === id);
   if (!p) return;
+  const alreadyOpen = document.getElementById('productModal').classList.contains('open');
+  if (!alreadyOpen) lastFocusedElement = document.activeElement;
   state.currentModalProduct = p;
   state.currentModalColor = p.colors[0];
 
@@ -547,12 +566,14 @@ function openProductModal(id) {
   document.getElementById('modalQty').value = 1;
 
   const colorsWrap = document.getElementById('modalColors');
-  colorsWrap.innerHTML = p.colors.map((c, i) => `<span class="swatch ${i === 0 ? 'selected' : ''}" style="width:28px;height:28px;background:${c}" data-modal-color="${c}"></span>`).join('');
+  colorsWrap.innerHTML = p.colors.map((c, i) => `<button type="button" class="swatch ${i === 0 ? 'selected' : ''}" style="width:28px;height:28px;background:${c}" data-modal-color="${c}" aria-label="${colorName(c)}" aria-pressed="${i === 0}"></button>`).join('');
 
   const favBtn = document.getElementById('modalFav');
   const isFav = state.favorites.includes(p.id);
   favBtn.textContent = isFav ? '❤️' : '🤍';
   favBtn.classList.toggle('active', isFav);
+  favBtn.setAttribute('aria-label', isFav ? t('fav.removeAria') : t('fav.addAria'));
+  favBtn.setAttribute('aria-pressed', String(isFav));
 
   document.getElementById('panelDescription').innerHTML = `
     <p>${pf(p, 'description')}</p>
@@ -573,13 +594,19 @@ function openProductModal(id) {
   document.querySelectorAll('.tab-btn').forEach((btn, i) => btn.classList.toggle('active', i === 0));
   document.querySelectorAll('.tab-panel').forEach((panel, i) => panel.classList.toggle('active', i === 0));
 
-  document.getElementById('productModal').classList.add('open');
+  const modal = document.getElementById('productModal');
+  modal.classList.add('open');
   document.body.style.overflow = 'hidden';
+  trapFocus(modal);
+  if (!alreadyOpen) document.getElementById('modalClose').focus();
 }
 
 function closeProductModal() {
-  document.getElementById('productModal').classList.remove('open');
+  const modal = document.getElementById('productModal');
+  modal.classList.remove('open');
   document.body.style.overflow = '';
+  releaseFocus(modal);
+  restoreFocus();
 }
 
 /* ===================== CART ===================== */
@@ -639,7 +666,7 @@ function renderCart() {
         <div class="cart-item-media" style="background:${p.bg}">${p.icon}</div>
         <div class="cart-item-info">
           <h5>${pf(p, 'name')}</h5>
-          <p><span class="swatch" style="display:inline-block;width:12px;height:12px;background:${item.color};vertical-align:middle;margin-right:4px;"></span>${fmtPrice(p.price)}</p>
+          <p><span class="swatch" aria-hidden="true" style="display:inline-block;width:12px;height:12px;background:${item.color};vertical-align:middle;margin-right:4px;"></span>${fmtPrice(p.price)}</p>
           <div class="cart-item-controls">
             <button data-qty-minus="${item.key}">−</button>
             <span>${item.qty}</span>
@@ -679,6 +706,8 @@ function toggleFavorite(productId) {
     const isFav = state.favorites.includes(productId);
     favBtn.textContent = isFav ? '❤️' : '🤍';
     favBtn.classList.toggle('active', isFav);
+    favBtn.setAttribute('aria-label', isFav ? t('fav.removeAria') : t('fav.addAria'));
+    favBtn.setAttribute('aria-pressed', String(isFav));
   }
 }
 
@@ -693,7 +722,7 @@ function renderFavorites() {
     <div class="cart-item">
       <div class="cart-item-media" style="background:${p.bg}">${p.icon}</div>
       <div class="cart-item-info">
-        <h5 style="cursor:pointer" data-open="${p.id}">${pf(p, 'name')}</h5>
+        <h5><button type="button" class="fav-item-name" data-open="${p.id}">${pf(p, 'name')}</button></h5>
         <p>${fmtPrice(p.price)}</p>
         <button class="cart-item-remove" data-unfav="${p.id}">${t('fav.remove')}</button>
       </div>
@@ -774,19 +803,26 @@ function openCheckout() {
     showToast(t('checkout.emptyCart'));
     return;
   }
+  lastFocusedElement = document.activeElement;
   renderCheckoutSummary();
   const form = document.getElementById('checkoutForm');
   const success = document.getElementById('checkoutSuccess');
   form.hidden = false;
   form.reset();
   success.hidden = true;
-  document.getElementById('checkoutModal').classList.add('open');
+  const modal = document.getElementById('checkoutModal');
+  modal.classList.add('open');
   document.body.style.overflow = 'hidden';
+  trapFocus(modal);
+  document.getElementById('checkoutName').focus();
 }
 
 function closeCheckout() {
-  document.getElementById('checkoutModal').classList.remove('open');
+  const modal = document.getElementById('checkoutModal');
+  modal.classList.remove('open');
   document.body.style.overflow = '';
+  releaseFocus(modal);
+  restoreFocus();
 }
 
 /* ===================== i18n APPLY ===================== */
@@ -821,14 +857,62 @@ function showToast(msg) {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
 }
 
+/* ===================== FOCUS MANAGEMENT ===================== */
+/* Keeps keyboard focus inside an open modal/drawer and restores it to the
+   triggering element on close, so keyboard and screen-reader users never
+   get stranded on hidden background content. */
+let lastFocusedElement = null;
+const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function trapFocus(container) {
+  releaseFocus(container);
+  const handler = (e) => {
+    if (e.key !== 'Tab') return;
+    const focusables = Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR)).filter(el => el.offsetParent !== null);
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
+  container.addEventListener('keydown', handler);
+  container._trapHandler = handler;
+}
+function releaseFocus(container) {
+  if (container._trapHandler) {
+    container.removeEventListener('keydown', container._trapHandler);
+    container._trapHandler = null;
+  }
+}
+function focusFirstIn(container) {
+  const focusable = container.querySelector(FOCUSABLE_SELECTOR);
+  if (focusable) focusable.focus();
+}
+function restoreFocus() {
+  if (lastFocusedElement && document.body.contains(lastFocusedElement)) {
+    lastFocusedElement.focus();
+  }
+  lastFocusedElement = null;
+}
+
 /* ===================== DRAWERS ===================== */
 function openDrawer(drawer, overlay) {
+  lastFocusedElement = document.activeElement;
   drawer.classList.add('open');
   overlay.classList.add('open');
+  trapFocus(drawer);
+  focusFirstIn(drawer);
 }
 function closeDrawer(drawer, overlay) {
   drawer.classList.remove('open');
   overlay.classList.remove('open');
+  releaseFocus(drawer);
+  restoreFocus();
 }
 
 /* ===================== EVENT WIRING ===================== */
@@ -858,8 +942,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (swatch) {
         const card = swatch.closest('.product-card');
-        card.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+        card.querySelectorAll('.swatch').forEach(s => { s.classList.remove('selected'); s.setAttribute('aria-pressed', 'false'); });
         swatch.classList.add('selected');
+        swatch.setAttribute('aria-pressed', 'true');
         return;
       }
       if (favId) { toggleFavorite(favId.dataset.fav); return; }
@@ -983,8 +1068,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const sw = e.target.closest('[data-modal-color]');
     if (!sw) return;
     state.currentModalColor = sw.dataset.modalColor;
-    document.querySelectorAll('#modalColors .swatch').forEach(s => s.classList.remove('selected'));
+    document.querySelectorAll('#modalColors .swatch').forEach(s => { s.classList.remove('selected'); s.setAttribute('aria-pressed', 'false'); });
     sw.classList.add('selected');
+    sw.setAttribute('aria-pressed', 'true');
   });
 
   document.getElementById('qtyMinus').addEventListener('click', () => {
@@ -1077,7 +1163,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('checkoutOrderNumber').textContent = orderNumber;
     document.getElementById('checkoutPointsEarned').textContent = points;
     document.getElementById('checkoutForm').hidden = true;
-    document.getElementById('checkoutSuccess').hidden = false;
+    const successPanel = document.getElementById('checkoutSuccess');
+    successPanel.hidden = false;
+    successPanel.focus();
     state.cart = [];
     saveState();
     renderCart();
