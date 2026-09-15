@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BBHappY — Jouets & Vêtements pour enfants</title>
-<meta name="description" content="BBHappY : jouets éducatifs, vêtements en coton bio et accessoires pour enfants. Là où l'imagination rencontre le confort.">
+<title>Soldes — BBHappY</title>
+<meta name="description" content="Toutes nos offres du moment sur les jouets et vêtements pour enfants BBHappY.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧸</text></svg>">
 </head>
-<body>
+<body data-category="soldes">
 
 <!-- ===== HEADER ===== -->
 <header class="site-header" id="siteHeader">
@@ -32,11 +32,11 @@
     </a>
 
     <nav class="main-nav" id="mainNav">
-      <a href="index.html" class="nav-link active">Accueil</a>
+      <a href="index.html" class="nav-link">Accueil</a>
       <a href="jouets.html" class="nav-link">Jouets</a>
       <a href="vetements.html" class="nav-link">Vêtements</a>
       <a href="marques.html" class="nav-link">Marques</a>
-      <a href="soldes.html" class="nav-link sale">Soldes 🔥</a>
+      <a href="soldes.html" class="nav-link active sale">Soldes 🔥</a>
     </nav>
 
     <div class="search-bar">
@@ -66,48 +66,20 @@
   🛒<span class="floating-cart-badge" id="floatingCartBadge">0</span>
 </button>
 
-<main id="accueil">
+<main>
 
-  <!-- ===== HERO ===== -->
-  <section class="hero">
-    <div class="hero-blob blob-1"></div>
-    <div class="hero-blob blob-2"></div>
-    <div class="hero-blob blob-3"></div>
-    <div class="container hero-inner">
-      <div class="hero-text">
-        <span class="hero-tag">✨ Nouvelle collection printemps</span>
-        <h1>Là où l'imagination<br>rencontre le <span class="highlight">confort</span></h1>
-        <p>Des jouets qui éveillent la créativité et des vêtements doux comme un câlin, pensés pour les petites aventures du quotidien.</p>
-        <div class="hero-actions">
-          <a href="#produits" class="btn btn-primary">Acheter maintenant</a>
-          <a href="#categories" class="btn btn-ghost">Découvrir les univers</a>
-        </div>
-        <div class="hero-stats">
-          <div><strong>10k+</strong><span>familles conquises</span></div>
-          <div><strong>100%</strong><span>matériaux sûrs</span></div>
-          <div><strong>4.9★</strong><span>note moyenne</span></div>
-        </div>
-      </div>
-      <div class="hero-visual">
-        <div class="hero-card card-float-1">🧸<small>Peluche câline</small></div>
-        <div class="hero-card card-float-2">🚂<small>Jouet en bois</small></div>
-        <div class="hero-card card-float-3">👕<small>Coton bio</small></div>
-        <div class="hero-sun">😊</div>
-        <div class="hero-ground"></div>
-      </div>
+  <section class="page-hero" style="background:linear-gradient(180deg,#fff1cf,var(--cream));">
+    <div class="container page-hero-inner">
+      <p class="breadcrumb"><a href="index.html">Accueil</a> / Soldes</p>
+      <span class="page-hero-emoji">🔥</span>
+      <h1>Soldes BBHappY</h1>
+      <p>Jusqu'à -20% avec le code <strong>SOLEIL</strong> sur une sélection de jouets et vêtements. Ça ne dure pas, on en profite !</p>
     </div>
   </section>
 
-  <!-- ===== CATEGORIES ===== -->
-  <section class="section" id="categories">
+  <section class="section" id="ages">
     <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">Explorer</span>
-        <h2>Trouver le bonheur par univers ou par âge</h2>
-        <p>Filtrez notre boutique selon les envies et l'âge de votre enfant.</p>
-      </div>
-
-      <h3 class="sub-title">Par âge</h3>
+      <h3 class="sub-title">Filtrer par âge</h3>
       <div class="age-grid">
         <button class="age-card" data-filter-age="0-2">
           <span class="age-emoji">👶</span>
@@ -122,78 +94,13 @@
           <span>6–12 ans</span>
         </button>
       </div>
-
-      <h3 class="sub-title">Par univers</h3>
-      <div class="category-grid">
-        <a class="category-card" href="jouets.html?universe=educatif" style="--cat-color:#c7f0db;">
-          <span class="category-emoji">🧩</span>
-          <h4>Jouets éducatifs</h4>
-          <p>Apprendre en s'amusant</p>
-        </a>
-        <a class="category-card" href="jouets.html?universe=plein-air" style="--cat-color:#ffe6a7;">
-          <span class="category-emoji">🪁</span>
-          <h4>Plein air</h4>
-          <p>Aventures en extérieur</p>
-        </a>
-        <a class="category-card" href="vetements.html?universe=coton-bio" style="--cat-color:#ffd6c9;">
-          <span class="category-emoji">👕</span>
-          <h4>Coton bio</h4>
-          <p>Doux pour leur peau</p>
-        </a>
-        <a class="category-card" href="vetements.html?universe=chaussures" style="--cat-color:#d8e4ff;">
-          <span class="category-emoji">👟</span>
-          <h4>Chaussures</h4>
-          <p>Confort à chaque pas</p>
-        </a>
-      </div>
     </div>
   </section>
 
-  <!-- ===== PRODUITS VEDETTES ===== -->
   <section class="section section-alt" id="produits">
     <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">Coups de cœur</span>
-        <h2>Produits vedettes</h2>
-        <p>Une sélection pensée avec amour pour petits explorateurs.</p>
-      </div>
-
-      <div class="filter-chips" id="filterChips">
-        <button class="chip active" data-filter="all">Tout voir</button>
-        <button class="chip" data-filter="jouets">Jouets</button>
-        <button class="chip" data-filter="vetements">Vêtements</button>
-        <button class="chip" data-filter="soldes">Soldes 🔥</button>
-      </div>
-
       <div class="product-grid" id="productGrid"></div>
-
       <p class="empty-state" id="emptyState" hidden>Aucun produit ne correspond à votre recherche 🧐 Essayez un autre filtre !</p>
-    </div>
-  </section>
-
-  <!-- ===== GAGES DE CONFIANCE ===== -->
-  <section class="section trust-section">
-    <div class="container trust-grid">
-      <div class="trust-item">
-        <span class="trust-icon">🚀</span>
-        <h4>Livraison rapide</h4>
-        <p>Expédié en 24h, chez vous en 2 à 4 jours</p>
-      </div>
-      <div class="trust-item">
-        <span class="trust-icon">🌿</span>
-        <h4>Emballage éco-responsable</h4>
-        <p>Cartons recyclés, zéro plastique à usage unique</p>
-      </div>
-      <div class="trust-item">
-        <span class="trust-icon">🛡️</span>
-        <h4>Matériaux 100% sûrs</h4>
-        <p>Certifiés CE, testés et approuvés par nos experts</p>
-      </div>
-      <div class="trust-item">
-        <span class="trust-icon">🔒</span>
-        <h4>Paiement sécurisé</h4>
-        <p>Vos données protégées, transactions cryptées</p>
-      </div>
     </div>
   </section>
 
@@ -205,7 +112,7 @@
     <button class="modal-close" id="modalClose" aria-label="Fermer">✕</button>
     <div class="modal-body">
       <div class="modal-visual">
-        <div class="modal-image" id="modalImage">🧸</div>
+        <div class="modal-image" id="modalImage"></div>
         <div class="modal-thumbs" id="modalColors"></div>
       </div>
       <div class="modal-info">

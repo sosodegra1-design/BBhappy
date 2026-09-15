@@ -1,3 +1,20 @@
+/* ===================== ICONS ===================== */
+/* Simple flat vector icons (white on the product's pastel background) used instead of emoji. */
+const ICONS = {
+  camion: `<svg viewBox="0 0 100 100"><rect x="8" y="45" width="55" height="28" rx="6" fill="#fff"/><path d="M63 50h18l10 14v9H63z" fill="#fff" opacity=".85"/><rect x="70" y="55" width="10" height="8" fill="#4a4358" opacity=".3"/><circle cx="26" cy="76" r="9" fill="#4a4358"/><circle cx="26" cy="76" r="4" fill="#fff"/><circle cx="68" cy="76" r="9" fill="#4a4358"/><circle cx="68" cy="76" r="4" fill="#fff"/></svg>`,
+  peluche: `<svg viewBox="0 0 100 100"><circle cx="30" cy="24" r="10" fill="#fff"/><circle cx="70" cy="24" r="10" fill="#fff"/><circle cx="50" cy="38" r="26" fill="#fff"/><ellipse cx="50" cy="72" rx="30" ry="24" fill="#fff"/><circle cx="42" cy="34" r="3" fill="#4a4358"/><circle cx="58" cy="34" r="3" fill="#4a4358"/><circle cx="50" cy="44" r="4" fill="#4a4358"/></svg>`,
+  body: `<svg viewBox="0 0 100 100"><path d="M35 10h30l4 14h12l6 20-14 6v40a6 6 0 0 1-6 6H33a6 6 0 0 1-6-6V50l-14-6 6-20h12z" fill="#fff"/><circle cx="50" cy="28" r="4" fill="#4a4358" opacity=".3"/></svg>`,
+  cire: `<svg viewBox="0 0 100 100"><path d="M50 8c-12 0-20 8-20 18v6l-18 8 6 14 12-5v41a6 6 0 0 0 6 6h28a6 6 0 0 0 6-6V49l12 5 6-14-18-8v-6c0-10-8-18-20-18z" fill="#fff"/><circle cx="50" cy="26" r="8" fill="none" stroke="#4a4358" stroke-width="2" opacity=".3"/></svg>`,
+  puzzle: `<svg viewBox="0 0 100 100"><path d="M12 12h30v10a6 6 0 1 1 0 12v14H12V12z" fill="#fff"/><path d="M50 12h38v36H62V34a6 6 0 1 0 0-12V12z" fill="#fff" opacity=".85"/><path d="M12 50h30v12a6 6 0 1 1 0 12v14H12V50z" fill="#fff" opacity=".7"/><path d="M50 50h38v38H50V64a6 6 0 1 1 0-12V50z" fill="#fff" opacity=".55"/></svg>`,
+  cerfvolant: `<svg viewBox="0 0 100 100"><path d="M50 6 78 46 50 94 22 46z" fill="#fff"/><line x1="50" y1="6" x2="50" y2="94" stroke="#4a4358" stroke-width="2" opacity=".25"/><line x1="22" y1="46" x2="78" y2="46" stroke="#4a4358" stroke-width="2" opacity=".25"/><path d="M50 94c0 0 -4 8 2 10c-6 2 -2 10 4 8" stroke="#fff" stroke-width="3" fill="none"/></svg>`,
+  baskets: `<svg viewBox="0 0 100 100"><path d="M10 70c0-6 6-10 14-12l20-14 10 6 20-4 12 8c6 2 8 6 8 12v6a6 6 0 0 1-6 6H16a6 6 0 0 1-6-6z" fill="#fff"/><path d="M44 44l10 6-4 8-14-6z" fill="#fff" opacity=".6"/></svg>`,
+  robot: `<svg viewBox="0 0 100 100"><rect x="30" y="10" width="40" height="6" fill="#fff"/><rect x="26" y="16" width="48" height="34" rx="8" fill="#fff"/><circle cx="40" cy="32" r="5" fill="#4a4358" opacity=".3"/><circle cx="60" cy="32" r="5" fill="#4a4358" opacity=".3"/><rect x="18" y="54" width="64" height="34" rx="10" fill="#fff" opacity=".85"/><rect x="4" y="58" width="12" height="22" rx="6" fill="#fff" opacity=".7"/><rect x="84" y="58" width="12" height="22" rx="6" fill="#fff" opacity=".7"/></svg>`,
+  pull: `<svg viewBox="0 0 100 100"><path d="M32 12 18 26l8 12 8-6v52a4 4 0 0 0 4 4h24a4 4 0 0 0 4-4V32l8 6 8-12-14-14-8 6H40z" fill="#fff"/><line x1="30" y1="50" x2="70" y2="50" stroke="#4a4358" stroke-width="2" opacity=".2"/><line x1="30" y1="62" x2="70" y2="62" stroke="#4a4358" stroke-width="2" opacity=".2"/></svg>`,
+  trottinette: `<svg viewBox="0 0 100 100"><line x1="24" y1="10" x2="24" y2="60" stroke="#fff" stroke-width="6" stroke-linecap="round"/><line x1="12" y1="14" x2="36" y2="14" stroke="#fff" stroke-width="6" stroke-linecap="round"/><path d="M24 60 78 66" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none"/><circle cx="24" cy="80" r="9" fill="#fff"/><circle cx="78" cy="72" r="9" fill="#fff"/></svg>`,
+  lapin: `<svg viewBox="0 0 100 100"><ellipse cx="38" cy="20" rx="7" ry="18" fill="#fff"/><ellipse cx="60" cy="20" rx="7" ry="18" fill="#fff"/><circle cx="50" cy="46" r="24" fill="#fff"/><ellipse cx="50" cy="80" rx="26" ry="18" fill="#fff"/><circle cx="43" cy="42" r="3" fill="#4a4358" opacity=".3"/><circle cx="57" cy="42" r="3" fill="#4a4358" opacity=".3"/></svg>`,
+  legging: `<svg viewBox="0 0 100 100"><path d="M30 8h40l4 30-4 54h-14l-6-40-6 40H30l-4-54z" fill="#fff"/><line x1="35" y1="20" x2="65" y2="20" stroke="#4a4358" stroke-width="2" opacity=".2"/></svg>`
+};
+
 /* ===================== DATA ===================== */
 const PRODUCTS = [
   {
@@ -9,7 +26,7 @@ const PRODUCTS = [
     ageLabel: '0-2 ans',
     price: 29.9,
     oldPrice: null,
-    emoji: '🚚',
+    icon: ICONS.camion,
     bg: '#c7f0db',
     colors: ['#a8e6cf', '#ffe066', '#ffcab1'],
     sale: false,
@@ -28,7 +45,7 @@ const PRODUCTS = [
     ageLabel: '0-2 ans',
     price: 19.9,
     oldPrice: 24.9,
-    emoji: '🧸',
+    icon: ICONS.peluche,
     bg: '#ffe6a7',
     colors: ['#ffffff', '#ffcab1', '#a8e6cf'],
     sale: true,
@@ -47,7 +64,7 @@ const PRODUCTS = [
     ageLabel: '0-2 ans',
     price: 14.9,
     oldPrice: null,
-    emoji: '👶',
+    icon: ICONS.body,
     bg: '#ffd6c9',
     colors: ['#ffffff', '#ffe066', '#a8e6cf', '#ffcab1'],
     sale: false,
@@ -66,7 +83,7 @@ const PRODUCTS = [
     ageLabel: '3-5 ans',
     price: 34.9,
     oldPrice: 39.9,
-    emoji: '🧥',
+    icon: ICONS.cire,
     bg: '#ffe066',
     colors: ['#ffe066', '#a8e6cf', '#ffcab1'],
     sale: true,
@@ -85,7 +102,7 @@ const PRODUCTS = [
     ageLabel: '3-5 ans',
     price: 16.9,
     oldPrice: null,
-    emoji: '🧩',
+    icon: ICONS.puzzle,
     bg: '#c7f0db',
     colors: ['#a8e6cf', '#ffe066'],
     sale: false,
@@ -104,7 +121,7 @@ const PRODUCTS = [
     ageLabel: '6-12 ans',
     price: 22.9,
     oldPrice: null,
-    emoji: '🪁',
+    icon: ICONS.cerfvolant,
     bg: '#d8e4ff',
     colors: ['#ffcab1', '#a8e6cf', '#ffe066'],
     sale: false,
@@ -123,7 +140,7 @@ const PRODUCTS = [
     ageLabel: '3-5 ans',
     price: 27.9,
     oldPrice: 32.9,
-    emoji: '👟',
+    icon: ICONS.baskets,
     bg: '#d8e4ff',
     colors: ['#ffffff', '#a8e6cf', '#ffcab1'],
     sale: true,
@@ -142,7 +159,7 @@ const PRODUCTS = [
     ageLabel: '6-12 ans',
     price: 24.9,
     oldPrice: null,
-    emoji: '🤖',
+    icon: ICONS.robot,
     bg: '#c7f0db',
     colors: ['#a8e6cf', '#ffe066', '#ffcab1'],
     sale: false,
@@ -161,7 +178,7 @@ const PRODUCTS = [
     ageLabel: '6-12 ans',
     price: 21.9,
     oldPrice: null,
-    emoji: '🧶',
+    icon: ICONS.pull,
     bg: '#ffd6c9',
     colors: ['#ffcab1', '#a8e6cf', '#ffffff'],
     sale: false,
@@ -180,7 +197,7 @@ const PRODUCTS = [
     ageLabel: '3-5 ans',
     price: 44.9,
     oldPrice: 54.9,
-    emoji: '🛴',
+    icon: ICONS.trottinette,
     bg: '#ffe6a7',
     colors: ['#ffe066', '#ffcab1', '#a8e6cf'],
     sale: true,
@@ -199,7 +216,7 @@ const PRODUCTS = [
     ageLabel: '0-2 ans',
     price: 12.9,
     oldPrice: null,
-    emoji: '🐰',
+    icon: ICONS.lapin,
     bg: '#ffe6a7',
     colors: ['#ffffff', '#ffcab1'],
     sale: false,
@@ -218,7 +235,7 @@ const PRODUCTS = [
     ageLabel: '3-5 ans',
     price: 13.9,
     oldPrice: 17.9,
-    emoji: '🩳',
+    icon: ICONS.legging,
     bg: '#ffd6c9',
     colors: ['#a8e6cf', '#ffcab1', '#ffe066'],
     sale: true,
@@ -232,9 +249,9 @@ const PRODUCTS = [
 
 /* ===================== STATE ===================== */
 const state = {
-  categoryFilter: 'all',
+  categoryFilter: document.body.dataset.category || 'all',
   ageFilter: null,
-  universeFilter: null,
+  universeFilter: new URLSearchParams(location.search).get('universe') || null,
   searchTerm: '',
   cart: JSON.parse(localStorage.getItem('bbhappy_cart') || '[]'),
   favorites: JSON.parse(localStorage.getItem('bbhappy_favorites') || '[]'),
@@ -262,10 +279,11 @@ function getFilteredProducts() {
 
 function renderProducts() {
   const grid = document.getElementById('productGrid');
+  if (!grid) return;
   const empty = document.getElementById('emptyState');
   const list = getFilteredProducts();
   grid.innerHTML = '';
-  empty.hidden = list.length !== 0;
+  if (empty) empty.hidden = list.length !== 0;
 
   list.forEach(p => {
     const isFav = state.favorites.includes(p.id);
@@ -275,7 +293,7 @@ function renderProducts() {
       <div class="product-media" style="--product-bg:${p.bg}" data-open="${p.id}">
         ${p.sale ? '<span class="product-badge">Soldes</span>' : ''}
         <button class="product-fav ${isFav ? 'active' : ''}" data-fav="${p.id}" aria-label="Ajouter aux favoris">${isFav ? '❤️' : '🤍'}</button>
-        <span>${p.emoji}</span>
+        <div class="product-icon">${p.icon}</div>
       </div>
       <div class="product-body">
         <span class="product-age">${p.ageLabel}</span>
@@ -298,7 +316,7 @@ function openProductModal(id) {
   state.currentModalProduct = p;
   state.currentModalColor = p.colors[0];
 
-  document.getElementById('modalImage').textContent = p.emoji;
+  document.getElementById('modalImage').innerHTML = p.icon;
   document.getElementById('modalImage').style.background = p.bg;
   document.getElementById('modalAge').textContent = p.ageLabel;
   document.getElementById('modalProductName').textContent = p.name;
@@ -350,7 +368,7 @@ function addToCart(productId, color, qty = 1) {
   if (existing) {
     existing.qty += qty;
   } else {
-    state.cart.push({ key, id: productId, color, qty, name: p.name, price: p.price, emoji: p.emoji, bg: p.bg });
+    state.cart.push({ key, id: productId, color, qty, name: p.name, price: p.price, icon: p.icon, bg: p.bg });
   }
   saveState();
   renderCart();
@@ -385,7 +403,7 @@ function renderCart() {
   } else {
     wrap.innerHTML = state.cart.map(item => `
       <div class="cart-item">
-        <div class="cart-item-media" style="background:${item.bg}">${item.emoji}</div>
+        <div class="cart-item-media" style="background:${item.bg}">${item.icon}</div>
         <div class="cart-item-info">
           <h5>${item.name}</h5>
           <p><span class="swatch" style="display:inline-block;width:12px;height:12px;background:${item.color};vertical-align:middle;margin-right:4px;"></span>${fmtPrice(item.price)}</p>
@@ -440,7 +458,7 @@ function renderFavorites() {
   }
   wrap.innerHTML = favProducts.map(p => `
     <div class="cart-item">
-      <div class="cart-item-media" style="background:${p.bg}">${p.emoji}</div>
+      <div class="cart-item-media" style="background:${p.bg}">${p.icon}</div>
       <div class="cart-item-info">
         <h5 style="cursor:pointer" data-open="${p.id}">${p.name}</h5>
         <p>${fmtPrice(p.price)}</p>
@@ -479,60 +497,62 @@ function closeDrawer(drawer, overlay) {
 
 /* ===================== EVENT WIRING ===================== */
 document.addEventListener('DOMContentLoaded', () => {
+  // Pre-select the universe card matching the ?universe= query param (deep link from another page)
+  if (state.universeFilter) {
+    const preselected = document.querySelector(`.category-card[data-filter-universe="${state.universeFilter}"]`);
+    if (preselected) preselected.classList.add('active');
+  }
+  // Pre-select the matching category chip (if the page has one)
+  const preselectedChip = document.querySelector(`.chip[data-filter="${state.categoryFilter}"]`);
+  if (preselectedChip) {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    preselectedChip.classList.add('active');
+  }
+
   renderProducts();
   renderCart();
   renderFavorites();
   updateCounts();
 
   // Product grid delegation
-  document.getElementById('productGrid').addEventListener('click', (e) => {
-    const openId = e.target.closest('[data-open]');
-    const favId = e.target.closest('[data-fav]');
-    const addId = e.target.closest('[data-add]');
-    const swatch = e.target.closest('.swatch[data-product]');
+  const productGrid = document.getElementById('productGrid');
+  if (productGrid) {
+    productGrid.addEventListener('click', (e) => {
+      const openId = e.target.closest('[data-open]');
+      const favId = e.target.closest('[data-fav]');
+      const addId = e.target.closest('[data-add]');
+      const swatch = e.target.closest('.swatch[data-product]');
 
-    if (swatch) {
-      const card = swatch.closest('.product-card');
-      card.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
-      swatch.classList.add('selected');
-      return;
-    }
-    if (favId) { toggleFavorite(favId.dataset.fav); return; }
-    if (addId) {
-      const card = addId.closest('.product-card');
-      const selectedSwatch = card.querySelector('.swatch.selected');
-      const color = selectedSwatch ? selectedSwatch.dataset.color : PRODUCTS.find(p => p.id === addId.dataset.add).colors[0];
-      addToCart(addId.dataset.add, color, 1);
-      return;
-    }
-    if (openId) { openProductModal(openId.dataset.open); return; }
-  });
-
-  // Filter chips
-  document.getElementById('filterChips').addEventListener('click', (e) => {
-    const chip = e.target.closest('.chip');
-    if (!chip) return;
-    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
-    state.categoryFilter = chip.dataset.filter;
-    renderProducts();
-  });
-
-  // Nav links category filter
-  document.querySelectorAll('[data-filter-category]').forEach(link => {
-    link.addEventListener('click', (e) => {
-      const cat = link.dataset.filterCategory;
-      if (cat === 'marques') return;
-      e.preventDefault();
-      state.categoryFilter = cat;
-      document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.filter === cat));
-      document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-      link.classList.add('active');
-      renderProducts();
-      document.getElementById('produits').scrollIntoView({ behavior: 'smooth' });
-      closeMobileNav();
+      if (swatch) {
+        const card = swatch.closest('.product-card');
+        card.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+        swatch.classList.add('selected');
+        return;
+      }
+      if (favId) { toggleFavorite(favId.dataset.fav); return; }
+      if (addId) {
+        const card = addId.closest('.product-card');
+        const selectedSwatch = card.querySelector('.swatch.selected');
+        const color = selectedSwatch ? selectedSwatch.dataset.color : PRODUCTS.find(p => p.id === addId.dataset.add).colors[0];
+        addToCart(addId.dataset.add, color, 1);
+        return;
+      }
+      if (openId) { openProductModal(openId.dataset.open); return; }
     });
-  });
+  }
+
+  // Filter chips (category)
+  const filterChips = document.getElementById('filterChips');
+  if (filterChips) {
+    filterChips.addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      state.categoryFilter = chip.dataset.filter;
+      renderProducts();
+    });
+  }
 
   // Age filter cards
   document.querySelectorAll('.age-card').forEach(card => {
@@ -547,12 +567,14 @@ document.addEventListener('DOMContentLoaded', () => {
         state.ageFilter = age;
       }
       renderProducts();
-      document.getElementById('produits').scrollIntoView({ behavior: 'smooth' });
+      const anchor = document.getElementById('produits');
+      if (anchor) anchor.scrollIntoView({ behavior: 'smooth' });
     });
   });
 
-  // Universe filter cards
-  document.querySelectorAll('.category-card').forEach(card => {
+  // Universe filter cards (only wired as filters when they are <button> elements;
+  // on the homepage these are plain links that simply navigate to the dedicated page)
+  document.querySelectorAll('button.category-card').forEach(card => {
     card.addEventListener('click', () => {
       const universe = card.dataset.filterUniverse;
       const isActive = card.classList.contains('active');
@@ -564,7 +586,8 @@ document.addEventListener('DOMContentLoaded', () => {
         state.universeFilter = universe;
       }
       renderProducts();
-      document.getElementById('produits').scrollIntoView({ behavior: 'smooth' });
+      const anchor = document.getElementById('produits');
+      if (anchor) anchor.scrollIntoView({ behavior: 'smooth' });
     });
   });
 

@@ -350,6 +350,7 @@ ul { list-style: none; margin: 0; padding: 0; }
   text-align: center;
   transition: transform .25s ease, box-shadow .25s ease;
   border: 3px solid transparent;
+  display: block;
 }
 .category-card:hover { transform: translateY(-6px) rotate(-1deg); box-shadow: var(--shadow-hover); }
 .category-card.active { border-color: var(--ink); }
@@ -394,10 +395,11 @@ ul { list-style: none; margin: 0; padding: 0; }
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 4.2rem;
   position: relative;
   cursor: pointer;
 }
+.product-icon { width: 88px; height: 88px; filter: drop-shadow(0 6px 10px rgba(74,67,88,0.12)); }
+.product-icon svg { width: 100%; height: 100%; display: block; }
 .product-badge {
   position: absolute;
   top: 12px;
@@ -459,6 +461,45 @@ ul { list-style: none; margin: 0; padding: 0; }
 .add-cart-btn:hover { background: var(--coral); transform: translateY(-2px); }
 .empty-state { text-align: center; color: var(--ink-soft); font-weight: 600; padding: 40px 0; }
 
+/* ===================== PAGE HERO (category pages) ===================== */
+.page-hero {
+  padding: 50px 0 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero-inner { position: relative; z-index: 1; }
+.page-hero-emoji { font-size: 3.2rem; display: block; margin-bottom: 10px; }
+.page-hero h1 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); margin-bottom: 10px; }
+.page-hero p { max-width: 520px; margin: 0 auto; }
+.breadcrumb { font-size: .85rem; font-weight: 700; color: var(--ink-soft); margin-bottom: 14px; }
+.breadcrumb a { color: var(--mint-dark); }
+
+/* ===================== BRANDS PAGE ===================== */
+.brand-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.brand-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  box-shadow: var(--shadow-soft);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.brand-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+.brand-logo {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+  background: var(--brand-color, var(--mint));
+}
+.brand-card h3 { margin-bottom: 6px; }
+.brand-card p { margin-bottom: 12px; }
+.brand-card a { font-weight: 700; color: var(--coral); }
+
 /* ===================== TRUST ===================== */
 .trust-section { background: linear-gradient(135deg, var(--mint), var(--sun) 120%); }
 .trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
@@ -512,7 +553,8 @@ ul { list-style: none; margin: 0; padding: 0; }
   justify-content: center;
   border-radius: var(--radius-lg) 0 0 var(--radius-lg);
 }
-.modal-image { font-size: 8rem; margin-bottom: 20px; }
+.modal-image { width: 220px; height: 220px; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+.modal-image svg { width: 65%; height: 65%; filter: drop-shadow(0 8px 14px rgba(74,67,88,0.15)); }
 .modal-thumbs { display: flex; gap: 10px; }
 .modal-info { padding: 40px; }
 .modal-age {
@@ -582,7 +624,8 @@ ul { list-style: none; margin: 0; padding: 0; }
 .drawer-footer { padding: 20px 24px; border-top: 2px solid rgba(74,67,88,0.08); }
 .cart-total { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 1.1rem; font-weight: 700; }
 .cart-item { display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid rgba(74,67,88,0.08); align-items: center; }
-.cart-item-media { width: 60px; height: 60px; background: var(--cream-alt); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; flex-shrink: 0; }
+.cart-item-media { width: 60px; height: 60px; background: var(--cream-alt); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 10px; }
+.cart-item-media svg { width: 100%; height: 100%; }
 .cart-item-info { flex: 1; }
 .cart-item-info h5 { margin: 0 0 4px; font-family: var(--font-heading); font-size: .95rem; }
 .cart-item-info p { margin: 0; font-size: .8rem; color: var(--ink-soft); }
@@ -677,6 +720,8 @@ ul { list-style: none; margin: 0; padding: 0; }
   .age-grid { grid-template-columns: 1fr; }
   .category-grid { grid-template-columns: 1fr; }
   .trust-grid { grid-template-columns: 1fr; }
+  .brand-grid { grid-template-columns: 1fr; }
+  .brand-card { flex-direction: column; align-items: center; text-align: center; }
   .hero { padding: 40px 0; }
   .hero-stats { gap: 20px; }
   .section { padding: 50px 0; }
