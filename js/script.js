@@ -805,6 +805,7 @@ function applyLanguage() {
   renderCart();
   renderFavorites();
   renderLoyalty();
+  updateCounts();
   if (state.currentModalProduct && document.getElementById('productModal').classList.contains('open')) {
     openProductModal(state.currentModalProduct.id);
   }
@@ -1033,6 +1034,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('checkoutBtn').addEventListener('click', () => {
+    if (state.cart.length === 0) {
+      showToast(t('checkout.emptyCart'));
+      return;
+    }
     closeDrawer(cartDrawer, cartOverlay);
     openCheckout();
   });

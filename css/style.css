@@ -777,10 +777,12 @@ ul { list-style: none; margin: 0; padding: 0; }
   .checkout-form, .checkout-success { padding: 28px 22px; }
 }
 
-/* Overlay for nav on mobile */
+/* Overlay for nav on mobile. Kept below .site-header's z-index (200) so the
+   mobile nav drawer, which is nested inside the header, stays clickable
+   above the dimmed backdrop instead of being trapped under it. */
 body.nav-open::after {
   content: "";
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.3);
-  z-index: 250;
+  z-index: 150;
 }
