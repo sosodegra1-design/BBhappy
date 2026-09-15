@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BBhappy — Jouets & Vêtements pour enfants</title>
+<meta name="description" content="BBhappy : jouets éducatifs, vêtements en coton bio et accessoires pour enfants. Là où l'imagination rencontre le confort.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧸</text></svg>">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header" id="siteHeader">
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <p>🚚 Livraison offerte dès 49€ &nbsp;•&nbsp; ✨ -20% sur les soldes avec le code SOLEIL</p>
+    </div>
+  </div>
+
+  <div class="container header-main">
+    <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <a href="#accueil" class="logo">
+      <span class="logo-icon">🧸</span>
+      <span class="logo-text">BB<span>happy</span></span>
+    </a>
+
+    <nav class="main-nav" id="mainNav">
+      <a href="#accueil" class="nav-link active">Accueil</a>
+      <a href="#jouets" class="nav-link" data-filter-category="jouets">Jouets</a>
+      <a href="#vetements" class="nav-link" data-filter-category="vetements">Vêtements</a>
+      <a href="#marques" class="nav-link" data-filter-category="marques">Marques</a>
+      <a href="#soldes" class="nav-link sale" data-filter-category="soldes">Soldes 🔥</a>
+    </nav>
+
+    <div class="search-bar">
+      <input type="search" id="searchInput" placeholder="Rechercher un jouet, un vêtement...">
+      <button aria-label="Rechercher">🔍</button>
+    </div>
+
+    <div class="header-actions">
+      <button class="icon-btn" id="searchToggle" aria-label="Recherche">🔍</button>
+      <button class="icon-btn" id="favBtn" aria-label="Favoris">
+        ❤️
+        <span class="badge" id="favCount">0</span>
+      </button>
+      <button class="icon-btn cart-btn" id="cartBtn" aria-label="Panier">
+        🛒
+        <span class="badge" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+  <div class="search-bar-mobile" id="searchBarMobile">
+    <input type="search" id="searchInputMobile" placeholder="Rechercher un jouet, un vêtement...">
+  </div>
+</header>
+
+<!-- Floating cart button (mobile micro-interaction) -->
+<button class="floating-cart" id="floatingCart" aria-label="Voir le panier">
+  🛒<span class="floating-cart-badge" id="floatingCartBadge">0</span>
+</button>
+
+<main id="accueil">
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-blob blob-1"></div>
+    <div class="hero-blob blob-2"></div>
+    <div class="hero-blob blob-3"></div>
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <span class="hero-tag">✨ Nouvelle collection printemps</span>
+        <h1>Là où l'imagination<br>rencontre le <span class="highlight">confort</span></h1>
+        <p>Des jouets qui éveillent la créativité et des vêtements doux comme un câlin, pensés pour les petites aventures du quotidien.</p>
+        <div class="hero-actions">
+          <a href="#produits" class="btn btn-primary">Acheter maintenant</a>
+          <a href="#categories" class="btn btn-ghost">Découvrir les univers</a>
+        </div>
+        <div class="hero-stats">
+          <div><strong>10k+</strong><span>familles conquises</span></div>
+          <div><strong>100%</strong><span>matériaux sûrs</span></div>
+          <div><strong>4.9★</strong><span>note moyenne</span></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card card-float-1">🧸<small>Peluche câline</small></div>
+        <div class="hero-card card-float-2">🚂<small>Jouet en bois</small></div>
+        <div class="hero-card card-float-3">👕<small>Coton bio</small></div>
+        <div class="hero-sun">😊</div>
+        <div class="hero-ground"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CATEGORIES ===== -->
+  <section class="section" id="categories">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Explorer</span>
+        <h2>Trouver le bonheur par univers ou par âge</h2>
+        <p>Filtrez notre boutique selon les envies et l'âge de votre enfant.</p>
+      </div>
+
+      <h3 class="sub-title">Par âge</h3>
+      <div class="age-grid">
+        <button class="age-card" data-filter-age="0-2">
+          <span class="age-emoji">👶</span>
+          <span>0–2 ans</span>
+        </button>
+        <button class="age-card" data-filter-age="3-5">
+          <span class="age-emoji">🧒</span>
+          <span>3–5 ans</span>
+        </button>
+        <button class="age-card" data-filter-age="6-12">
+          <span class="age-emoji">🧑</span>
+          <span>6–12 ans</span>
+        </button>
+      </div>
+
+      <h3 class="sub-title">Par univers</h3>
+      <div class="category-grid">
+        <button class="category-card" data-filter-universe="educatif" style="--cat-color:#c7f0db;">
+          <span class="category-emoji">🧩</span>
+          <h4>Jouets éducatifs</h4>
+          <p>Apprendre en s'amusant</p>
+        </button>
+        <button class="category-card" data-filter-universe="plein-air" style="--cat-color:#ffe6a7;">
+          <span class="category-emoji">🪁</span>
+          <h4>Plein air</h4>
+          <p>Aventures en extérieur</p>
+        </button>
+        <button class="category-card" data-filter-universe="coton-bio" style="--cat-color:#ffd6c9;">
+          <span class="category-emoji">👕</span>
+          <h4>Coton bio</h4>
+          <p>Doux pour leur peau</p>
+        </button>
+        <button class="category-card" data-filter-universe="chaussures" style="--cat-color:#d8e4ff;">
+          <span class="category-emoji">👟</span>
+          <h4>Chaussures</h4>
+          <p>Confort à chaque pas</p>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRODUITS VEDETTES ===== -->
+  <section class="section section-alt" id="produits">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Coups de cœur</span>
+        <h2>Produits vedettes</h2>
+        <p>Une sélection pensée avec amour pour petits explorateurs.</p>
+      </div>
+
+      <div class="filter-chips" id="filterChips">
+        <button class="chip active" data-filter="all">Tout voir</button>
+        <button class="chip" data-filter="jouets">Jouets</button>
+        <button class="chip" data-filter="vetements">Vêtements</button>
+        <button class="chip" data-filter="soldes">Soldes 🔥</button>
+      </div>
+
+      <div class="product-grid" id="productGrid"></div>
+
+      <p class="empty-state" id="emptyState" hidden>Aucun produit ne correspond à votre recherche 🧐 Essayez un autre filtre !</p>
+    </div>
+  </section>
+
+  <!-- ===== GAGES DE CONFIANCE ===== -->
+  <section class="section trust-section">
+    <div class="container trust-grid">
+      <div class="trust-item">
+        <span class="trust-icon">🚀</span>
+        <h4>Livraison rapide</h4>
+        <p>Expédié en 24h, chez vous en 2 à 4 jours</p>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">🌿</span>
+        <h4>Emballage éco-responsable</h4>
+        <p>Cartons recyclés, zéro plastique à usage unique</p>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">🛡️</span>
+        <h4>Matériaux 100% sûrs</h4>
+        <p>Certifiés CE, testés et approuvés par nos experts</p>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">🔒</span>
+        <h4>Paiement sécurisé</h4>
+        <p>Vos données protégées, transactions cryptées</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== PRODUCT MODAL ===== -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalProductName">
+    <button class="modal-close" id="modalClose" aria-label="Fermer">✕</button>
+    <div class="modal-body">
+      <div class="modal-visual">
+        <div class="modal-image" id="modalImage">🧸</div>
+        <div class="modal-thumbs" id="modalColors"></div>
+      </div>
+      <div class="modal-info">
+        <span class="modal-age" id="modalAge">0-2 ans</span>
+        <h3 id="modalProductName">Nom du produit</h3>
+        <p class="modal-price" id="modalPrice">0,00 €</p>
+        <div class="modal-qty">
+          <label for="modalQty">Quantité</label>
+          <div class="qty-control">
+            <button id="qtyMinus" aria-label="Diminuer">−</button>
+            <input id="modalQty" type="number" min="1" value="1">
+            <button id="qtyPlus" aria-label="Augmenter">+</button>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-primary" id="modalAddToCart">Ajouter au panier</button>
+          <button class="icon-btn fav-toggle" id="modalFav" aria-label="Ajouter aux favoris">🤍</button>
+        </div>
+
+        <div class="tabs">
+          <div class="tab-headers">
+            <button class="tab-btn active" data-tab="description">Description</button>
+            <button class="tab-btn" data-tab="entretien">Entretien</button>
+            <button class="tab-btn" data-tab="tailles">Tailles/Âges</button>
+          </div>
+          <div class="tab-panel active" data-panel="description" id="panelDescription"></div>
+          <div class="tab-panel" data-panel="entretien" id="panelEntretien"></div>
+          <div class="tab-panel" data-panel="tailles" id="panelTailles"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CART DRAWER ===== -->
+<div class="drawer-overlay" id="cartOverlay"></div>
+<aside class="drawer" id="cartDrawer" aria-label="Panier">
+  <div class="drawer-head">
+    <h3>Votre panier</h3>
+    <button class="modal-close" id="cartClose" aria-label="Fermer le panier">✕</button>
+  </div>
+  <div class="drawer-body" id="cartItems"></div>
+  <div class="drawer-footer">
+    <div class="cart-total">
+      <span>Total</span>
+      <strong id="cartTotal">0,00 €</strong>
+    </div>
+    <button class="btn btn-primary btn-block">Passer la commande</button>
+  </div>
+</aside>
+
+<!-- ===== FAVORITES DRAWER ===== -->
+<div class="drawer-overlay" id="favOverlay"></div>
+<aside class="drawer" id="favDrawer" aria-label="Favoris">
+  <div class="drawer-head">
+    <h3>Vos favoris</h3>
+    <button class="modal-close" id="favClose" aria-label="Fermer les favoris">✕</button>
+  </div>
+  <div class="drawer-body" id="favItems"></div>
+</aside>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container footer-top">
+    <div class="footer-newsletter">
+      <h3>Rejoignez la famille BBhappy 💌</h3>
+      <p>Recevez -10% sur votre première commande et nos nouveautés en avant-première.</p>
+      <form id="newsletterForm">
+        <input type="email" required placeholder="Votre adresse e-mail">
+        <button type="submit" class="btn btn-primary">S'inscrire</button>
+      </form>
+      <p class="newsletter-msg" id="newsletterMsg"></p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Boutique</h4>
+        <a href="#jouets" data-filter-category="jouets">Jouets</a>
+        <a href="#vetements" data-filter-category="vetements">Vêtements</a>
+        <a href="#marques" data-filter-category="marques">Marques</a>
+        <a href="#soldes" data-filter-category="soldes">Soldes</a>
+      </div>
+      <div class="footer-col">
+        <h4>Service client</h4>
+        <a href="#">Contactez-nous</a>
+        <a href="#">Livraison &amp; retours</a>
+        <a href="#">Guide des tailles</a>
+        <a href="#">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h4>À propos</h4>
+        <a href="#">Notre histoire</a>
+        <a href="#">Engagement éco-responsable</a>
+        <a href="#">Normes de sécurité</a>
+        <a href="#">Carrières</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <div class="footer-social">
+      <a href="#" aria-label="Instagram">📷</a>
+      <a href="#" aria-label="Facebook">📘</a>
+      <a href="#" aria-label="Pinterest">📌</a>
+      <a href="#" aria-label="TikTok">🎵</a>
+    </div>
+    <div class="footer-payments">
+      <span>💳 Visa</span>
+      <span>💳 Mastercard</span>
+      <span>🅿️ PayPal</span>
+      <span>🍏 Apple Pay</span>
+    </div>
+    <p class="footer-copy">© 2026 BBhappy — Tous droits réservés.</p>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>
