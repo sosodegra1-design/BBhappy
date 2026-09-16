@@ -58,11 +58,16 @@ async function init() {
   // Migration for databases created before Stripe support was added: the
   // CREATE TABLE above only applies to brand-new tables, so existing
   // deployments need the column added explicitly. Safe to run every startup.
+  // SQLite rejects UNIQUE on ALTER TABLE ADD COLUMN, so the constraint is
+  // added afterwards as a separate unique index instead.
   try {
-    await client.execute('ALTER TABLE orders ADD COLUMN stripe_session_id TEXT UNIQUE');
+    await client.execute('ALTER TABLE orders ADD COLUMN stripe_session_id TEXT');
   } catch (err) {
     if (!/duplicate column name/i.test(err.message)) throw err;
   }
+  await client.execute(
+    'CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_stripe_session_id ON orders (stripe_session_id)'
+  );
 }
 
 module.exports = { client, init };
