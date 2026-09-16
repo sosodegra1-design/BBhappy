@@ -372,12 +372,12 @@ const PORT = process.env.PORT || 3000;
 async function start() {
   await db.init();
   app.listen(PORT, () => {
-    console.log(`BBHappY running at http://localhost:${PORT}`);
+    console.log(`BBVOLTEX running at http://localhost:${PORT}`);
     console.log(`Database: ${process.env.TURSO_DATABASE_URL ? 'Turso (' + process.env.TURSO_DATABASE_URL + ')' : 'local SQLite file (server/bbhappy.db)'}`);
   });
 }
 
 start().catch(err => {
-  console.error('Failed to start BBHappY server:', err);
+  console.error('Failed to start BBVOLTEX server:', err);
   process.exit(1);
 });

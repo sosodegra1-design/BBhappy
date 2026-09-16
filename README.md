@@ -1,4 +1,4 @@
-# BBHappY
+# BBVOLTEX
 
 Site e-commerce pour jouets et vêtements enfants, avec un vrai backend
 (Express + base de données SQLite/Turso) qui gère le panier, les favoris,

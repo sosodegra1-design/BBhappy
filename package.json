@@ -1,7 +1,7 @@
 {
   "name": "bbhappy",
   "version": "1.0.0",
-  "description": "BBHappY e-commerce site with a small Express + SQLite backend for the cart, favorites, loyalty points and checkout.",
+  "description": "BBVOLTEX e-commerce site with a small Express + SQLite backend for the cart, favorites, loyalty points and checkout.",
   "private": true,
   "scripts": {
     "start": "node server/index.js",
