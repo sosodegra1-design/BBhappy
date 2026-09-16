@@ -1,0 +1,50 @@
+name: Test Stripe connection
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-stripe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.22.2'
+
+      - run: npm install
+
+      - name: Create a test Checkout session
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+        run: |
+          node -e "
+          if (!process.env.STRIPE_SECRET_KEY) {
+            console.error('❌ STRIPE_SECRET_KEY secret is not set on this repository.');
+            process.exit(1);
+          }
+          const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+          (async () => {
+            const session = await stripe.checkout.sessions.create({
+              mode: 'payment',
+              payment_method_types: ['card'],
+              line_items: [{
+                quantity: 1,
+                price_data: { currency: 'eur', unit_amount: 1000, product_data: { name: 'BBHappY CI test item' } }
+              }],
+              success_url: 'https://example.com/success',
+              cancel_url: 'https://example.com/cancel'
+            });
+            if (session.url && session.url.startsWith('https://checkout.stripe.com/')) {
+              console.log('✅ Stripe accepted the key and created a real Checkout session.');
+              console.log('   (session created in test/live mode matching the key you provided; not completed, no charge made)');
+            } else {
+              console.error('❌ Unexpected response from Stripe.');
+              process.exit(1);
+            }
+          })().catch(err => {
+            console.error('❌ Stripe connection failed:', err.message);
+            process.exit(1);
+          });
+          "

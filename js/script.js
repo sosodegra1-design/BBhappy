@@ -129,6 +129,7 @@ const TRANSLATIONS = {
     'checkout.success.desc': 'Un e-mail de confirmation vous a été envoyé.',
     'checkout.orderNumber': 'Numéro de commande', 'checkout.pointsEarned': 'de fidélité gagnés !',
     'checkout.close': 'Fermer', 'checkout.emptyCart': 'Votre panier est vide, ajoutez des produits avant de commander 🧺',
+    'checkout.cancelled': 'Paiement annulé, votre panier est toujours là.',
     'loyalty.title': 'Carte de fidélité', 'loyalty.aria': 'Carte de fidélité', 'loyalty.points': 'points',
     'loyalty.tiersTitle': 'Récompenses', 'loyalty.maxed': 'Bravo, vous avez débloqué toutes les récompenses ! 🎉',
     'lang.toggle': '🇬🇧 EN',
@@ -220,6 +221,7 @@ const TRANSLATIONS = {
     'checkout.success.desc': 'A confirmation email has been sent to you.',
     'checkout.orderNumber': 'Order number', 'checkout.pointsEarned': 'loyalty points earned!',
     'checkout.close': 'Close', 'checkout.emptyCart': 'Your cart is empty, add products before checking out 🧺',
+    'checkout.cancelled': 'Payment cancelled, your cart is still here.',
     'loyalty.title': 'Loyalty card', 'loyalty.aria': 'Loyalty card', 'loyalty.points': 'points',
     'loyalty.tiersTitle': 'Rewards', 'loyalty.maxed': 'Congrats, you\'ve unlocked every reward! 🎉',
     'lang.toggle': '🇫🇷 FR',
@@ -621,6 +623,27 @@ function closeCheckout() {
   restoreFocus();
 }
 
+/* Shows the order confirmation screen — used both right after a no-payment
+   checkout (local dev without Stripe configured) and when the visitor lands
+   back on the site after completing a real Stripe payment. */
+async function showOrderSuccess(order) {
+  const modal = document.getElementById('checkoutModal');
+  document.getElementById('checkoutOrderNumber').textContent = order.orderNumber;
+  document.getElementById('checkoutPointsEarned').textContent = order.pointsEarned;
+  document.getElementById('checkoutForm').hidden = true;
+  const successPanel = document.getElementById('checkoutSuccess');
+  successPanel.hidden = false;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  trapFocus(modal);
+  successPanel.focus();
+  state.cart = [];
+  renderCart();
+  updateCounts();
+  await loadLoyalty();
+  renderLoyalty();
+}
+
 /* ===================== i18n APPLY ===================== */
 function applyLanguage() {
   document.documentElement.lang = state.lang;
@@ -736,6 +759,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   applyLanguage();
+
+  // Returning from Stripe Checkout: confirm the payment and show the order
+  // confirmation, or let the visitor know a payment was cancelled.
+  const params = new URLSearchParams(location.search);
+  const sessionId = params.get('session_id');
+  const checkoutCancelled = params.get('checkout') === 'cancelled';
+  if (sessionId || checkoutCancelled) {
+    history.replaceState(null, '', location.pathname);
+  }
+  if (sessionId) {
+    apiFetch(`/checkout/confirm?session_id=${encodeURIComponent(sessionId)}`)
+      .then(order => showOrderSuccess(order))
+      .catch(err => showToast(err.message || t('error.generic')));
+  } else if (checkoutCancelled) {
+    showToast(t('checkout.cancelled'));
+  }
 
   // Product grid delegation
   const productGrid = document.getElementById('productGrid');
@@ -978,18 +1017,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const submitBtn = document.querySelector('#checkoutForm button[type="submit"]');
     submitBtn.disabled = true;
     try {
-      const order = await apiFetch('/checkout', { method: 'POST', body: JSON.stringify(payload) });
-      document.getElementById('checkoutOrderNumber').textContent = order.orderNumber;
-      document.getElementById('checkoutPointsEarned').textContent = order.pointsEarned;
-      document.getElementById('checkoutForm').hidden = true;
-      const successPanel = document.getElementById('checkoutSuccess');
-      successPanel.hidden = false;
-      successPanel.focus();
-      state.cart = [];
-      renderCart();
-      updateCounts();
-      await loadLoyalty();
-      renderLoyalty();
+      const result = await apiFetch('/checkout', { method: 'POST', body: JSON.stringify(payload) });
+      if (result.redirectUrl) {
+        // Real payment required: hand off to Stripe's hosted checkout page.
+        // The order itself is only created once payment is confirmed, after
+        // Stripe redirects back (see the ?session_id handling below).
+        window.location.href = result.redirectUrl;
+        return;
+      }
+      await showOrderSuccess(result);
     } catch (err) {
       showToast(err.message || t('error.generic'));
     } finally {

@@ -42,7 +42,8 @@ async function init() {
       city TEXT,
       total REAL NOT NULL,
       points_earned INTEGER NOT NULL,
-      created_at TEXT NOT NULL
+      created_at TEXT NOT NULL,
+      stripe_session_id TEXT UNIQUE
     );
 
     CREATE TABLE IF NOT EXISTS order_items (
@@ -53,6 +54,15 @@ async function init() {
       price REAL NOT NULL
     );
   `);
+
+  // Migration for databases created before Stripe support was added: the
+  // CREATE TABLE above only applies to brand-new tables, so existing
+  // deployments need the column added explicitly. Safe to run every startup.
+  try {
+    await client.execute('ALTER TABLE orders ADD COLUMN stripe_session_id TEXT UNIQUE');
+  } catch (err) {
+    if (!/duplicate column name/i.test(err.message)) throw err;
+  }
 }
 
 module.exports = { client, init };

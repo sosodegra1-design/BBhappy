@@ -4,9 +4,18 @@ const crypto = require('crypto');
 const db = require('./db');
 const { PRODUCTS, LOYALTY_TIERS } = require('./products-data');
 
+const stripe = process.env.STRIPE_SECRET_KEY
+  ? require('stripe')(process.env.STRIPE_SECRET_KEY)
+  : null;
+
 const app = express();
 const ROOT = path.join(__dirname, '..');
 const PRODUCTS_BY_ID = new Map(PRODUCTS.map(p => [p.id, p]));
+
+// Render (and most PaaS) terminate TLS at a reverse proxy and forward plain
+// HTTP internally; without this, req.protocol would report "http" and the
+// Stripe success/cancel URLs we build from it would be wrong.
+app.set('trust proxy', 1);
 
 app.use(express.json());
 
@@ -202,45 +211,112 @@ app.post('/api/loyalty/bonus', async (req, res, next) => {
 });
 
 /* ===================== CHECKOUT ===================== */
+/* Records the order, its line items, empties the cart and credits loyalty
+   points. Shared by the no-Stripe fallback and the post-payment confirmation
+   so an order is only ever created once, with a consistent shape. */
+async function createOrder(cartId, customer, stripeSessionId = null) {
+  const { name, email, address, zip, city } = customer;
+  const { items, total } = await cartWithProducts(cartId);
+  if (items.length === 0) {
+    throw Object.assign(new Error('Cart is empty.'), { status: 400 });
+  }
+
+  const orderId = 'BB' + Date.now().toString().slice(-8);
+  const pointsEarned = Math.round(total);
+  const createdAt = new Date().toISOString();
+
+  await db.client.execute({
+    sql: `INSERT INTO orders (id, cart_id, name, email, address, zip, city, total, points_earned, created_at, stripe_session_id)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    args: [orderId, cartId, name, email, address, zip, city, total, pointsEarned, createdAt, stripeSessionId]
+  });
+
+  for (const item of items) {
+    await db.client.execute({
+      sql: 'INSERT INTO order_items (order_id, product_id, color, qty, price) VALUES (?, ?, ?, ?, ?)',
+      args: [orderId, item.productId, item.color, item.qty, item.product.price]
+    });
+  }
+
+  await db.client.execute({ sql: 'DELETE FROM cart_items WHERE cart_id = ?', args: [cartId] });
+  await addLoyaltyPoints(cartId, pointsEarned);
+
+  return { orderNumber: orderId, pointsEarned, total };
+}
+
 app.post('/api/checkout', async (req, res, next) => {
   try {
     const { name, email, address, zip, city } = req.body || {};
     if (!name || !email || !address || !zip || !city) {
       return res.status(400).json({ error: 'Missing required fields.' });
     }
-    const { items, total } = await cartWithProducts(req.cartId);
-    if (items.length === 0) {
-      return res.status(400).json({ error: 'Cart is empty.' });
-    }
 
-    const orderId = 'BB' + Date.now().toString().slice(-8);
-    const pointsEarned = Math.round(total);
-    const createdAt = new Date().toISOString();
-
-    await db.client.execute({
-      sql: `INSERT INTO orders (id, cart_id, name, email, address, zip, city, total, points_earned, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      args: [orderId, req.cartId, name, email, address, zip, city, total, pointsEarned, createdAt]
-    });
-
-    for (const item of items) {
-      await db.client.execute({
-        sql: 'INSERT INTO order_items (order_id, product_id, color, qty, price) VALUES (?, ?, ?, ?, ?)',
-        args: [orderId, item.productId, item.color, item.qty, item.product.price]
+    if (stripe) {
+      // Real payment: hand off to Stripe Checkout instead of creating the
+      // order immediately. The order is only recorded once Stripe confirms
+      // the payment actually went through (see /api/checkout/confirm).
+      const { items } = await cartWithProducts(req.cartId);
+      if (items.length === 0) {
+        return res.status(400).json({ error: 'Cart is empty.' });
+      }
+      const origin = `${req.protocol}://${req.get('host')}`;
+      const session = await stripe.checkout.sessions.create({
+        mode: 'payment',
+        payment_method_types: ['card'],
+        customer_email: email,
+        line_items: items.map(item => ({
+          quantity: item.qty,
+          price_data: {
+            currency: 'eur',
+            unit_amount: Math.round(item.product.price * 100),
+            product_data: { name: `${item.product.name} (${item.color})` }
+          }
+        })),
+        metadata: { cartId: req.cartId, name, email, address, zip, city },
+        success_url: `${origin}/index.html?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${origin}/index.html?checkout=cancelled`
       });
+      return res.json({ redirectUrl: session.url });
     }
 
-    await db.client.execute({ sql: 'DELETE FROM cart_items WHERE cart_id = ?', args: [req.cartId] });
-    await addLoyaltyPoints(req.cartId, pointsEarned);
+    // No STRIPE_SECRET_KEY configured (e.g. local dev without a Stripe
+    // account): fall back to creating the order immediately, with no real
+    // payment collected — keeps `npm start` fully testable with zero setup.
+    const order = await createOrder(req.cartId, { name, email, address, zip, city });
+    res.status(201).json(order);
+  } catch (err) { next(err); }
+});
 
-    res.status(201).json({ orderNumber: orderId, pointsEarned, total });
+app.get('/api/checkout/confirm', async (req, res, next) => {
+  try {
+    if (!stripe) return res.status(400).json({ error: 'Stripe is not configured.' });
+    const { session_id } = req.query;
+    if (!session_id) return res.status(400).json({ error: 'session_id is required.' });
+
+    // Idempotent: a page refresh on the success URL must not create a second order.
+    const existing = await db.client.execute({
+      sql: 'SELECT id, points_earned, total FROM orders WHERE stripe_session_id = ?',
+      args: [session_id]
+    });
+    if (existing.rows.length) {
+      const row = existing.rows[0];
+      return res.json({ orderNumber: row.id, pointsEarned: Number(row.points_earned), total: Number(row.total) });
+    }
+
+    const session = await stripe.checkout.sessions.retrieve(session_id);
+    if (session.payment_status !== 'paid') {
+      return res.status(402).json({ error: 'Payment not completed.' });
+    }
+    const { cartId, name, email, address, zip, city } = session.metadata;
+    const order = await createOrder(cartId, { name, email, address, zip, city }, session_id);
+    res.status(201).json(order);
   } catch (err) { next(err); }
 });
 
 /* ===================== ERROR HANDLING ===================== */
 app.use('/api', (err, req, res, next) => {
   console.error(err);
-  res.status(500).json({ error: 'Internal server error.' });
+  res.status(err.status || 500).json({ error: err.status ? err.message : 'Internal server error.' });
 });
 
 /* ===================== STATIC FRONTEND ===================== */

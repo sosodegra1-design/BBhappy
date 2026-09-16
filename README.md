@@ -44,7 +44,8 @@ favoris et ses points de fidélité côté serveur.
 | POST/DELETE | `/api/favorites/:productId` | Ajouter/retirer un favori |
 | GET | `/api/loyalty` | Points de fidélité + paliers |
 | POST | `/api/loyalty/bonus` | Ajouter un bonus `{amount}` |
-| POST | `/api/checkout` | Passer la commande, vide le panier, crédite les points |
+| POST | `/api/checkout` | Passer la commande. Si Stripe est configuré : crée une session de paiement et renvoie `{redirectUrl}` vers la page de paiement Stripe. Sinon : crée directement la commande, vide le panier, crédite les points, et renvoie `{orderNumber, pointsEarned, total}`. |
+| GET | `/api/checkout/confirm?session_id=...` | Appelé après un paiement Stripe réussi : vérifie la session auprès de Stripe, crée la commande (une seule fois même en cas de rechargement de page) et renvoie `{orderNumber, pointsEarned, total}` |
 
 Sans le serveur lancé (ex: en ouvrant `index.html` directement dans le
 navigateur), le site affiche un message d'erreur — il n'y a pas de repli
@@ -69,6 +70,31 @@ redéploiement.
 4. Garde ces deux valeurs de côté, elles servent de variables d'environnement
    `TURSO_DATABASE_URL` et `TURSO_AUTH_TOKEN` à l'étape suivante.
 
+## Configurer Stripe (paiement en ligne réel)
+
+Nécessaire pour que le bouton « Payer » redirige vers une vraie page de
+paiement. Sans cette configuration, la commande est simplement enregistrée
+directement (mode démo, pas de paiement réel).
+
+1. Va sur [stripe.com](https://stripe.com) et crée un compte gratuit.
+2. Dans le tableau de bord, reste en **mode Test** (interrupteur en haut à
+   droite) — cela permet de tester des paiements sans vraie carte bancaire.
+3. Va dans **Développeurs** → **Clés API**, et copie la **clé secrète**
+   (elle commence par `sk_test_...`).
+4. Garde cette valeur de côté, elle sert de variable d'environnement
+   `STRIPE_SECRET_KEY` :
+   - en local : `STRIPE_SECRET_KEY="sk_test_..." npm start`
+   - sur Render : à ajouter dans les variables d'environnement du service
+     (voir étape suivante)
+5. Pour tester un paiement, utilise le numéro de carte de test Stripe
+   `4242 4242 4242 4242`, avec n'importe quelle date future, n'importe quel
+   CVC et n'importe quel code postal.
+
+**Pour accepter de vrais paiements (argent réel) :** il faut passer le
+compte Stripe en mode Live (Stripe demande alors les informations de
+l'entreprise et un compte bancaire), puis remplacer la clé `sk_test_...`
+par la clé `sk_live_...` correspondante.
+
 ## Déployer sur Render (gratuit)
 
 Le dépôt contient déjà tout ce qu'il faut (`render.yaml`, `.node-version`,
@@ -85,10 +111,14 @@ quelques clics :
    *(Si l'option Blueprint n'apparaît pas : New + → Web Service → même
    dépôt/branche → Build Command `npm install` → Start Command `npm start`
    → plan Free.)*
-3. Render va te demander de renseigner deux variables d'environnement —
-   colle les valeurs récupérées sur Turso à l'étape précédente :
+3. Render va te demander de renseigner les variables d'environnement —
+   colle les valeurs récupérées sur Turso et Stripe aux étapes précédentes :
    - `TURSO_DATABASE_URL` → l'URL `libsql://...`
    - `TURSO_AUTH_TOKEN` → le jeton généré
+   - `STRIPE_SECRET_KEY` → la clé secrète Stripe (`sk_test_...` ou
+     `sk_live_...`). Optionnel : sans cette variable, le paiement fonctionne
+     en mode démo (commande enregistrée directement, sans vraie page de
+     paiement).
 4. Clique sur **Apply** / **Create Web Service**. Le premier déploiement
    prend 1 à 2 minutes.
 5. Une fois prêt, Render te donne une URL publique du type
