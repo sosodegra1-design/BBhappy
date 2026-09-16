@@ -61,6 +61,8 @@ async function loadLoyalty() {
   const data = await apiFetch('/loyalty');
   state.loyaltyPoints = data.points;
   LOYALTY_TIERS = data.tiers;
+  state.memberNumber = data.memberNumber;
+  state.physicalCardRequested = data.physicalCardRequested;
 }
 
 /* ===================== TRANSLATIONS ===================== */
@@ -132,6 +134,22 @@ const TRANSLATIONS = {
     'checkout.cancelled': 'Paiement annulé, votre panier est toujours là.',
     'loyalty.title': 'Carte de fidélité', 'loyalty.aria': 'Carte de fidélité', 'loyalty.points': 'points',
     'loyalty.tiersTitle': 'Récompenses', 'loyalty.maxed': 'Bravo, vous avez débloqué toutes les récompenses ! 🎉',
+    'loyalty.viewCard': 'Voir ma carte de fidélité complète →',
+    'loyalty.hero.title': 'Votre carte de fidélité BBHappY',
+    'loyalty.hero.desc': 'Cumulez des points à chaque commande (1 € dépensé = 1 point) et débloquez des récompenses automatiquement.',
+    'loyalty.member': 'Membre BBHappY', 'loyalty.memberNew': 'Nouveau membre',
+    'loyalty.card.number': 'N° de membre', 'loyalty.card.points': 'points',
+    'loyalty.table.title': 'Tableau des récompenses',
+    'loyalty.table.status': 'Statut', 'loyalty.table.threshold': 'Points requis', 'loyalty.table.reward': 'Récompense',
+    'loyalty.physicalCard.eyebrow': 'Carte physique',
+    'loyalty.physicalCard.title': 'Recevez votre carte chez vous',
+    'loyalty.physicalCard.desc': 'Votre carte virtuelle ci-dessus est déjà active et cumule des points automatiquement. Vous pouvez en plus recevoir une carte physique à présenter en magasin partenaire, envoyée gratuitement par courrier sous 10 à 15 jours.',
+    'loyalty.physicalCard.name': 'Nom complet', 'loyalty.physicalCard.address': 'Adresse',
+    'loyalty.physicalCard.zip': 'Code postal', 'loyalty.physicalCard.city': 'Ville',
+    'loyalty.physicalCard.submit': 'Recevoir ma carte physique',
+    'loyalty.physicalCard.toast': 'Demande enregistrée ! Votre carte physique arrive sous 10 à 15 jours 📮',
+    'loyalty.physicalCard.confirmed.title': 'Carte physique en préparation ✅',
+    'loyalty.physicalCard.confirmed.desc': 'Votre demande a bien été enregistrée, votre carte vous sera envoyée par courrier sous 10 à 15 jours.',
     'lang.toggle': '🇬🇧 EN',
     'brand0.desc': 'Jouets en bois massif fabriqués en Europe, finitions à l\'eau et certification FSC sur tout le bois utilisé.',
     'brand0.cta': 'Voir les jouets éducatifs →',
@@ -224,6 +242,22 @@ const TRANSLATIONS = {
     'checkout.cancelled': 'Payment cancelled, your cart is still here.',
     'loyalty.title': 'Loyalty card', 'loyalty.aria': 'Loyalty card', 'loyalty.points': 'points',
     'loyalty.tiersTitle': 'Rewards', 'loyalty.maxed': 'Congrats, you\'ve unlocked every reward! 🎉',
+    'loyalty.viewCard': 'See my full loyalty card →',
+    'loyalty.hero.title': 'Your BBHappY loyalty card',
+    'loyalty.hero.desc': 'Earn points with every order (€1 spent = 1 point) and unlock rewards automatically.',
+    'loyalty.member': 'BBHappY member', 'loyalty.memberNew': 'New member',
+    'loyalty.card.number': 'Member no.', 'loyalty.card.points': 'points',
+    'loyalty.table.title': 'Rewards table',
+    'loyalty.table.status': 'Status', 'loyalty.table.threshold': 'Points required', 'loyalty.table.reward': 'Reward',
+    'loyalty.physicalCard.eyebrow': 'Physical card',
+    'loyalty.physicalCard.title': 'Get your card at home',
+    'loyalty.physicalCard.desc': 'Your virtual card above is already active and earns points automatically. You can also receive a physical card to show in partner stores, mailed to you for free within 10 to 15 days.',
+    'loyalty.physicalCard.name': 'Full name', 'loyalty.physicalCard.address': 'Address',
+    'loyalty.physicalCard.zip': 'Zip code', 'loyalty.physicalCard.city': 'City',
+    'loyalty.physicalCard.submit': 'Get my physical card',
+    'loyalty.physicalCard.toast': 'Request saved! Your physical card is on its way (10 to 15 days) 📮',
+    'loyalty.physicalCard.confirmed.title': 'Physical card on its way ✅',
+    'loyalty.physicalCard.confirmed.desc': 'Your request has been recorded, your card will be mailed to you within 10 to 15 days.',
     'lang.toggle': '🇫🇷 FR',
     'brand0.desc': 'Solid wood toys made in Europe, water-based finishes and FSC certification on all wood used.',
     'brand0.cta': 'See educational toys →',
@@ -264,6 +298,8 @@ const state = {
   cart: [],
   favorites: [],
   loyaltyPoints: 0,
+  memberNumber: '',
+  physicalCardRequested: false,
   currentModalProduct: null,
   currentModalColor: null
 };
@@ -551,23 +587,25 @@ function renderLoyalty() {
   if (!valueEl) return; // loyalty drawer not present on this page render pass
   valueEl.textContent = state.loyaltyPoints;
 
+  // A page can show the progress bar/remaining-points text more than once
+  // (e.g. both the loyalty drawer and the dedicated card page), so every
+  // matching element is kept in sync rather than looking up a single id.
   const nextTier = LOYALTY_TIERS.find(tier => state.loyaltyPoints < tier.threshold);
-  const bar = document.getElementById('loyaltyProgressBar');
-  const nextText = document.getElementById('loyaltyNextText');
+  const bars = document.querySelectorAll('.loyalty-progress-bar');
+  const nextTexts = document.querySelectorAll('.loyalty-next');
   if (nextTier) {
     const prevThreshold = LOYALTY_TIERS.filter(x => x.threshold <= nextTier.threshold && x !== nextTier).slice(-1)[0]?.threshold || 0;
     const pct = Math.min(100, Math.round(((state.loyaltyPoints - prevThreshold) / (nextTier.threshold - prevThreshold)) * 100));
-    if (bar) bar.style.width = pct + '%';
-    if (nextText) {
-      const remaining = nextTier.threshold - state.loyaltyPoints;
-      const reward = state.lang === 'en' ? nextTier.reward_en : nextTier.reward;
-      nextText.textContent = state.lang === 'en'
-        ? `${remaining} more points to unlock: ${reward}`
-        : `Encore ${remaining} points pour débloquer : ${reward}`;
-    }
+    bars.forEach(bar => { bar.style.width = pct + '%'; });
+    const remaining = nextTier.threshold - state.loyaltyPoints;
+    const reward = state.lang === 'en' ? nextTier.reward_en : nextTier.reward;
+    const text = state.lang === 'en'
+      ? `${remaining} more points to unlock: ${reward}`
+      : `Encore ${remaining} points pour débloquer : ${reward}`;
+    nextTexts.forEach(el => { el.textContent = text; });
   } else {
-    if (bar) bar.style.width = '100%';
-    if (nextText) nextText.textContent = t('loyalty.maxed');
+    bars.forEach(bar => { bar.style.width = '100%'; });
+    nextTexts.forEach(el => { el.textContent = t('loyalty.maxed'); });
   }
 
   const tiersList = document.getElementById('loyaltyTiers');
@@ -580,6 +618,45 @@ function renderLoyalty() {
         <span class="loyalty-tier-info"><strong>${tier.threshold} ${t('loyalty.points')}</strong> — ${reward}</span>
       </li>`;
     }).join('');
+  }
+
+  renderLoyaltyCardPage();
+}
+
+/* Populates the dedicated carte-fidelite.html page, when present: the
+   virtual card visual, the full rewards table and the physical-card
+   request form/confirmation. No-op on every other page. */
+function renderLoyaltyCardPage() {
+  const cardPoints = document.getElementById('loyaltyCardPoints');
+  if (!cardPoints) return;
+  cardPoints.textContent = state.loyaltyPoints;
+
+  const cardNumber = document.getElementById('loyaltyCardNumber');
+  if (cardNumber) cardNumber.textContent = state.memberNumber ? `BB-${state.memberNumber}` : '—';
+
+  const reachedTiers = LOYALTY_TIERS.filter(tier => state.loyaltyPoints >= tier.threshold);
+  const currentTier = reachedTiers[reachedTiers.length - 1];
+  const tierName = document.getElementById('loyaltyCardTierName');
+  if (tierName) tierName.textContent = currentTier ? t('loyalty.member') : t('loyalty.memberNew');
+
+  const table = document.getElementById('loyaltyTiersTableBody');
+  if (table) {
+    table.innerHTML = LOYALTY_TIERS.map(tier => {
+      const reached = state.loyaltyPoints >= tier.threshold;
+      const reward = state.lang === 'en' ? tier.reward_en : tier.reward;
+      return `<tr class="${reached ? 'reached' : ''}">
+        <td>${reached ? '✅' : '🔒'}</td>
+        <td><strong>${tier.threshold}</strong> ${t('loyalty.points')}</td>
+        <td>${reward}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  const form = document.getElementById('physicalCardForm');
+  const confirmed = document.getElementById('physicalCardConfirmed');
+  if (form && confirmed) {
+    form.hidden = state.physicalCardRequested;
+    confirmed.hidden = !state.physicalCardRequested;
   }
 }
 
@@ -1043,6 +1120,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     e.target.reset();
     setTimeout(() => { msg.textContent = ''; }, 5000);
   });
+
+  const physicalCardForm = document.getElementById('physicalCardForm');
+  if (physicalCardForm) {
+    physicalCardForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        await apiFetch('/loyalty/physical-card', {
+          method: 'POST',
+          body: JSON.stringify({
+            name: document.getElementById('physicalCardName').value,
+            address: document.getElementById('physicalCardAddress').value,
+            zip: document.getElementById('physicalCardZip').value,
+            city: document.getElementById('physicalCardCity').value
+          })
+        });
+        state.physicalCardRequested = true;
+        renderLoyaltyCardPage();
+        showToast(t('loyalty.physicalCard.toast'));
+      } catch (err) {
+        showToast(err.message || t('error.generic'));
+      }
+    });
+  }
 
   // Sticky header shrink on scroll (subtle)
   const header = document.getElementById('siteHeader');

@@ -694,6 +694,42 @@ ul { list-style: none; margin: 0; padding: 0; }
 .checkout-success-icon { font-size: 3.4rem; display: block; margin-bottom: 14px; }
 .checkout-points { font-weight: 800; color: var(--coral-ink); font-size: 1.05rem; }
 
+/* ===================== LOYALTY CARD PAGE ===================== */
+.loyalty-card-visual {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 32px 36px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--coral), var(--sun-dark));
+  color: var(--white);
+  box-shadow: var(--shadow-hover);
+}
+.loyalty-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+.loyalty-card-logo { font-family: var(--font-heading); font-weight: 800; font-size: 1.1rem; }
+.loyalty-card-tier { font-size: .8rem; font-weight: 700; background: rgba(255,255,255,0.25); border-radius: 999px; padding: 5px 12px; }
+.loyalty-card-points-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 16px; }
+.loyalty-card-points { font-family: var(--font-heading); font-size: 3.2rem; font-weight: 800; line-height: 1; }
+.loyalty-card-points-label { font-size: 1rem; opacity: .9; }
+.loyalty-progress-card { background: rgba(255,255,255,0.3); }
+.loyalty-progress-card .loyalty-progress-bar { background: var(--white); }
+.loyalty-card-visual .loyalty-next { color: var(--white); opacity: .9; text-align: left; margin-bottom: 18px; }
+.loyalty-card-bottom { font-size: .85rem; letter-spacing: .05em; opacity: .85; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 14px; }
+
+.loyalty-tiers-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-soft); }
+.loyalty-tiers-table th, .loyalty-tiers-table td { padding: 14px 18px; text-align: left; }
+.loyalty-tiers-table thead { background: var(--cream-alt); }
+.loyalty-tiers-table th { font-family: var(--font-heading); font-size: .85rem; }
+.loyalty-tiers-table tbody tr { border-top: 1px solid rgba(74,67,88,0.08); opacity: .55; }
+.loyalty-tiers-table tbody tr.reached { opacity: 1; background: var(--cream-alt); }
+
+.physical-card-section { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+.physical-card-text h2 { margin: 10px 0 14px; }
+.physical-card-form { background: var(--white); border-radius: var(--radius-md); box-shadow: var(--shadow-soft); padding: 28px; }
+.physical-card-confirmed { background: var(--white); border-radius: var(--radius-md); box-shadow: var(--shadow-soft); }
+@media (max-width: 860px) {
+  .physical-card-section { grid-template-columns: 1fr; }
+}
+
 /* ===================== TOAST ===================== */
 .toast {
   position: fixed;

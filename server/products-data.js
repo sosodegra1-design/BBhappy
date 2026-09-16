@@ -313,9 +313,11 @@ const PRODUCTS = [
 
 /* ===================== LOYALTY TIERS ===================== */
 const LOYALTY_TIERS = [
-  { threshold: 30, reward: 'Code -5€ sur votre prochaine commande', reward_en: '€5 off your next order' },
-  { threshold: 75, reward: 'Un cadeau surprise offert 🎁', reward_en: 'A free surprise gift 🎁' },
-  { threshold: 150, reward: 'Livraison gratuite à vie', reward_en: 'Free shipping for life' }
+  { threshold: 50, reward: 'Code -5€ sur votre prochaine commande', reward_en: '€5 off your next order' },
+  { threshold: 100, reward: 'Petit cadeau offert 🎁', reward_en: 'A free small gift 🎁' },
+  { threshold: 200, reward: '-10% sur votre prochaine commande', reward_en: '10% off your next order' },
+  { threshold: 350, reward: 'Livraison gratuite à vie', reward_en: 'Free shipping for life' },
+  { threshold: 500, reward: 'Cadeau premium surprise 🎉', reward_en: 'A free premium surprise gift 🎉' }
 ];
 
 module.exports = { ICONS, PRODUCTS, LOYALTY_TIERS };

@@ -193,9 +193,28 @@ app.delete('/api/favorites/:productId', async (req, res, next) => {
 });
 
 /* ===================== LOYALTY ===================== */
+// A stable, readable "member number" derived from the visitor's cart id, so
+// the virtual card has something card-like to show without needing accounts.
+function memberNumber(cartId) {
+  return crypto.createHash('sha256').update(cartId).digest('hex').slice(0, 8).toUpperCase();
+}
+
+async function hasRequestedPhysicalCard(cartId) {
+  const res = await db.client.execute({
+    sql: 'SELECT 1 FROM physical_card_requests WHERE cart_id = ?',
+    args: [cartId]
+  });
+  return res.rows.length > 0;
+}
+
 app.get('/api/loyalty', async (req, res, next) => {
   try {
-    res.json({ points: await getLoyaltyPoints(req.cartId), tiers: LOYALTY_TIERS });
+    res.json({
+      points: await getLoyaltyPoints(req.cartId),
+      tiers: LOYALTY_TIERS,
+      memberNumber: memberNumber(req.cartId),
+      physicalCardRequested: await hasRequestedPhysicalCard(req.cartId)
+    });
   } catch (err) { next(err); }
 });
 
@@ -207,6 +226,24 @@ app.post('/api/loyalty/bonus', async (req, res, next) => {
       return res.status(400).json({ error: 'amount must be a positive integer.' });
     }
     res.json({ points: await addLoyaltyPoints(req.cartId, bonus) });
+  } catch (err) { next(err); }
+});
+
+app.post('/api/loyalty/physical-card', async (req, res, next) => {
+  try {
+    const { name, address, zip, city } = req.body || {};
+    if (!name || !address || !zip || !city) {
+      return res.status(400).json({ error: 'Missing required fields.' });
+    }
+    await db.client.execute({
+      sql: `INSERT INTO physical_card_requests (cart_id, name, address, zip, city, requested_at)
+            VALUES (?, ?, ?, ?, ?, ?)
+            ON CONFLICT(cart_id) DO UPDATE SET
+              name = excluded.name, address = excluded.address,
+              zip = excluded.zip, city = excluded.city, requested_at = excluded.requested_at`,
+      args: [req.cartId, name, address, zip, city, new Date().toISOString()]
+    });
+    res.status(201).json({ ok: true });
   } catch (err) { next(err); }
 });
 

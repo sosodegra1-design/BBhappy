@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Livraison & retours — BBHappY</title>
-<meta name="description" content="Options de livraison, délais et modalités de retour chez BBHappY.">
+<title>Carte de fidélité — BBHappY</title>
+<meta name="description" content="Découvrez votre carte de fidélité BBHappY, le tableau des récompenses par palier de points, et demandez votre carte physique.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -74,41 +74,30 @@
 
 <main id="main-content">
 
-  <section class="page-hero" style="background:linear-gradient(180deg,#dff0ff,var(--cream));">
+  <section class="page-hero" style="background:linear-gradient(180deg,#ffe9d6,var(--cream));">
     <div class="container page-hero-inner">
-      <p class="breadcrumb"><a href="index.html" data-i18n="breadcrumb.home">Accueil</a> / <span data-i18n="footer.shipping">Livraison &amp; retours</span></p>
-      <span class="page-hero-emoji">🚚</span>
-      <h1 data-i18n="shipping.hero.title">Livraison &amp; retours</h1>
-      <p data-i18n="shipping.hero.desc">Tout ce qu'il faut savoir pour recevoir vos commandes sereinement, et les retourner tout aussi simplement en cas de besoin.</p>
+      <p class="breadcrumb"><a href="index.html" data-i18n="breadcrumb.home">Accueil</a> / <span data-i18n="loyalty.title">Carte de fidélité</span></p>
+      <span class="page-hero-emoji">🎁</span>
+      <h1 data-i18n="loyalty.hero.title">Votre carte de fidélité BBHappY</h1>
+      <p data-i18n="loyalty.hero.desc">Cumulez des points à chaque commande (1 € dépensé = 1 point) et débloquez des récompenses automatiquement.</p>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <div class="section-head">
-        <span class="eyebrow" data-i18n="shipping.delivery.eyebrow">Livraison</span>
-        <h2 data-i18n="shipping.delivery.title">Des options adaptées à vos envies</h2>
-      </div>
-      <div class="trust-grid">
-        <div class="trust-item">
-          <span class="trust-icon">📦</span>
-          <h4 data-i18n="shipping.standard.title">Standard</h4>
-          <p data-i18n="shipping.standard.desc">3 à 5 jours ouvrés — 4,90 €, gratuite dès 49 € d'achat</p>
+      <div class="loyalty-card-visual">
+        <div class="loyalty-card-top">
+          <span class="loyalty-card-logo">🧸 BBHappY</span>
+          <span class="loyalty-card-tier" id="loyaltyCardTierName">Membre BBHappY</span>
         </div>
-        <div class="trust-item">
-          <span class="trust-icon">⚡</span>
-          <h4 data-i18n="shipping.express.title">Express</h4>
-          <p data-i18n="shipping.express.desc">24 à 48h ouvrées — 9,90 €</p>
+        <div class="loyalty-card-points-row">
+          <span class="loyalty-card-points" id="loyaltyCardPoints">0</span>
+          <span class="loyalty-card-points-label" data-i18n="loyalty.card.points">points</span>
         </div>
-        <div class="trust-item">
-          <span class="trust-icon">🌍</span>
-          <h4 data-i18n="shipping.europe.title">Europe</h4>
-          <p data-i18n="shipping.europe.desc">5 à 8 jours ouvrés — à partir de 9,90 €</p>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon">📍</span>
-          <h4 data-i18n="shipping.tracking.title">Suivi en temps réel</h4>
-          <p data-i18n="shipping.tracking.desc">Un lien de suivi vous est envoyé dès l'expédition de votre colis</p>
+        <div class="loyalty-progress loyalty-progress-card"><div class="loyalty-progress-bar" id="loyaltyProgressBar"></div></div>
+        <p class="loyalty-next" id="loyaltyNextText"></p>
+        <div class="loyalty-card-bottom">
+          <span data-i18n="loyalty.card.number">N° de membre</span> : <span id="loyaltyCardNumber">—</span>
         </div>
       </div>
     </div>
@@ -117,28 +106,50 @@
   <section class="section section-alt">
     <div class="container">
       <div class="section-head">
-        <span class="eyebrow" data-i18n="shipping.returns.eyebrow">Retours</span>
-        <h2 data-i18n="shipping.returns.title">30 jours pour changer d'avis</h2>
-        <p data-i18n="shipping.returns.desc">Si un article ne convient pas, vous pouvez le retourner sans justification dans les 30 jours suivant sa réception.</p>
+        <h2 data-i18n="loyalty.table.title">Tableau des récompenses</h2>
       </div>
-      <div class="trust-grid">
-        <div class="trust-item">
-          <span class="trust-icon">✉️</span>
-          <h4 data-i18n="shipping.step1.title">1. Contactez-nous</h4>
-          <p data-i18n="shipping.step1.desc">Depuis votre espace commande ou par e-mail, sous 30 jours après réception</p>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon">📮</span>
-          <h4 data-i18n="shipping.step2.title">2. Renvoyez l'article</h4>
-          <p data-i18n="shipping.step2.desc">Dans son emballage d'origine, avec l'étiquette de retour fournie</p>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon">💳</span>
-          <h4 data-i18n="shipping.step3.title">3. Remboursement</h4>
-          <p data-i18n="shipping.step3.desc">Sous 5 à 7 jours ouvrés après réception de votre retour</p>
-        </div>
+      <table class="loyalty-tiers-table">
+        <thead>
+          <tr>
+            <th data-i18n="loyalty.table.status">Statut</th>
+            <th data-i18n="loyalty.table.threshold">Points requis</th>
+            <th data-i18n="loyalty.table.reward">Récompense</th>
+          </tr>
+        </thead>
+        <tbody id="loyaltyTiersTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container physical-card-section">
+      <div class="physical-card-text">
+        <span class="eyebrow" data-i18n="loyalty.physicalCard.eyebrow">Carte physique</span>
+        <h2 data-i18n="loyalty.physicalCard.title">Recevez votre carte chez vous</h2>
+        <p data-i18n="loyalty.physicalCard.desc">Votre carte virtuelle ci-dessus est déjà active et cumule des points automatiquement. Vous pouvez en plus recevoir une carte physique à présenter en magasin partenaire, envoyée gratuitement par courrier sous 10 à 15 jours.</p>
       </div>
-      <p style="text-align:center; margin-top:24px; font-size:.85rem;" data-i18n="shipping.exclusions">Les articles soldés à -50% ou plus, les sous-vêtements et les cadeaux personnalisés ne sont pas repris pour des raisons d'hygiène.</p>
+      <form id="physicalCardForm" class="checkout-form physical-card-form">
+        <label for="physicalCardName" data-i18n="loyalty.physicalCard.name">Nom complet</label>
+        <input type="text" id="physicalCardName" required>
+        <label for="physicalCardAddress" data-i18n="loyalty.physicalCard.address">Adresse</label>
+        <input type="text" id="physicalCardAddress" required>
+        <div class="checkout-row">
+          <div>
+            <label for="physicalCardZip" data-i18n="loyalty.physicalCard.zip">Code postal</label>
+            <input type="text" id="physicalCardZip" required>
+          </div>
+          <div>
+            <label for="physicalCardCity" data-i18n="loyalty.physicalCard.city">Ville</label>
+            <input type="text" id="physicalCardCity" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="loyalty.physicalCard.submit">Recevoir ma carte physique</button>
+      </form>
+      <div class="checkout-success physical-card-confirmed" id="physicalCardConfirmed" hidden>
+        <span class="checkout-success-icon">📮</span>
+        <h3 data-i18n="loyalty.physicalCard.confirmed.title">Carte physique en préparation ✅</h3>
+        <p data-i18n="loyalty.physicalCard.confirmed.desc">Votre demande a bien été enregistrée, votre carte vous sera envoyée par courrier sous 10 à 15 jours.</p>
+      </div>
     </div>
   </section>
 
@@ -262,8 +273,7 @@
       <span class="loyalty-points-value" id="loyaltyPointsValue">0</span>
       <span data-i18n="loyalty.points">points</span>
     </div>
-    <div class="loyalty-progress"><div class="loyalty-progress-bar" id="loyaltyProgressBar"></div></div>
-    <p class="loyalty-next" id="loyaltyNextText"></p>
+    <p class="loyalty-next"></p>
     <h4 data-i18n="loyalty.tiersTitle">Récompenses</h4>
     <ul class="loyalty-tiers" id="loyaltyTiers" style="margin-top:12px;"></ul>
     <a href="carte-fidelite.html" class="btn btn-primary btn-block" style="margin-top:16px;" data-i18n="loyalty.viewCard">Voir ma carte de fidélité complète →</a>
@@ -299,7 +309,6 @@
         <a href="#" data-i18n="footer.contact">Contactez-nous</a>
         <a href="livraison-retours.html" data-i18n="footer.shipping">Livraison &amp; retours</a>
         <a href="carte-fidelite.html" data-i18n="loyalty.title">Carte de fidélité</a>
-        <a href="#" data-i18n="footer.sizeguide">Guide des tailles</a>
         <a href="#" data-i18n="footer.faq">FAQ</a>
       </div>
       <div class="footer-col">

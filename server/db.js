@@ -53,6 +53,15 @@ async function init() {
       qty INTEGER NOT NULL,
       price REAL NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS physical_card_requests (
+      cart_id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      address TEXT NOT NULL,
+      zip TEXT NOT NULL,
+      city TEXT NOT NULL,
+      requested_at TEXT NOT NULL
+    );
   `);
 
   // Migration for databases created before Stripe support was added: the
