@@ -68,7 +68,7 @@ async function loadLoyalty() {
 /* ===================== TRANSLATIONS ===================== */
 const TRANSLATIONS = {
   fr: {
-    'topbar.text': '🚚 Livraison standard à 4,90€ &nbsp;•&nbsp; ✨ -20% sur les soldes avec le code SOLEIL',
+    'topbar.text': '🚚 Livraison offerte dès 20€ d\'achat &nbsp;•&nbsp; ✨ -20% sur les soldes avec le code SOLEIL',
     'nav.home': 'Accueil', 'nav.toys': 'Jouets', 'nav.clothing': 'Vêtements', 'nav.brands': 'Marques', 'nav.sales': 'Soldes 🔥',
     'search.placeholder': 'Rechercher un jouet, un vêtement...',
     'hero.tag': '✨ Nouvelle collection printemps',
@@ -164,7 +164,7 @@ const TRANSLATIONS = {
     'shipping.hero.title': 'Livraison & retours',
     'shipping.hero.desc': 'Tout ce qu\'il faut savoir pour recevoir vos commandes sereinement, et les retourner tout aussi simplement en cas de besoin.',
     'shipping.delivery.eyebrow': 'Livraison', 'shipping.delivery.title': 'Des options adaptées à vos envies',
-    'shipping.standard.title': 'Standard', 'shipping.standard.desc': '3 à 5 jours ouvrés — 4,90 €',
+    'shipping.standard.title': 'Standard', 'shipping.standard.desc': '3 à 5 jours ouvrés — 4,90 €, gratuite dès 20 € d\'achat',
     'shipping.express.title': 'Express', 'shipping.express.desc': '24 à 48h ouvrées — 9,90 €',
     'shipping.europe.title': 'Europe', 'shipping.europe.desc': '5 à 8 jours ouvrés — à partir de 9,90 €',
     'shipping.tracking.title': 'Suivi en temps réel', 'shipping.tracking.desc': 'Un lien de suivi vous est envoyé dès l\'expédition de votre colis',
@@ -176,7 +176,7 @@ const TRANSLATIONS = {
     'shipping.exclusions': 'Les articles soldés à -50% ou plus, les sous-vêtements et les cadeaux personnalisés ne sont pas repris pour des raisons d\'hygiène.'
   },
   en: {
-    'topbar.text': '🚚 Standard delivery for €4.90 &nbsp;•&nbsp; ✨ -20% on sale items with code SOLEIL',
+    'topbar.text': '🚚 Free delivery from €20 &nbsp;•&nbsp; ✨ -20% on sale items with code SOLEIL',
     'nav.home': 'Home', 'nav.toys': 'Toys', 'nav.clothing': 'Clothing', 'nav.brands': 'Brands', 'nav.sales': 'Sale 🔥',
     'search.placeholder': 'Search for a toy, an outfit...',
     'hero.tag': '✨ New spring collection',
@@ -272,7 +272,7 @@ const TRANSLATIONS = {
     'shipping.hero.title': 'Shipping & Returns',
     'shipping.hero.desc': 'Everything you need to know to receive your orders with peace of mind, and return them just as easily if needed.',
     'shipping.delivery.eyebrow': 'Shipping', 'shipping.delivery.title': 'Options to suit your needs',
-    'shipping.standard.title': 'Standard', 'shipping.standard.desc': '3 to 5 business days — €4.90',
+    'shipping.standard.title': 'Standard', 'shipping.standard.desc': '3 to 5 business days — €4.90, free from €20 of purchase',
     'shipping.express.title': 'Express', 'shipping.express.desc': '24 to 48 business hours — €9.90',
     'shipping.europe.title': 'Europe', 'shipping.europe.desc': '5 to 8 business days — from €9.90',
     'shipping.tracking.title': 'Real-time tracking', 'shipping.tracking.desc': 'A tracking link is sent to you as soon as your parcel ships',
