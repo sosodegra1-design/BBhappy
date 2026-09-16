@@ -170,7 +170,7 @@ const TRANSLATIONS = {
     'shipping.tracking.title': 'Suivi en temps réel', 'shipping.tracking.desc': 'Un lien de suivi vous est envoyé dès l\'expédition de votre colis',
     'shipping.returns.eyebrow': 'Retours', 'shipping.returns.title': '30 jours pour changer d\'avis',
     'shipping.returns.desc': 'Si un article ne convient pas, vous pouvez le retourner sans justification dans les 30 jours suivant sa réception.',
-    'shipping.step1.title': '1. Contactez-nous', 'shipping.step1.desc': 'Depuis votre espace commande ou par e-mail, sous 30 jours après réception',
+    'shipping.step1.title': '1. Contactez-nous', 'shipping.step1.desc': 'Par e-mail à <a href="mailto:bbvoltex@gmail.com">bbvoltex@gmail.com</a>, sous 30 jours après réception',
     'shipping.step2.title': '2. Renvoyez l\'article', 'shipping.step2.desc': 'Dans son emballage d\'origine, avec l\'étiquette de retour fournie',
     'shipping.step3.title': '3. Remboursement', 'shipping.step3.desc': 'Sous 5 à 7 jours ouvrés après réception de votre retour',
     'shipping.exclusions': 'Les articles soldés à -50% ou plus, les sous-vêtements et les cadeaux personnalisés ne sont pas repris pour des raisons d\'hygiène.'
@@ -278,7 +278,7 @@ const TRANSLATIONS = {
     'shipping.tracking.title': 'Real-time tracking', 'shipping.tracking.desc': 'A tracking link is sent to you as soon as your parcel ships',
     'shipping.returns.eyebrow': 'Returns', 'shipping.returns.title': '30 days to change your mind',
     'shipping.returns.desc': 'If an item doesn\'t work out, you can return it with no questions asked within 30 days of receiving it.',
-    'shipping.step1.title': '1. Contact us', 'shipping.step1.desc': 'From your order space or by email, within 30 days of receipt',
+    'shipping.step1.title': '1. Contact us', 'shipping.step1.desc': 'By email at <a href="mailto:bbvoltex@gmail.com">bbvoltex@gmail.com</a>, within 30 days of receipt',
     'shipping.step2.title': '2. Send the item back', 'shipping.step2.desc': 'In its original packaging, with the provided return label',
     'shipping.step3.title': '3. Refund', 'shipping.step3.desc': 'Within 5 to 7 business days after we receive your return',
     'shipping.exclusions': 'Items on sale at -50% or more, underwear and personalized gifts cannot be returned for hygiene reasons.'
