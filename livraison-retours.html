@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lots déstockage — BBHappY</title>
-<meta name="description" content="Nos lots et packs multi-produits en édition limitée, à prix déstockage, jusqu'à épuisement des stocks.">
+<title>Livraison & retours — BBHappY</title>
+<meta name="description" content="Options de livraison, délais et modalités de retour chez BBHappY.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧸</text></svg>">
 </head>
-<body data-category="destockage">
+<body>
 <a href="#main-content" class="skip-link">Aller au contenu principal</a>
 
 <!-- ===== HEADER ===== -->
@@ -37,7 +37,7 @@
       <a href="jouets.html" class="nav-link" data-i18n="nav.toys">Jouets</a>
       <a href="vetements.html" class="nav-link" data-i18n="nav.clothing">Vêtements</a>
       <a href="marques.html" class="nav-link" data-i18n="nav.brands">Marques</a>
-      <a href="soldes.html" class="nav-link sale active" data-i18n="nav.sales">Soldes 🔥</a>
+      <a href="soldes.html" class="nav-link sale" data-i18n="nav.sales">Soldes 🔥</a>
     </nav>
 
     <div class="search-bar">
@@ -74,19 +74,71 @@
 
 <main id="main-content">
 
-  <section class="page-hero" style="background:linear-gradient(180deg,#dff3e8,var(--cream));">
+  <section class="page-hero" style="background:linear-gradient(180deg,#dff0ff,var(--cream));">
     <div class="container page-hero-inner">
-      <p class="breadcrumb"><a href="index.html" data-i18n="breadcrumb.home">Accueil</a> / <a href="soldes.html" data-i18n="nav.sales">Soldes</a> / <span data-i18n="footer.destock">Lots déstockage</span></p>
-      <span class="page-hero-emoji">📦</span>
-      <h1 data-i18n="destockage.hero.title">Lots déstockage 📦</h1>
-      <p data-i18n="destockage.hero.desc">Des packs multi-produits à prix cassés pour équiper toute la fratrie sans se ruiner, jusqu'à épuisement des stocks.</p>
+      <p class="breadcrumb"><a href="index.html" data-i18n="breadcrumb.home">Accueil</a> / <span data-i18n="footer.shipping">Livraison &amp; retours</span></p>
+      <span class="page-hero-emoji">🚚</span>
+      <h1 data-i18n="shipping.hero.title">Livraison &amp; retours</h1>
+      <p data-i18n="shipping.hero.desc">Tout ce qu'il faut savoir pour recevoir vos commandes sereinement, et les retourner tout aussi simplement en cas de besoin.</p>
     </div>
   </section>
 
-  <section class="section section-alt" id="produits">
+  <section class="section">
     <div class="container">
-      <div class="product-grid" id="productGrid"></div>
-      <p class="empty-state" id="emptyState" hidden data-i18n="empty.state">Aucun produit ne correspond à votre recherche 🧐 Essayez un autre filtre !</p>
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="shipping.delivery.eyebrow">Livraison</span>
+        <h2 data-i18n="shipping.delivery.title">Des options adaptées à vos envies</h2>
+      </div>
+      <div class="trust-grid">
+        <div class="trust-item">
+          <span class="trust-icon">📦</span>
+          <h4 data-i18n="shipping.standard.title">Standard</h4>
+          <p data-i18n="shipping.standard.desc">3 à 5 jours ouvrés — 4,90 €, gratuite dès 49 € d'achat</p>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">⚡</span>
+          <h4 data-i18n="shipping.express.title">Express</h4>
+          <p data-i18n="shipping.express.desc">24 à 48h ouvrées — 9,90 €</p>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">🌍</span>
+          <h4 data-i18n="shipping.europe.title">Europe</h4>
+          <p data-i18n="shipping.europe.desc">5 à 8 jours ouvrés — à partir de 9,90 €</p>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">📍</span>
+          <h4 data-i18n="shipping.tracking.title">Suivi en temps réel</h4>
+          <p data-i18n="shipping.tracking.desc">Un lien de suivi vous est envoyé dès l'expédition de votre colis</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="shipping.returns.eyebrow">Retours</span>
+        <h2 data-i18n="shipping.returns.title">30 jours pour changer d'avis</h2>
+        <p data-i18n="shipping.returns.desc">Si un article ne convient pas, vous pouvez le retourner sans justification dans les 30 jours suivant sa réception.</p>
+      </div>
+      <div class="trust-grid">
+        <div class="trust-item">
+          <span class="trust-icon">✉️</span>
+          <h4 data-i18n="shipping.step1.title">1. Contactez-nous</h4>
+          <p data-i18n="shipping.step1.desc">Depuis votre espace commande ou par e-mail, sous 30 jours après réception</p>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">📮</span>
+          <h4 data-i18n="shipping.step2.title">2. Renvoyez l'article</h4>
+          <p data-i18n="shipping.step2.desc">Dans son emballage d'origine, avec l'étiquette de retour fournie</p>
+        </div>
+        <div class="trust-item">
+          <span class="trust-icon">💳</span>
+          <h4 data-i18n="shipping.step3.title">3. Remboursement</h4>
+          <p data-i18n="shipping.step3.desc">Sous 5 à 7 jours ouvrés après réception de votre retour</p>
+        </div>
+      </div>
+      <p style="text-align:center; margin-top:24px; font-size:.85rem;" data-i18n="shipping.exclusions">Les articles soldés à -50% ou plus, les sous-vêtements et les cadeaux personnalisés ne sont pas repris pour des raisons d'hygiène.</p>
     </div>
   </section>
 

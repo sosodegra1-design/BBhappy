@@ -1,0 +1,16 @@
+{
+  "name": "bbhappy",
+  "version": "1.0.0",
+  "description": "BBHappY e-commerce site with a small Express + SQLite backend for the cart, favorites, loyalty points and checkout.",
+  "private": true,
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
