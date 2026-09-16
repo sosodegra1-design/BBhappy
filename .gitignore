@@ -1,2 +1,5 @@
 node_modules/
 server/bbhappy.sqlite
+server/bbhappy.db
+server/bbhappy.db-*
+.env
