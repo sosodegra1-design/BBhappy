@@ -33,7 +33,11 @@ const ICONS = {
   calecon: `<svg viewBox="0 0 100 100"><path d="M20 14h60l4 20-4 4v10l14 38a6 6 0 0 1-6 8H62a6 6 0 0 1-6-5l-6-30-6 30a6 6 0 0 1-6 5H16a6 6 0 0 1-6-8l14-38V38l-4-4z" fill="#fff"/></svg>`,
   robe: `<svg viewBox="0 0 100 100"><path d="M40 8h20l6 16-8 6v4l20 48a6 6 0 0 1-6 8H28a6 6 0 0 1-6-8l20-48v-4l-8-6z" fill="#fff"/><circle cx="50" cy="20" r="6" fill="#fff" opacity=".7"/></svg>`,
   chaussuresville: `<svg viewBox="0 0 100 100"><path d="M8 66c0-8 8-12 16-12l8-20 14 2 4 14 30 6c8 2 12 6 12 12v8a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4z" fill="#fff"/><path d="M32 34l14 2 2 8-16-2z" fill="#fff" opacity=".6"/></svg>`,
-  dessous: `<svg viewBox="0 0 100 100"><path d="M20 30c0-10 8-18 18-18 8 0 14 5 17 12 3-7 9-12 17-12 10 0 18 8 18 18 0 14-14 22-35 40C35 52 20 44 20 30z" fill="#fff"/></svg>`
+  dessous: `<svg viewBox="0 0 100 100"><path d="M20 30c0-10 8-18 18-18 8 0 14 5 17 12 3-7 9-12 17-12 10 0 18 8 18 18 0 14-14 22-35 40C35 52 20 44 20 30z" fill="#fff"/></svg>`,
+  boitekraft: `<svg viewBox="0 0 100 100"><path d="M10 30 50 12 90 30 50 48 10 30Z" fill="#fff"/><path d="M10 30v40l40 18 40-18V30" fill="#fff" opacity=".85"/><line x1="50" y1="48" x2="50" y2="88" stroke="#4a4358" stroke-width="2" opacity=".2"/></svg>`,
+  boitefenetre: `<svg viewBox="0 0 100 100"><path d="M10 30 50 12 90 30 50 48 10 30Z" fill="#fff"/><path d="M10 30v40l40 18 40-18V30" fill="#fff" opacity=".85"/><rect x="38" y="55" width="24" height="24" rx="3" fill="#4a4358" opacity=".18"/></svg>`,
+  boitelogo: `<svg viewBox="0 0 100 100"><path d="M10 30 50 12 90 30 50 48 10 30Z" fill="#fff"/><path d="M10 30v40l40 18 40-18V30" fill="#fff" opacity=".85"/><circle cx="50" cy="65" r="10" fill="#4a4358" opacity=".2"/><path d="M46 65l3 3 6-6" stroke="#4a4358" stroke-width="2" fill="none" opacity=".5"/></svg>`,
+  boitecadeau: `<svg viewBox="0 0 100 100"><rect x="15" y="40" width="70" height="45" rx="3" fill="#fff"/><rect x="15" y="28" width="70" height="16" rx="3" fill="#fff" opacity=".9"/><rect x="44" y="28" width="12" height="57" fill="#4a4358" opacity=".2"/><path d="M40 28c-6-10 6-16 10-6 4-10 16-4 10 6" fill="none" stroke="#4a4358" stroke-width="2" opacity=".3"/></svg>`
 };
 // Icons are purely decorative (the product name already conveys the product); hide them from assistive tech.
 Object.keys(ICONS).forEach(key => {
@@ -782,6 +786,93 @@ const PRODUCTS = [
     care_en: 'Machine wash at 30°C, delicate cycle.',
     sizeGuide: [ ['Taille'], ['S'], ['M'], ['L'], ['XL'] ],
     sizeGuide_en: [ ['Size'], ['S'], ['M'], ['L'], ['XL'] ]
+  },
+
+  /* ===== BOX — EMBALLAGES & BOÎTES CARTON ===== */
+  {
+    id: 'bx1', category: 'box', universe: null, age: 'all',
+    price: 12.9, oldPrice: null, icon: ICONS.boitefenetre, bg: '#f2ead6',
+    colors: ['#c68642', '#ffffff'], sale: false, lot: 10,
+    name: 'Boîte pâtisserie kraft fenêtre (lot de 10)', name_en: 'Kraft Window Pastry Box (Pack of 10)',
+    ageLabel: 'Particuliers', ageLabel_en: 'Individuals',
+    description: 'Boîte pâtissière en carton kraft avec fenêtre transparente, idéale pour présenter et transporter gâteaux, viennoiseries et pâtisseries maison.',
+    description_en: 'Kraft cardboard pastry box with a clear window, perfect for presenting and carrying homemade cakes, pastries and viennoiseries.',
+    ecoDetails: 'Carton kraft recyclable et biodégradable, fenêtre en PLA d\'origine végétale.',
+    ecoDetails_en: 'Recyclable, biodegradable kraft cardboard, plant-based PLA window.',
+    safety: 'Carton alimentaire conforme aux normes de contact alimentaire en vigueur.',
+    safety_en: 'Food-grade cardboard, compliant with current food contact standards.',
+    care: 'À usage unique. Se plie à plat pour le stockage avant montage.',
+    care_en: 'Single use. Folds flat for storage before assembly.',
+    sizeGuide: [ ['Format', 'Dimensions'], ['Standard', '20 x 20 x 10 cm'] ],
+    sizeGuide_en: [ ['Format', 'Dimensions'], ['Standard', '20 x 20 x 10 cm'] ]
+  },
+  {
+    id: 'bx2', category: 'box', universe: null, age: 'all',
+    price: 9.9, oldPrice: null, icon: ICONS.boitekraft, bg: '#f2ead6',
+    colors: ['#c68642', '#2b2620'], sale: false, lot: 25,
+    name: 'Boîte snack carton kraft (lot de 25)', name_en: 'Kraft Cardboard Snack Box (Pack of 25)',
+    ageLabel: 'Particuliers', ageLabel_en: 'Individuals',
+    description: 'Petites boîtes carton kraft pour snacks, goûters et en-cas, pratiques pour un usage à la maison ou lors d\'événements entre particuliers.',
+    description_en: 'Small kraft cardboard boxes for snacks and treats, handy for home use or events between individuals.',
+    ecoDetails: 'Carton kraft recyclable, sans plastique.',
+    ecoDetails_en: 'Recyclable kraft cardboard, plastic-free.',
+    safety: 'Carton alimentaire conforme aux normes de contact alimentaire en vigueur.',
+    safety_en: 'Food-grade cardboard, compliant with current food contact standards.',
+    care: 'À usage unique. Se plie à plat pour le stockage avant montage.',
+    care_en: 'Single use. Folds flat for storage before assembly.',
+    sizeGuide: [ ['Format', 'Dimensions'], ['Standard', '12 x 8 x 6 cm'] ],
+    sizeGuide_en: [ ['Format', 'Dimensions'], ['Standard', '12 x 8 x 6 cm'] ]
+  },
+  {
+    id: 'bx3', category: 'box', universe: null, age: 'all',
+    price: 34.9, oldPrice: null, icon: ICONS.boitelogo, bg: '#f2ead6',
+    colors: ['#c68642', '#2b2620', '#ffffff'], sale: false, lot: 50,
+    name: 'Boîte carton personnalisable avec logo (lot de 50)', name_en: 'Custom Logo Cardboard Box (Pack of 50)',
+    ageLabel: 'Petites entreprises', ageLabel_en: 'Small businesses',
+    description: 'Boîte en carton ondulé personnalisable avec votre logo, pensée pour les petites entreprises et artisans qui veulent une présentation soignée à petite échelle.',
+    description_en: 'Corrugated cardboard box customizable with your logo, designed for small businesses and makers who want a polished presentation at small scale.',
+    ecoDetails: 'Carton ondulé recyclable, encres d\'impression à faible impact.',
+    ecoDetails_en: 'Recyclable corrugated cardboard, low-impact printing inks.',
+    safety: 'Carton alimentaire conforme aux normes de contact alimentaire en vigueur.',
+    safety_en: 'Food-grade cardboard, compliant with current food contact standards.',
+    care: 'À usage unique. Délai de personnalisation : 5 à 7 jours ouvrés.',
+    care_en: 'Single use. Customization lead time: 5 to 7 business days.',
+    sizeGuide: [ ['Format', 'Dimensions'], ['Standard', '25 x 18 x 10 cm'] ],
+    sizeGuide_en: [ ['Format', 'Dimensions'], ['Standard', '25 x 18 x 10 cm'] ]
+  },
+  {
+    id: 'bx4', category: 'box', universe: null, age: 'all',
+    price: 99.9, oldPrice: 119.9, icon: ICONS.boitelogo, bg: '#f2ead6',
+    colors: ['#c68642', '#2b2620', '#ffffff'], sale: true, lot: 200,
+    name: 'Boîte carton personnalisable avec logo — pack pro (lot de 200)', name_en: 'Custom Logo Cardboard Box — Pro Pack (Pack of 200)',
+    ageLabel: 'Petites entreprises', ageLabel_en: 'Small businesses',
+    description: 'Le même carton personnalisable avec logo, en grand volume pour les petites entreprises qui commandent régulièrement, à prix dégressif.',
+    description_en: 'The same custom logo cardboard box, in bulk for small businesses that order regularly, at a reduced per-unit price.',
+    ecoDetails: 'Carton ondulé recyclable, encres d\'impression à faible impact.',
+    ecoDetails_en: 'Recyclable corrugated cardboard, low-impact printing inks.',
+    safety: 'Carton alimentaire conforme aux normes de contact alimentaire en vigueur.',
+    safety_en: 'Food-grade cardboard, compliant with current food contact standards.',
+    care: 'À usage unique. Délai de personnalisation : 5 à 7 jours ouvrés.',
+    care_en: 'Single use. Customization lead time: 5 to 7 business days.',
+    sizeGuide: [ ['Format', 'Dimensions'], ['Standard', '25 x 18 x 10 cm'] ],
+    sizeGuide_en: [ ['Format', 'Dimensions'], ['Standard', '25 x 18 x 10 cm'] ]
+  },
+  {
+    id: 'bx5', category: 'box', universe: null, age: 'all',
+    price: 14.9, oldPrice: null, icon: ICONS.boitecadeau, bg: '#f2ead6',
+    colors: ['#c68642', '#8a6a1f', '#ffffff'], sale: false, lot: 5,
+    name: 'Boîte cadeau carton rigide (lot de 5)', name_en: 'Rigid Cardboard Gift Box (Pack of 5)',
+    ageLabel: 'Particuliers', ageLabel_en: 'Individuals',
+    description: 'Boîte cadeau en carton rigide avec couvercle, pour emballer soigneusement un présent ou une préparation maison à offrir.',
+    description_en: 'Rigid cardboard gift box with lid, for neatly wrapping a present or a homemade treat to give.',
+    ecoDetails: 'Carton rigide recyclable, sans plastique.',
+    ecoDetails_en: 'Recyclable rigid cardboard, plastic-free.',
+    safety: 'Conforme aux normes en vigueur pour l\'emballage.',
+    safety_en: 'Complies with current packaging standards.',
+    care: 'Réutilisable plusieurs fois si manipulée avec soin.',
+    care_en: 'Reusable several times if handled with care.',
+    sizeGuide: [ ['Format', 'Dimensions'], ['Standard', '18 x 18 x 8 cm'] ],
+    sizeGuide_en: [ ['Format', 'Dimensions'], ['Standard', '18 x 18 x 8 cm'] ]
   }
 ];
 

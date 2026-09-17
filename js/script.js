@@ -70,6 +70,7 @@ const TRANSLATIONS = {
   fr: {
     'topbar.text': '🚚 Livraison offerte dès 20€ d\'achat &nbsp;•&nbsp; ✨ -20% sur les soldes avec le code SOLEIL',
     'nav.home': 'Accueil', 'nav.toys': 'Jouets', 'nav.clothing': 'Vêtements', 'nav.brands': 'Marques', 'nav.sales': 'Soldes 🔥',
+    'nav.box': 'Box 📦', 'nav.box2': 'Box',
     'nav.categories': 'Catégories ▾', 'nav.tech': 'Électronique', 'nav.home2': 'Maison &amp; Déco',
     'nav.beauty': 'Beauté', 'nav.sport': 'Sport &amp; Loisirs',
     'mega.kids': 'Enfants', 'mega.home': 'Maison &amp; Bien-être', 'mega.techsport': 'Tech &amp; Sport',
@@ -81,6 +82,8 @@ const TRANSLATIONS = {
     'beaute.hero.desc': 'Des soins et cosmétiques formulés avec des ingrédients naturels, pour prendre soin de vous chaque jour.',
     'sport.hero.title': 'L\'univers Sport &amp; Loisirs',
     'sport.hero.desc': 'Du matériel simple et durable pour bouger à la maison ou en extérieur, à tout âge et à tout niveau.',
+    'box.hero.title': 'Box — Emballages &amp; boîtes carton',
+    'box.hero.desc': 'Des boîtes en carton pensées pour les snacks et pâtisseries, en petites ou grandes quantités, pour les particuliers comme pour les petites entreprises.',
     'search.placeholder': 'Rechercher un jouet, un vêtement...',
     'hero.tag': '✨ Sélection premium',
     'hero.title': 'L\'exigence au service<br>de votre <span class="highlight">quotidien</span>',
@@ -205,6 +208,7 @@ const TRANSLATIONS = {
   en: {
     'topbar.text': '🚚 Free delivery from €20 &nbsp;•&nbsp; ✨ -20% on sale items with code SOLEIL',
     'nav.home': 'Home', 'nav.toys': 'Toys', 'nav.clothing': 'Clothing', 'nav.brands': 'Brands', 'nav.sales': 'Sale 🔥',
+    'nav.box': 'Box 📦', 'nav.box2': 'Box',
     'nav.categories': 'Categories ▾', 'nav.tech': 'Electronics', 'nav.home2': 'Home &amp; Decor',
     'nav.beauty': 'Beauty', 'nav.sport': 'Sport &amp; Leisure',
     'mega.kids': 'Kids', 'mega.home': 'Home &amp; Wellness', 'mega.techsport': 'Tech &amp; Sport',
@@ -216,6 +220,8 @@ const TRANSLATIONS = {
     'beaute.hero.desc': 'Skincare and cosmetics formulated with natural ingredients, to take care of you every day.',
     'sport.hero.title': 'The Sport &amp; Leisure universe',
     'sport.hero.desc': 'Simple, durable gear to stay active at home or outdoors, at any age and any level.',
+    'box.hero.title': 'Box — Packaging &amp; cardboard boxes',
+    'box.hero.desc': 'Cardboard boxes designed for snacks and pastries, in small or large quantities, for individuals and small businesses alike.',
     'search.placeholder': 'Search for a toy, an outfit...',
     'hero.tag': '✨ Premium selection',
     'hero.title': 'Excellence at the service<br>of your <span class="highlight">everyday</span>',
