@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jouets — BBVOLTEX</title>
-<meta name="description" content="Découvrez notre univers Jouets : jouets éducatifs en bois, peluches et jeux de plein air, sélectionnés pour leur qualité et leur sécurité.">
+<title>Guide des tailles — BBVOLTEX</title>
+<meta name="description" content="Guide des tailles BBVOLTEX : vêtements homme, femme, enfant et chaussures, pour trouver la taille idéale à chaque commande.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
 </head>
-<body data-category="jouets">
+<body>
 <a href="#main-content" class="skip-link">Aller au contenu principal</a>
 
 <!-- ===== HEADER ===== -->
@@ -35,7 +35,7 @@
     <nav class="main-nav" id="mainNav">
       <a href="index.html" class="nav-link" data-i18n="nav.home">Accueil</a>
       <div class="nav-item">
-        <button class="nav-link active" aria-haspopup="true" data-i18n="nav.categories">Catégories ▾</button>
+        <button class="nav-link" aria-haspopup="true" data-i18n="nav.categories">Catégories ▾</button>
         <div class="mega-menu">
           <div class="mega-menu-col">
             <h5 data-i18n="mega.kids">Enfants</h5>
@@ -93,47 +93,93 @@
 
 <main id="main-content">
 
-  <section class="page-hero" style="background:linear-gradient(180deg,#e3f7ec,var(--bg));">
+  <section class="page-hero" style="background:linear-gradient(180deg,#e8f0ff,var(--bg));">
     <div class="container page-hero-inner">
-      <p class="breadcrumb"><a href="index.html" data-i18n="breadcrumb.home">Accueil</a> / <span data-i18n="nav.toys">Jouets</span></p>
-      <span class="page-hero-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="9" width="18" height="11" rx="1"/><path d="M3 9h18M12 9v11M7.5 9C6 9 5 7.8 5 6.5S6 4 7.5 4C10 4 12 6.5 12 9M16.5 9C18 9 19 7.8 19 6.5S18 4 16.5 4C14 4 12 6.5 12 9"/></svg></span>
-      <h1 data-i18n="jouets.hero.title">L'univers Jouets</h1>
-      <p data-i18n="jouets.hero.desc">Des jouets conçus pour durer et éveiller la curiosité : matériaux nobles, finitions soignées et sécurité irréprochable, à chaque âge.</p>
+      <p class="breadcrumb"><a href="index.html" data-i18n="breadcrumb.home">Accueil</a> / <span data-i18n="footer.sizeguide">Guide des tailles</span></p>
+      <span class="page-hero-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h16"/><circle cx="18" cy="12" r="2"/></svg></span>
+      <h1 data-i18n="sizeguide.hero.title">Guide des tailles</h1>
+      <p data-i18n="sizeguide.hero.desc">Trouvez la taille idéale pour vos vêtements et chaussures, à chaque commande.</p>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <h3 class="sub-title" data-i18n="sub.byuniverse2">Filtrer par univers</h3>
-      <div class="category-grid">
-        <button class="category-card" data-filter-universe="fille">
-          <span class="cat-icon" style="background:#fbe4ec; font-size:30px; line-height:1;" aria-hidden="true">👧</span>
-          <h4 data-i18n="uni.fille.title">Fille</h4>
-          <p data-i18n="uni.fille.desc">Univers doux et créatif</p>
-        </button>
-        <button class="category-card" data-filter-universe="garcon">
-          <span class="cat-icon" style="background:#e2edf7; font-size:30px; line-height:1;" aria-hidden="true">👦</span>
-          <h4 data-i18n="uni.garcon.title">Garçon</h4>
-          <p data-i18n="uni.garcon.desc">Univers action et découverte</p>
-        </button>
-        <button class="category-card" data-filter-universe="bebe">
-          <span class="cat-icon" style="background:#f5ecd3; font-size:30px; line-height:1;" aria-hidden="true">👶</span>
-          <h4 data-i18n="uni.bebe.title">Bébé</h4>
-          <p data-i18n="uni.bebe.desc">Premiers éveils en douceur</p>
-        </button>
-        <button class="category-card" data-filter-universe="plein-air">
-          <span class="cat-icon" style="background:#e3f3e8; font-size:30px; line-height:1;" aria-hidden="true">🛝</span>
-          <h4 data-i18n="uni.pleinair.title">Plein air</h4>
-          <p data-i18n="uni.pleinair.desc">Aventures en extérieur</p>
-        </button>
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="sizeguide.adult.eyebrow">Homme &amp; Femme</span>
+        <h2 data-i18n="sizeguide.adult.title">Vêtements adulte</h2>
+        <p data-i18n="sizeguide.adult.desc">Mesures données à titre indicatif, en centimètres. En cas de doute entre deux tailles, préférez la taille supérieure.</p>
       </div>
+      <table class="loyalty-tiers-table">
+        <thead>
+          <tr>
+            <th data-i18n="sizeguide.col.size">Taille</th>
+            <th data-i18n="sizeguide.col.chestWomen">Tour de poitrine (Femme)</th>
+            <th data-i18n="sizeguide.col.chestMen">Tour de poitrine (Homme)</th>
+            <th data-i18n="sizeguide.col.waist">Tour de taille</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>S</td><td>84–88 cm</td><td>92–96 cm</td><td>64–68 cm</td></tr>
+          <tr><td>M</td><td>88–92 cm</td><td>96–100 cm</td><td>68–72 cm</td></tr>
+          <tr><td>L</td><td>92–96 cm</td><td>100–104 cm</td><td>72–76 cm</td></tr>
+          <tr><td>XL</td><td>96–100 cm</td><td>104–110 cm</td><td>76–80 cm</td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
 
-  <section class="section section-alt" id="produits">
+  <section class="section section-alt">
     <div class="container">
-      <div class="product-grid" id="productGrid"></div>
-      <p class="empty-state" id="emptyState" hidden data-i18n="empty.state">Aucun produit ne correspond à votre recherche 🧐 Essayez un autre filtre !</p>
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="sizeguide.kids.eyebrow">Enfant</span>
+        <h2 data-i18n="sizeguide.kids.title">Vêtements enfant</h2>
+        <p data-i18n="sizeguide.kids.desc">Les tailles enfant sont indiquées par âge et par hauteur, pour un ajustement au plus près de la croissance.</p>
+      </div>
+      <table class="loyalty-tiers-table">
+        <thead>
+          <tr>
+            <th data-i18n="sizeguide.col.size">Taille</th>
+            <th data-i18n="sizeguide.col.age">Âge</th>
+            <th data-i18n="sizeguide.col.height">Hauteur</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>50</td><td data-i18n="sizeguide.age.0-1m">0–1 mois</td><td>50 cm</td></tr>
+          <tr><td>62</td><td data-i18n="sizeguide.age.2-3m">2–3 mois</td><td>62 cm</td></tr>
+          <tr><td>74</td><td data-i18n="sizeguide.age.6-9m">6–9 mois</td><td>74 cm</td></tr>
+          <tr><td>86–104</td><td data-i18n="sizeguide.age.1-4a">1–4 ans</td><td>86–104 cm</td></tr>
+          <tr><td>116–140</td><td data-i18n="sizeguide.age.5-10a">5–10 ans</td><td>116–140 cm</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="sizeguide.shoes.eyebrow">Chaussures</span>
+        <h2 data-i18n="sizeguide.shoes.title">Pointures</h2>
+        <p data-i18n="sizeguide.shoes.desc">Mesurez la longueur du pied en fin de journée, pieds légèrement écartés, pour plus de précision.</p>
+      </div>
+      <table class="loyalty-tiers-table">
+        <thead>
+          <tr>
+            <th data-i18n="sizeguide.col.eu">Pointure EU</th>
+            <th data-i18n="sizeguide.col.footlength">Longueur du pied</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>37</td><td>23,5 cm</td></tr>
+          <tr><td>38</td><td>24,2 cm</td></tr>
+          <tr><td>39</td><td>24,8 cm</td></tr>
+          <tr><td>40</td><td>25,5 cm</td></tr>
+          <tr><td>41</td><td>26,0 cm</td></tr>
+          <tr><td>42</td><td>26,7 cm</td></tr>
+          <tr><td>43</td><td>27,3 cm</td></tr>
+          <tr><td>44</td><td>28,0 cm</td></tr>
+        </tbody>
+      </table>
+      <p style="text-align:center; margin-top:24px; font-size:.85rem;" data-i18n="sizeguide.help">Un doute sur votre taille ? <a href="mailto:bbvoltex@gmail.com">Contactez-nous</a>, nous vous aidons à choisir.</p>
     </div>
   </section>
 

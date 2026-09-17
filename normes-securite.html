@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jouets — BBVOLTEX</title>
-<meta name="description" content="Découvrez notre univers Jouets : jouets éducatifs en bois, peluches et jeux de plein air, sélectionnés pour leur qualité et leur sécurité.">
+<title>Normes de sécurité — BBVOLTEX</title>
+<meta name="description" content="Les normes de sécurité appliquées par BBVOLTEX selon les catégories : jouets, textile, alimentaire et électronique.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
 </head>
-<body data-category="jouets">
+<body>
 <a href="#main-content" class="skip-link">Aller au contenu principal</a>
 
 <!-- ===== HEADER ===== -->
@@ -35,7 +35,7 @@
     <nav class="main-nav" id="mainNav">
       <a href="index.html" class="nav-link" data-i18n="nav.home">Accueil</a>
       <div class="nav-item">
-        <button class="nav-link active" aria-haspopup="true" data-i18n="nav.categories">Catégories ▾</button>
+        <button class="nav-link" aria-haspopup="true" data-i18n="nav.categories">Catégories ▾</button>
         <div class="mega-menu">
           <div class="mega-menu-col">
             <h5 data-i18n="mega.kids">Enfants</h5>
@@ -93,47 +93,39 @@
 
 <main id="main-content">
 
-  <section class="page-hero" style="background:linear-gradient(180deg,#e3f7ec,var(--bg));">
+  <section class="page-hero" style="background:linear-gradient(180deg,#e8f0ff,var(--bg));">
     <div class="container page-hero-inner">
-      <p class="breadcrumb"><a href="index.html" data-i18n="breadcrumb.home">Accueil</a> / <span data-i18n="nav.toys">Jouets</span></p>
-      <span class="page-hero-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="9" width="18" height="11" rx="1"/><path d="M3 9h18M12 9v11M7.5 9C6 9 5 7.8 5 6.5S6 4 7.5 4C10 4 12 6.5 12 9M16.5 9C18 9 19 7.8 19 6.5S18 4 16.5 4C14 4 12 6.5 12 9"/></svg></span>
-      <h1 data-i18n="jouets.hero.title">L'univers Jouets</h1>
-      <p data-i18n="jouets.hero.desc">Des jouets conçus pour durer et éveiller la curiosité : matériaux nobles, finitions soignées et sécurité irréprochable, à chaque âge.</p>
+      <p class="breadcrumb"><a href="index.html" data-i18n="breadcrumb.home">Accueil</a> / <span data-i18n="footer.safety">Normes de sécurité</span></p>
+      <span class="page-hero-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 3.4 8.5 8 9 4.6-.5 8-4 8-9V6Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+      <h1 data-i18n="securite.hero.title">Normes de sécurité</h1>
+      <p data-i18n="securite.hero.desc">Chaque catégorie répond à des exigences de sécurité vérifiées avant sa mise en vente.</p>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <h3 class="sub-title" data-i18n="sub.byuniverse2">Filtrer par univers</h3>
-      <div class="category-grid">
-        <button class="category-card" data-filter-universe="fille">
-          <span class="cat-icon" style="background:#fbe4ec; font-size:30px; line-height:1;" aria-hidden="true">👧</span>
-          <h4 data-i18n="uni.fille.title">Fille</h4>
-          <p data-i18n="uni.fille.desc">Univers doux et créatif</p>
-        </button>
-        <button class="category-card" data-filter-universe="garcon">
-          <span class="cat-icon" style="background:#e2edf7; font-size:30px; line-height:1;" aria-hidden="true">👦</span>
-          <h4 data-i18n="uni.garcon.title">Garçon</h4>
-          <p data-i18n="uni.garcon.desc">Univers action et découverte</p>
-        </button>
-        <button class="category-card" data-filter-universe="bebe">
-          <span class="cat-icon" style="background:#f5ecd3; font-size:30px; line-height:1;" aria-hidden="true">👶</span>
-          <h4 data-i18n="uni.bebe.title">Bébé</h4>
-          <p data-i18n="uni.bebe.desc">Premiers éveils en douceur</p>
-        </button>
-        <button class="category-card" data-filter-universe="plein-air">
-          <span class="cat-icon" style="background:#e3f3e8; font-size:30px; line-height:1;" aria-hidden="true">🛝</span>
-          <h4 data-i18n="uni.pleinair.title">Plein air</h4>
-          <p data-i18n="uni.pleinair.desc">Aventures en extérieur</p>
-        </button>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary data-i18n="securite.q1">Jouets</summary>
+          <p data-i18n="securite.a1">Nos jouets sont conformes au marquage CE et à la norme européenne EN71, avec des pièces adaptées à l'âge indiqué pour éviter tout risque d'ingestion ou d'étouffement.</p>
+        </details>
+        <details class="faq-item">
+          <summary data-i18n="securite.q2">Vêtements &amp; textile</summary>
+          <p data-i18n="securite.a2">Nos textiles respectent les normes de sécurité CE pour le textile : absence de cordons dangereux, boutons-pression sans nickel, coutures contrôlées.</p>
+        </details>
+        <details class="faq-item">
+          <summary data-i18n="securite.q3">Box &amp; emballages alimentaires</summary>
+          <p data-i18n="securite.a3">Les boîtes en carton de la rubrique Box sont fabriquées avec des matériaux conformes aux normes de contact alimentaire en vigueur.</p>
+        </details>
+        <details class="faq-item">
+          <summary data-i18n="securite.q4">Électronique</summary>
+          <p data-i18n="securite.a4">Nos produits électroniques sont conformes au marquage CE et aux exigences européennes en matière de compatibilité électromagnétique et de restriction des substances dangereuses.</p>
+        </details>
+        <details class="faq-item">
+          <summary data-i18n="securite.q5">Contrôle qualité</summary>
+          <p data-i18n="securite.a5">Chaque nouveau produit est vérifié avant sa mise en ligne : documentation de conformité, matériaux et finitions sont passés en revue avant d'intégrer le catalogue.</p>
+        </details>
       </div>
-    </div>
-  </section>
-
-  <section class="section section-alt" id="produits">
-    <div class="container">
-      <div class="product-grid" id="productGrid"></div>
-      <p class="empty-state" id="emptyState" hidden data-i18n="empty.state">Aucun produit ne correspond à votre recherche 🧐 Essayez un autre filtre !</p>
     </div>
   </section>
 
