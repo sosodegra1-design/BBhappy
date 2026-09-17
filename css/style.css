@@ -615,6 +615,8 @@ ul { list-style: none; margin: 0; padding: 0; }
 /* ===================== TRUST ===================== */
 .trust-section { background: linear-gradient(135deg, var(--surface), var(--bg-alt) 120%); }
 .trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.trust-grid-3 { grid-template-columns: repeat(3, 1fr); max-width: 780px; margin: 0 auto; }
+@media (max-width: 640px) { .trust-grid-3 { grid-template-columns: 1fr; } }
 .trust-item { text-align: center; padding: 10px; }
 .trust-icon { font-size: 2.6rem; display: block; margin-bottom: 10px; }
 .trust-item h4 { font-size: 1.05rem; margin-bottom: 4px; color: var(--gold-deep); }
