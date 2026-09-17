@@ -440,6 +440,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 /* Filter chips */
 .filter-chips { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 36px; }
+.filter-chips[hidden] { display: none; }
 .chip {
   padding: 10px 22px;
   border-radius: 999px;

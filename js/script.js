@@ -87,6 +87,9 @@ const TRANSLATIONS = {
     'uni.chaussures.title': 'Chaussures', 'uni.chaussures.desc': 'Confort à chaque pas',
     'products.eyebrow': 'Coups de cœur', 'products.title': 'Produits vedettes',
     'products.desc': 'Une sélection pensée avec amour pour petits explorateurs.',
+    'search.eyebrow': 'Résultats de recherche',
+    'search.resultsFor': 'Résultats pour « %s »',
+    'search.resultsDesc': '%s produit(s) trouvé(s) dans tout le catalogue.',
     'chip.all': 'Tout voir', 'chip.toys': 'Jouets', 'chip.clothing': 'Vêtements', 'chip.sales': 'Soldes 🔥',
     'empty.state': 'Aucun produit ne correspond à votre recherche 🧐 Essayez un autre filtre !',
     'trust.delivery.title': 'Livraison rapide', 'trust.delivery.desc': 'Expédié en 24h, chez vous en 2 à 4 jours',
@@ -195,6 +198,9 @@ const TRANSLATIONS = {
     'uni.chaussures.title': 'Shoes', 'uni.chaussures.desc': 'Comfort with every step',
     'products.eyebrow': 'Favorites', 'products.title': 'Featured products',
     'products.desc': 'A selection made with love for little explorers.',
+    'search.eyebrow': 'Search results',
+    'search.resultsFor': 'Results for "%s"',
+    'search.resultsDesc': '%s product(s) found across the whole catalog.',
     'chip.all': 'View all', 'chip.toys': 'Toys', 'chip.clothing': 'Clothing', 'chip.sales': 'Sale 🔥',
     'empty.state': 'No products match your search 🧐 Try a different filter!',
     'trust.delivery.title': 'Fast delivery', 'trust.delivery.desc': 'Shipped within 24h, delivered in 2-4 days',
@@ -293,7 +299,7 @@ const state = {
   categoryFilter: document.body.dataset.category || 'all',
   ageFilter: null,
   universeFilter: new URLSearchParams(location.search).get('universe') || null,
-  searchTerm: '',
+  searchTerm: new URLSearchParams(location.search).get('q') || '',
   lang: localStorage.getItem('bbhappy_lang') || 'fr',
   cart: [],
   favorites: [],
@@ -317,12 +323,19 @@ function pf(p, field) {
 
 /* ===================== RENDER PRODUCTS ===================== */
 function getFilteredProducts() {
+  // A search term is a universal, cross-category lookup (like a marketplace
+  // search bar): it overrides the page's own category/age/universe filters
+  // instead of narrowing them further, so a search always finds a matching
+  // product regardless of which page or category it lives in.
+  if (state.searchTerm) {
+    const term = state.searchTerm.toLowerCase();
+    return PRODUCTS.filter(p => pf(p, 'name').toLowerCase().includes(term));
+  }
   return PRODUCTS.filter(p => {
     if (state.categoryFilter === 'soldes' && !p.sale) return false;
     if (state.categoryFilter !== 'all' && state.categoryFilter !== 'soldes' && p.category !== state.categoryFilter) return false;
     if (state.ageFilter && p.age !== state.ageFilter && p.age !== 'all') return false;
     if (state.universeFilter && p.universe !== state.universeFilter) return false;
-    if (state.searchTerm && !pf(p, 'name').toLowerCase().includes(state.searchTerm.toLowerCase())) return false;
     return true;
   });
 }
@@ -334,6 +347,26 @@ function renderProducts() {
   const list = getFilteredProducts();
   grid.innerHTML = '';
   if (empty) empty.hidden = list.length !== 0;
+
+  // Reflect the "universal search" state in the products section heading,
+  // and hide the category chips since a search overrides them anyway.
+  const eyebrow = document.getElementById('productsEyebrow');
+  const title = document.getElementById('productsTitle');
+  const desc = document.getElementById('productsDesc');
+  const chips = document.getElementById('filterChips');
+  if (title) {
+    if (state.searchTerm) {
+      if (eyebrow) eyebrow.textContent = t('search.eyebrow');
+      title.textContent = t('search.resultsFor').replace('%s', state.searchTerm);
+      if (desc) desc.textContent = t('search.resultsDesc').replace('%s', list.length);
+      if (chips) chips.hidden = true;
+    } else {
+      if (eyebrow) eyebrow.textContent = t('products.eyebrow');
+      title.textContent = t('products.title');
+      if (desc) desc.textContent = t('products.desc');
+      if (chips) chips.hidden = false;
+    }
+  }
 
   list.forEach(p => {
     const isFav = state.favorites.includes(p.id);
@@ -931,13 +964,33 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // Search
+  // Search — acts as a universal, cross-category search (like a marketplace
+  // search bar): typing live-filters when already on the homepage (where the
+  // full catalog is browsable), and submitting from any other page jumps to
+  // the homepage with the results, since that's the only page whose product
+  // grid is meant to show items from every category at once.
+  const isHome = document.getElementById('productGrid') && document.getElementById('filterChips');
   const doSearch = (val) => {
     state.searchTerm = val;
     renderProducts();
   };
-  document.getElementById('searchInput').addEventListener('input', (e) => doSearch(e.target.value));
-  document.getElementById('searchInputMobile').addEventListener('input', (e) => doSearch(e.target.value));
+  const goToSearchResults = (val) => {
+    if (!val.trim()) return;
+    window.location.href = 'index.html?q=' + encodeURIComponent(val.trim());
+  };
+  [document.getElementById('searchInput'), document.getElementById('searchInputMobile')].forEach(input => {
+    if (!input) return;
+    input.value = state.searchTerm;
+    input.addEventListener('input', (e) => {
+      if (isHome) doSearch(e.target.value);
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); goToSearchResults(e.target.value); }
+    });
+  });
+  document.querySelector('.search-bar button')?.addEventListener('click', () => {
+    goToSearchResults(document.getElementById('searchInput').value);
+  });
 
   document.getElementById('searchToggle').addEventListener('click', () => {
     document.getElementById('searchBarMobile').classList.toggle('open');
