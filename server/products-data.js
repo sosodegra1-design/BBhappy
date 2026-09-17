@@ -37,7 +37,7 @@ function colorName(hex) {
 const PRODUCTS = [
   {
     id: 'p1', category: 'jouets', universe: 'educatif', age: '0-2',
-    price: 29.9, oldPrice: null, icon: ICONS.camion, bg: '#c7f0db',
+    price: 29.9, oldPrice: null, icon: ICONS.camion, bg: '#f2ead6',
     colors: ['#a8e6cf', '#ffe066', '#ffcab1'], sale: false,
     name: 'Camion en bois éducatif', name_en: 'Educational Wooden Truck',
     ageLabel: '0-2 ans', ageLabel_en: '0-2 years',
@@ -54,7 +54,7 @@ const PRODUCTS = [
   },
   {
     id: 'p2', category: 'jouets', universe: 'educatif', age: '0-2',
-    price: 19.9, oldPrice: 24.9, icon: ICONS.peluche, bg: '#ffe6a7',
+    price: 19.9, oldPrice: 24.9, icon: ICONS.peluche, bg: '#f2ead6',
     colors: ['#ffffff', '#ffcab1', '#a8e6cf'], sale: true,
     name: 'Peluche câline "Nuage"', name_en: 'Cuddly Plush "Cloud"',
     ageLabel: '0-2 ans', ageLabel_en: '0-2 years',
@@ -71,7 +71,7 @@ const PRODUCTS = [
   },
   {
     id: 'p3', category: 'vetements', universe: 'coton-bio', age: '0-2',
-    price: 14.9, oldPrice: null, icon: ICONS.body, bg: '#ffd6c9',
+    price: 14.9, oldPrice: null, icon: ICONS.body, bg: '#f2ead6',
     colors: ['#ffffff', '#ffe066', '#a8e6cf', '#ffcab1'], sale: false,
     name: 'Body manches longues bio', name_en: 'Organic Long-Sleeve Bodysuit',
     ageLabel: '0-2 ans', ageLabel_en: '0-2 years',
@@ -88,7 +88,7 @@ const PRODUCTS = [
   },
   {
     id: 'p4', category: 'vetements', universe: 'plein-air', age: '3-5',
-    price: 34.9, oldPrice: 39.9, icon: ICONS.cire, bg: '#ffe066',
+    price: 34.9, oldPrice: 39.9, icon: ICONS.cire, bg: '#f2ead6',
     colors: ['#ffe066', '#a8e6cf', '#ffcab1'], sale: true,
     name: 'Ciré de pluie jaune soleil', name_en: 'Sunshine Yellow Rain Coat',
     ageLabel: '3-5 ans', ageLabel_en: '3-5 years',
@@ -105,7 +105,7 @@ const PRODUCTS = [
   },
   {
     id: 'p5', category: 'jouets', universe: 'educatif', age: '3-5',
-    price: 16.9, oldPrice: null, icon: ICONS.puzzle, bg: '#c7f0db',
+    price: 16.9, oldPrice: null, icon: ICONS.puzzle, bg: '#f2ead6',
     colors: ['#a8e6cf', '#ffe066'], sale: false,
     name: 'Puzzle animaux de la forêt', name_en: 'Forest Animals Puzzle',
     ageLabel: '3-5 ans', ageLabel_en: '3-5 years',
@@ -122,7 +122,7 @@ const PRODUCTS = [
   },
   {
     id: 'p6', category: 'jouets', universe: 'plein-air', age: '6-12',
-    price: 22.9, oldPrice: null, icon: ICONS.cerfvolant, bg: '#d8e4ff',
+    price: 22.9, oldPrice: null, icon: ICONS.cerfvolant, bg: '#f2ead6',
     colors: ['#ffcab1', '#a8e6cf', '#ffe066'], sale: false,
     name: 'Cerf-volant arc-en-ciel', name_en: 'Rainbow Kite',
     ageLabel: '6-12 ans', ageLabel_en: '6-12 years',
@@ -139,7 +139,7 @@ const PRODUCTS = [
   },
   {
     id: 'p7', category: 'vetements', universe: 'chaussures', age: '3-5',
-    price: 27.9, oldPrice: 32.9, icon: ICONS.baskets, bg: '#d8e4ff',
+    price: 27.9, oldPrice: 32.9, icon: ICONS.baskets, bg: '#f2ead6',
     colors: ['#ffffff', '#a8e6cf', '#ffcab1'], sale: true,
     name: 'Baskets confort coton', name_en: 'Comfort Cotton Sneakers',
     ageLabel: '3-5 ans', ageLabel_en: '3-5 years',
@@ -156,7 +156,7 @@ const PRODUCTS = [
   },
   {
     id: 'p8', category: 'jouets', universe: 'educatif', age: '6-12',
-    price: 24.9, oldPrice: null, icon: ICONS.robot, bg: '#c7f0db',
+    price: 24.9, oldPrice: null, icon: ICONS.robot, bg: '#f2ead6',
     colors: ['#a8e6cf', '#ffe066', '#ffcab1'], sale: false,
     name: 'Robot à construire en bois', name_en: 'Wooden Build-Your-Own Robot',
     ageLabel: '6-12 ans', ageLabel_en: '6-12 years',
@@ -173,7 +173,7 @@ const PRODUCTS = [
   },
   {
     id: 'p9', category: 'vetements', universe: 'coton-bio', age: '6-12',
-    price: 21.9, oldPrice: null, icon: ICONS.pull, bg: '#ffd6c9',
+    price: 21.9, oldPrice: null, icon: ICONS.pull, bg: '#f2ead6',
     colors: ['#ffcab1', '#a8e6cf', '#ffffff'], sale: false,
     name: 'Pull tricot col rond', name_en: 'Round-Neck Knit Sweater',
     ageLabel: '6-12 ans', ageLabel_en: '6-12 years',
@@ -190,7 +190,7 @@ const PRODUCTS = [
   },
   {
     id: 'p10', category: 'jouets', universe: 'plein-air', age: '3-5',
-    price: 44.9, oldPrice: 54.9, icon: ICONS.trottinette, bg: '#ffe6a7',
+    price: 44.9, oldPrice: 54.9, icon: ICONS.trottinette, bg: '#f2ead6',
     colors: ['#ffe066', '#ffcab1', '#a8e6cf'], sale: true,
     name: 'Trottinette pliable 3 roues', name_en: 'Foldable 3-Wheel Scooter',
     ageLabel: '3-5 ans', ageLabel_en: '3-5 years',
@@ -207,7 +207,7 @@ const PRODUCTS = [
   },
   {
     id: 'p11', category: 'jouets', universe: 'educatif', age: '0-2',
-    price: 12.9, oldPrice: null, icon: ICONS.lapin, bg: '#ffe6a7',
+    price: 12.9, oldPrice: null, icon: ICONS.lapin, bg: '#f2ead6',
     colors: ['#ffffff', '#ffcab1'], sale: false,
     name: 'Doudou lapin bio', name_en: 'Organic Bunny Comforter',
     ageLabel: '0-2 ans', ageLabel_en: '0-2 years',
@@ -224,7 +224,7 @@ const PRODUCTS = [
   },
   {
     id: 'p12', category: 'vetements', universe: 'coton-bio', age: '3-5',
-    price: 13.9, oldPrice: 17.9, icon: ICONS.legging, bg: '#ffd6c9',
+    price: 13.9, oldPrice: 17.9, icon: ICONS.legging, bg: '#f2ead6',
     colors: ['#a8e6cf', '#ffcab1', '#ffe066'], sale: true,
     name: 'Legging coton bio motifs', name_en: 'Organic Cotton Print Leggings',
     ageLabel: '3-5 ans', ageLabel_en: '3-5 years',
@@ -243,7 +243,7 @@ const PRODUCTS = [
   /* ---- Lots déstockage (clearance bundles) ---- */
   {
     id: 'l1', category: 'destockage', universe: null, age: 'all',
-    price: 34.9, oldPrice: 54.7, icon: ICONS.peluche, bg: '#ffe6a7',
+    price: 34.9, oldPrice: 54.7, icon: ICONS.peluche, bg: '#f2ead6',
     colors: ['#ffffff', '#ffcab1', '#a8e6cf'], sale: false, lot: true,
     name: 'Lot surprise 3 peluches', name_en: 'Surprise 3-Plush Bundle',
     ageLabel: 'Tous âges', ageLabel_en: 'All ages',
@@ -260,7 +260,7 @@ const PRODUCTS = [
   },
   {
     id: 'l2', category: 'destockage', universe: null, age: 'all',
-    price: 49.9, oldPrice: 74.5, icon: ICONS.body, bg: '#ffd6c9',
+    price: 49.9, oldPrice: 74.5, icon: ICONS.body, bg: '#f2ead6',
     colors: ['#ffffff', '#ffe066', '#a8e6cf', '#ffcab1'], sale: false, lot: true,
     name: 'Lot de 5 bodies bio', name_en: 'Bundle of 5 Organic Bodysuits',
     ageLabel: 'Tous âges', ageLabel_en: 'All ages',
@@ -277,7 +277,7 @@ const PRODUCTS = [
   },
   {
     id: 'l3', category: 'destockage', universe: null, age: 'all',
-    price: 59.9, oldPrice: 67.8, icon: ICONS.trottinette, bg: '#d8e4ff',
+    price: 59.9, oldPrice: 67.8, icon: ICONS.trottinette, bg: '#f2ead6',
     colors: ['#ffe066', '#ffcab1', '#a8e6cf'], sale: false, lot: true,
     name: 'Pack plein air : cerf-volant + trottinette', name_en: 'Outdoor Pack: Kite + Scooter',
     ageLabel: 'Tous âges', ageLabel_en: 'All ages',
@@ -294,7 +294,7 @@ const PRODUCTS = [
   },
   {
     id: 'l4', category: 'destockage', universe: null, age: 'all',
-    price: 24.9, oldPrice: 33.8, icon: ICONS.puzzle, bg: '#c7f0db',
+    price: 24.9, oldPrice: 33.8, icon: ICONS.puzzle, bg: '#f2ead6',
     colors: ['#a8e6cf', '#ffe066'], sale: false, lot: true,
     name: 'Duo puzzles éducatifs', name_en: 'Educational Puzzle Duo',
     ageLabel: 'Tous âges', ageLabel_en: 'All ages',
