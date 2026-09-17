@@ -38,6 +38,7 @@ const ICONS = {
   boitefenetre: `<svg viewBox="0 0 100 100"><path d="M10 30 50 12 90 30 50 48 10 30Z" fill="#fff"/><path d="M10 30v40l40 18 40-18V30" fill="#fff" opacity=".85"/><rect x="38" y="55" width="24" height="24" rx="3" fill="#4a4358" opacity=".18"/></svg>`,
   boitelogo: `<svg viewBox="0 0 100 100"><path d="M10 30 50 12 90 30 50 48 10 30Z" fill="#fff"/><path d="M10 30v40l40 18 40-18V30" fill="#fff" opacity=".85"/><circle cx="50" cy="65" r="10" fill="#4a4358" opacity=".2"/><path d="M46 65l3 3 6-6" stroke="#4a4358" stroke-width="2" fill="none" opacity=".5"/></svg>`,
   boitecadeau: `<svg viewBox="0 0 100 100"><rect x="15" y="40" width="70" height="45" rx="3" fill="#fff"/><rect x="15" y="28" width="70" height="16" rx="3" fill="#fff" opacity=".9"/><rect x="44" y="28" width="12" height="57" fill="#4a4358" opacity=".2"/><path d="M40 28c-6-10 6-16 10-6 4-10 16-4 10 6" fill="none" stroke="#4a4358" stroke-width="2" opacity=".3"/></svg>`,
+  boiteslider: `<svg viewBox="0 0 100 100"><rect x="12" y="35" width="76" height="45" rx="4" fill="#fff"/><rect x="12" y="25" width="76" height="14" rx="3" fill="#fff" opacity=".85"/><rect x="30" y="28" width="40" height="8" rx="2" fill="#4a4358" opacity=".25"/></svg>`,
   poupee: `<svg viewBox="0 0 100 100"><circle cx="50" cy="22" r="16" fill="#fff"/><path d="M30 42h40l6 20-10 4v28a4 4 0 0 1-4 4H38a4 4 0 0 1-4-4V66l-10-4z" fill="#fff" opacity=".85"/></svg>`,
   dinette: `<svg viewBox="0 0 100 100"><path d="M20 50h40a4 4 0 0 1 4 4v6c0 12-10 20-24 20S16 72 16 60v-6a4 4 0 0 1 4-4z" fill="#fff"/><path d="M64 54h10a8 8 0 0 1 0 16h-8" fill="none" stroke="#fff" stroke-width="6"/><rect x="60" y="78" width="16" height="10" rx="2" fill="#fff" opacity=".7"/></svg>`,
   circuitvoiture: `<svg viewBox="0 0 100 100"><path d="M10 60c0-6 6-10 14-12l8-14 14 2 4 12 30 6c6 2 10 6 10 12v4a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4z" fill="#fff"/><circle cx="26" cy="76" r="8" fill="#4a4358"/><circle cx="74" cy="76" r="8" fill="#4a4358"/><ellipse cx="50" cy="20" rx="30" ry="10" fill="none" stroke="#fff" stroke-width="4" opacity=".4"/></svg>`,
@@ -879,6 +880,23 @@ const PRODUCTS = [
     care_en: 'Reusable several times if handled with care.',
     sizeGuide: [ ['Format', 'Dimensions'], ['Standard', '18 x 18 x 8 cm'] ],
     sizeGuide_en: [ ['Format', 'Dimensions'], ['Standard', '18 x 18 x 8 cm'] ]
+  },
+  {
+    id: 'bx6', category: 'box', universe: null, age: 'all',
+    price: 18.9, oldPrice: null, icon: ICONS.boiteslider, bg: '#f2ead6',
+    colors: ['#c68642', '#2b2620'], sale: false, lot: 20,
+    name: 'Boîte à burger éco-responsable à couvercle coulissant (lot de 20)', name_en: 'Eco-Friendly Sliding-Lid Burger Box (Pack of 20)',
+    ageLabel: 'Petites entreprises', ageLabel_en: 'Small businesses',
+    description: 'Boîte à burger et sliders en carton kraft avec couvercle coulissant, pensée pour la vente à emporter et les food trucks.',
+    description_en: 'Kraft cardboard burger and slider box with a sliding lid, designed for takeout and food trucks.',
+    ecoDetails: 'Carton kraft recyclable et compostable, sans plastique.',
+    ecoDetails_en: 'Recyclable, compostable kraft cardboard, plastic-free.',
+    safety: 'Carton alimentaire conforme aux normes de contact alimentaire en vigueur.',
+    safety_en: 'Food-grade cardboard, compliant with current food contact standards.',
+    care: 'À usage unique. Se plie à plat pour le stockage avant montage.',
+    care_en: 'Single use. Folds flat for storage before assembly.',
+    sizeGuide: [ ['Format', 'Dimensions'], ['Standard', '14 x 14 x 7 cm'] ],
+    sizeGuide_en: [ ['Format', 'Dimensions'], ['Standard', '14 x 14 x 7 cm'] ]
   },
 
   /* ===== JOUETS — FILLE / GARÇON / BÉBÉ ===== */
