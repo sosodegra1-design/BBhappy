@@ -95,7 +95,11 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 .topbar { background: linear-gradient(90deg, var(--gold-deep), var(--gold)); }
 .topbar-inner { padding: 6px 24px; text-align: center; }
-.topbar p { margin: 0; font-size: .82rem; font-weight: 600; color: var(--text); }
+.topbar p { margin: 0; font-size: .82rem; font-weight: 600; color: var(--text); line-height: 1.4; }
+@media (max-width: 640px) {
+  .topbar-inner { padding: 6px 16px; }
+  .topbar p { font-size: .7rem; }
+}
 
 .header-main {
   display: flex;
@@ -422,6 +426,9 @@ ul { list-style: none; margin: 0; padding: 0; }
 
 /* Category grid */
 .category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.category-grid-6 { grid-template-columns: repeat(6, 1fr); }
+@media (max-width: 900px) { .category-grid-6 { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 480px) { .category-grid-6 { grid-template-columns: repeat(2, 1fr); } }
 .category-card {
   background: var(--cat-color, var(--surface));
   border-radius: var(--radius-lg);
@@ -435,6 +442,15 @@ ul { list-style: none; margin: 0; padding: 0; }
 .category-card:hover { transform: translateY(-6px) rotate(-1deg); box-shadow: var(--shadow-hover); }
 .category-card.active { border-color: var(--gold); }
 .category-emoji { font-size: 2.4rem; display: block; margin-bottom: 10px; }
+.cat-icon {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: var(--gold-tint);
+  border: 1px solid rgba(179,144,42,0.25);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px;
+}
+.cat-icon svg { width: 28px; height: 28px; color: var(--gold-deep); }
 .category-card h4 { margin-bottom: 4px; }
 .category-card p { margin: 0; font-size: .85rem; color: var(--text-soft); }
 
@@ -555,6 +571,15 @@ ul { list-style: none; margin: 0; padding: 0; }
 }
 .page-hero-inner { position: relative; z-index: 1; }
 .page-hero-emoji { font-size: 3.2rem; display: block; margin-bottom: 10px; }
+.page-hero-icon {
+  width: 84px; height: 84px;
+  border-radius: 50%;
+  background: var(--gold-tint);
+  border: 1px solid rgba(179,144,42,0.25);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px;
+}
+.page-hero-icon svg { width: 38px; height: 38px; color: var(--gold-deep); }
 .page-hero h1 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); margin-bottom: 10px; }
 .page-hero p { max-width: 520px; margin: 0 auto; }
 .breadcrumb { font-size: .85rem; font-weight: 700; color: var(--text-soft); margin-bottom: 14px; }
