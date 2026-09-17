@@ -461,8 +461,8 @@ const PRODUCTS = [
     safety_en: 'Solid wood structure, stable-sliding drawer, rounded corners.',
     care: 'Dépoussiérer avec un chiffon sec. Éviter l\'humidité prolongée sur le tressage.',
     care_en: 'Dust with a dry cloth. Avoid prolonged moisture on the woven panel.',
-    sizeGuide: [ ['Matériau', 'Tiroirs', 'Poids brut'], ['Bois massif', '1', '≈ 23 kg'] ],
-    sizeGuide_en: [ ['Material', 'Drawers', 'Gross weight'], ['Solid wood', '1', '≈ 23 kg'] ]
+    sizeGuide: [ ['Dimensions (L x l x H)', 'Tiroirs', 'Poids brut'], ['50 x 40 x 65 cm', '1', '≈ 23 kg'] ],
+    sizeGuide_en: [ ['Dimensions (W x D x H)', 'Drawers', 'Gross weight'], ['50 x 40 x 65 cm', '1', '≈ 23 kg'] ]
   },
 
   /* ===== BEAUTÉ & BIEN-ÊTRE ===== */
