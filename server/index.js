@@ -278,7 +278,7 @@ async function createOrder(cartId, customer, stripeSessionId = null) {
   await db.client.execute({ sql: 'DELETE FROM cart_items WHERE cart_id = ?', args: [cartId] });
   await addLoyaltyPoints(cartId, pointsEarned);
 
-  return { orderNumber: orderId, pointsEarned, total };
+  return { orderNumber: orderId, email, pointsEarned, total };
 }
 
 app.post('/api/checkout', async (req, res, next) => {
@@ -332,12 +332,12 @@ app.get('/api/checkout/confirm', async (req, res, next) => {
 
     // Idempotent: a page refresh on the success URL must not create a second order.
     const existing = await db.client.execute({
-      sql: 'SELECT id, points_earned, total FROM orders WHERE stripe_session_id = ?',
+      sql: 'SELECT id, email, points_earned, total FROM orders WHERE stripe_session_id = ?',
       args: [session_id]
     });
     if (existing.rows.length) {
       const row = existing.rows[0];
-      return res.json({ orderNumber: row.id, pointsEarned: Number(row.points_earned), total: Number(row.total) });
+      return res.json({ orderNumber: row.id, email: row.email, pointsEarned: Number(row.points_earned), total: Number(row.total) });
     }
 
     const session = await stripe.checkout.sessions.retrieve(session_id);
@@ -347,6 +347,62 @@ app.get('/api/checkout/confirm', async (req, res, next) => {
     const { cartId, name, email, address, zip, city } = session.metadata;
     const order = await createOrder(cartId, { name, email, address, zip, city }, session_id);
     res.status(201).json(order);
+  } catch (err) { next(err); }
+});
+
+/* ===================== ORDER TRACKING =====================
+   No real carrier integration here — the status is derived deterministically
+   from elapsed time since the order was placed, so a lookup always returns
+   a stable, believable progression rather than requiring a live webhook. */
+const TRACKING_STAGES = [
+  { key: 'confirmed', hours: 0, label: 'Commande confirmée', label_en: 'Order confirmed' },
+  { key: 'preparing', hours: 6, label: 'En préparation', label_en: 'Being prepared' },
+  { key: 'shipped', hours: 24, label: 'Expédiée', label_en: 'Shipped' },
+  { key: 'delivered', hours: 96, label: 'Livrée', label_en: 'Delivered' }
+];
+
+function trackingNumberFor(orderId) {
+  const hash = crypto.createHash('sha256').update(orderId).digest('hex').toUpperCase();
+  return `BV${hash.slice(0, 10)}FR`;
+}
+
+app.get('/api/track', async (req, res, next) => {
+  try {
+    const orderNumber = String(req.query.order || '').trim().toUpperCase();
+    const email = String(req.query.email || '').trim().toLowerCase();
+    if (!orderNumber || !email) {
+      return res.status(400).json({ error: 'Order number and email are required.' });
+    }
+
+    const result = await db.client.execute({
+      sql: 'SELECT id, email, total, created_at FROM orders WHERE id = ?',
+      args: [orderNumber]
+    });
+    const row = result.rows[0];
+    if (!row || String(row.email || '').trim().toLowerCase() !== email) {
+      return res.status(404).json({ error: 'No order matches this number and email.' });
+    }
+
+    const createdAt = new Date(row.created_at);
+    const hoursElapsed = (Date.now() - createdAt.getTime()) / 3600000;
+    let stageIndex = 0;
+    TRACKING_STAGES.forEach((stage, i) => { if (hoursElapsed >= stage.hours) stageIndex = i; });
+
+    const steps = TRACKING_STAGES.map((stage, i) => ({
+      key: stage.key,
+      label: stage.label,
+      label_en: stage.label_en,
+      done: i <= stageIndex,
+      date: new Date(createdAt.getTime() + stage.hours * 3600000).toISOString()
+    }));
+
+    res.json({
+      orderNumber: row.id,
+      total: Number(row.total),
+      status: TRACKING_STAGES[stageIndex].key,
+      trackingNumber: stageIndex >= 2 ? trackingNumberFor(row.id) : null,
+      steps
+    });
   } catch (err) { next(err); }
 });
 

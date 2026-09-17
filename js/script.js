@@ -124,6 +124,7 @@ const TRANSLATIONS = {
     'newsletter.success': 'Merci pour votre inscription ! 🎉 +10 points de fidélité offerts.',
     'footer.shop': 'Boutique', 'footer.destock': 'Lots déstockage', 'footer.service': 'Service client',
     'footer.contact': 'Contactez-nous', 'footer.shipping': 'Livraison &amp; retours',
+    'footer.tracking': 'Suivre ma commande',
     'footer.sizeguide': 'Guide des tailles', 'footer.faq': 'FAQ', 'footer.about': 'À propos',
     'footer.story': 'Notre histoire', 'footer.eco': 'Engagement éco-responsable',
     'footer.safety': 'Normes de sécurité', 'footer.careers': 'Carrières',
@@ -148,6 +149,16 @@ const TRANSLATIONS = {
     'checkout.orderNumber': 'Numéro de commande', 'checkout.pointsEarned': 'de fidélité gagnés !',
     'checkout.close': 'Fermer', 'checkout.emptyCart': 'Votre panier est vide, ajoutez des produits avant de commander 🧺',
     'checkout.cancelled': 'Paiement annulé, votre panier est toujours là.',
+    'checkout.trackOrder': 'Suivre ma commande →',
+    'tracking.title': 'Suivi de commande',
+    'tracking.hero.title': 'Suivi de commande',
+    'tracking.hero.desc': 'Entrez votre numéro de commande et votre e-mail pour connaître son statut en temps réel.',
+    'tracking.orderNumber': 'Numéro de commande', 'tracking.email': 'E-mail',
+    'tracking.submit': 'Suivre mon colis',
+    'tracking.notFound': 'Aucune commande ne correspond à ce numéro et cet e-mail.',
+    'tracking.trackingNumber': 'Numéro de suivi',
+    'tracking.step.confirmed': 'Commande confirmée', 'tracking.step.preparing': 'En préparation',
+    'tracking.step.shipped': 'Expédiée', 'tracking.step.delivered': 'Livrée',
     'loyalty.title': 'Carte de fidélité', 'loyalty.aria': 'Carte de fidélité', 'loyalty.points': 'points',
     'loyalty.tiersTitle': 'Récompenses', 'loyalty.maxed': 'Bravo, vous avez débloqué toutes les récompenses ! 🎉',
     'loyalty.viewCard': 'Voir ma carte de fidélité complète →',
@@ -248,6 +259,7 @@ const TRANSLATIONS = {
     'newsletter.success': 'Thanks for subscribing! 🎉 +10 loyalty points added.',
     'footer.shop': 'Shop', 'footer.destock': 'Clearance bundles', 'footer.service': 'Customer service',
     'footer.contact': 'Contact us', 'footer.shipping': 'Shipping &amp; returns',
+    'footer.tracking': 'Track my order',
     'footer.sizeguide': 'Size guide', 'footer.faq': 'FAQ', 'footer.about': 'About',
     'footer.story': 'Our story', 'footer.eco': 'Eco-friendly commitment',
     'footer.safety': 'Safety standards', 'footer.careers': 'Careers',
@@ -272,6 +284,16 @@ const TRANSLATIONS = {
     'checkout.orderNumber': 'Order number', 'checkout.pointsEarned': 'loyalty points earned!',
     'checkout.close': 'Close', 'checkout.emptyCart': 'Your cart is empty, add products before checking out 🧺',
     'checkout.cancelled': 'Payment cancelled, your cart is still here.',
+    'checkout.trackOrder': 'Track my order →',
+    'tracking.title': 'Order tracking',
+    'tracking.hero.title': 'Order tracking',
+    'tracking.hero.desc': 'Enter your order number and e-mail to see its status in real time.',
+    'tracking.orderNumber': 'Order number', 'tracking.email': 'E-mail',
+    'tracking.submit': 'Track my package',
+    'tracking.notFound': 'No order matches this number and e-mail.',
+    'tracking.trackingNumber': 'Tracking number',
+    'tracking.step.confirmed': 'Order confirmed', 'tracking.step.preparing': 'Being prepared',
+    'tracking.step.shipped': 'Shipped', 'tracking.step.delivered': 'Delivered',
     'loyalty.title': 'Loyalty card', 'loyalty.aria': 'Loyalty card', 'loyalty.points': 'points',
     'loyalty.tiersTitle': 'Rewards', 'loyalty.maxed': 'Congrats, you\'ve unlocked every reward! 🎉',
     'loyalty.viewCard': 'See my full loyalty card →',
@@ -732,6 +754,35 @@ function renderCheckoutSummary() {
   summary.innerHTML = `<h4>${t('checkout.summaryTitle')}</h4>${lines}<div class="checkout-line checkout-line-total"><span>${t('cart.total')}</span><span>${fmtPrice(total)}</span></div>`;
 }
 
+/* ===================== ORDER TRACKING ===================== */
+/* Renders the step-by-step timeline returned by GET /api/track on suivi.html.
+   No-op if the page doesn't have the tracking result panel. */
+function renderTrackingResult(data) {
+  const result = document.getElementById('trackResult');
+  if (!result) return;
+  document.getElementById('trackResultOrder').textContent = data.orderNumber;
+
+  const numberEl = document.getElementById('trackResultNumber');
+  if (data.trackingNumber) {
+    numberEl.textContent = `${t('tracking.trackingNumber')} : ${data.trackingNumber}`;
+    numberEl.hidden = false;
+  } else {
+    numberEl.hidden = true;
+  }
+
+  const locale = state.lang === 'en' ? 'en-GB' : 'fr-FR';
+  document.getElementById('trackSteps').innerHTML = data.steps.map(step => {
+    const date = new Date(step.date).toLocaleDateString(locale, { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+    return `<li class="tracking-step ${step.done ? 'done' : ''}">
+      <h4>${t('tracking.step.' + step.key)}</h4>
+      <p>${step.done ? date : ''}</p>
+    </li>`;
+  }).join('');
+
+  result.hidden = false;
+  document.getElementById('trackError').hidden = true;
+}
+
 function openCheckout() {
   if (state.cart.length === 0) {
     showToast(t('checkout.emptyCart'));
@@ -767,6 +818,12 @@ async function showOrderSuccess(order) {
   document.getElementById('checkoutOrderNumber').textContent = order.orderNumber;
   document.getElementById('checkoutPointsEarned').textContent = order.pointsEarned;
   document.getElementById('checkoutForm').hidden = true;
+
+  if (order.email) {
+    try {
+      sessionStorage.setItem('bbvoltex_last_order', JSON.stringify({ orderNumber: order.orderNumber, email: order.email }));
+    } catch (_) { /* private browsing or storage disabled — tracking link still works, just without prefill */ }
+  }
   const successPanel = document.getElementById('checkoutSuccess');
   successPanel.hidden = false;
   modal.classList.add('open');
@@ -1219,6 +1276,36 @@ document.addEventListener('DOMContentLoaded', async () => {
         showToast(t('loyalty.physicalCard.toast'));
       } catch (err) {
         showToast(err.message || t('error.generic'));
+      }
+    });
+  }
+
+  const trackForm = document.getElementById('trackForm');
+  if (trackForm) {
+    const orderInput = document.getElementById('trackOrderNumber');
+    const emailInput = document.getElementById('trackEmail');
+    try {
+      const last = JSON.parse(sessionStorage.getItem('bbvoltex_last_order'));
+      if (last && last.orderNumber) {
+        orderInput.value = last.orderNumber;
+        emailInput.value = last.email || '';
+      }
+    } catch (_) { /* no prefill available — the visitor can still type it in manually */ }
+
+    trackForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = trackForm.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      try {
+        const data = await apiFetch(`/track?order=${encodeURIComponent(orderInput.value.trim())}&email=${encodeURIComponent(emailInput.value.trim())}`);
+        renderTrackingResult(data);
+      } catch (err) {
+        document.getElementById('trackResult').hidden = true;
+        const errorEl = document.getElementById('trackError');
+        errorEl.textContent = err.message || t('tracking.notFound');
+        errorEl.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
       }
     });
   }

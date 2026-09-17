@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Livraison & retours — BBVOLTEX</title>
-<meta name="description" content="Options de livraison, délais et modalités de retour chez BBVOLTEX.">
+<title>Suivi de commande — BBVOLTEX</title>
+<meta name="description" content="Suivez votre commande BBVOLTEX en temps réel : entrez votre numéro de commande et votre e-mail pour connaître son statut.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -94,70 +94,29 @@
 
   <section class="page-hero" style="background:linear-gradient(180deg,#dff0ff,var(--bg));">
     <div class="container page-hero-inner">
-      <p class="breadcrumb"><a href="index.html" data-i18n="breadcrumb.home">Accueil</a> / <span data-i18n="footer.shipping">Livraison &amp; retours</span></p>
-      <span class="page-hero-emoji">🚚</span>
-      <h1 data-i18n="shipping.hero.title">Livraison &amp; retours</h1>
-      <p data-i18n="shipping.hero.desc">Tout ce qu'il faut savoir pour recevoir vos commandes sereinement, et les retourner tout aussi simplement en cas de besoin.</p>
+      <p class="breadcrumb"><a href="index.html" data-i18n="breadcrumb.home">Accueil</a> / <span data-i18n="tracking.title">Suivi de commande</span></p>
+      <span class="page-hero-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-7.5 7-13a7 7 0 1 0-14 0c0 5.5 7 13 7 13Z"/><circle cx="12" cy="9" r="2.5"/></svg></span>
+      <h1 data-i18n="tracking.hero.title">Suivi de commande</h1>
+      <p data-i18n="tracking.hero.desc">Entrez votre numéro de commande et votre e-mail pour connaître son statut en temps réel.</p>
     </div>
   </section>
 
   <section class="section">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow" data-i18n="shipping.delivery.eyebrow">Livraison</span>
-        <h2 data-i18n="shipping.delivery.title">Des options adaptées à vos envies</h2>
-      </div>
-      <div class="trust-grid">
-        <div class="trust-item">
-          <span class="trust-icon">📦</span>
-          <h4 data-i18n="shipping.standard.title">Standard</h4>
-          <p data-i18n="shipping.standard.desc">3 à 5 jours ouvrés — 4,90 €, gratuite dès 20 € d'achat</p>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon">⚡</span>
-          <h4 data-i18n="shipping.express.title">Express</h4>
-          <p data-i18n="shipping.express.desc">24 à 48h ouvrées — 9,90 €</p>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon">🌍</span>
-          <h4 data-i18n="shipping.europe.title">Europe</h4>
-          <p data-i18n="shipping.europe.desc">5 à 8 jours ouvrés — à partir de 9,90 €</p>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon">📍</span>
-          <h4 data-i18n="shipping.tracking.title">Suivi en temps réel</h4>
-          <p data-i18n="shipping.tracking.desc">Un lien de suivi vous est envoyé dès l'expédition de votre colis</p>
-          <p><a href="suivi.html" data-i18n="footer.tracking">Suivre ma commande</a> →</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    <div class="container tracking-wrap">
+      <form id="trackForm" class="checkout-form tracking-form">
+        <label for="trackOrderNumber" data-i18n="tracking.orderNumber">Numéro de commande</label>
+        <input type="text" id="trackOrderNumber" placeholder="BB12345678" required>
+        <label for="trackEmail" data-i18n="tracking.email">E-mail</label>
+        <input type="email" id="trackEmail" required>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="tracking.submit">Suivre mon colis</button>
+      </form>
+      <p class="tracking-error" id="trackError" hidden></p>
 
-  <section class="section section-alt">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow" data-i18n="shipping.returns.eyebrow">Retours</span>
-        <h2 data-i18n="shipping.returns.title">30 jours pour changer d'avis</h2>
-        <p data-i18n="shipping.returns.desc">Si un article ne convient pas, vous pouvez le retourner sans justification dans les 30 jours suivant sa réception.</p>
+      <div class="tracking-result" id="trackResult" hidden tabindex="-1">
+        <p class="tracking-result-order"><strong data-i18n="checkout.orderNumber">Numéro de commande</strong> : <span id="trackResultOrder"></span></p>
+        <span class="tracking-number" id="trackResultNumber" hidden></span>
+        <ol class="tracking-steps" id="trackSteps"></ol>
       </div>
-      <div class="trust-grid trust-grid-3">
-        <div class="trust-item">
-          <span class="trust-icon">✉️</span>
-          <h4 data-i18n="shipping.step1.title">1. Contactez-nous</h4>
-          <p data-i18n="shipping.step1.desc">Par e-mail à <a href="mailto:bbvoltex@gmail.com">bbvoltex@gmail.com</a>, sous 30 jours après réception</p>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon">📮</span>
-          <h4 data-i18n="shipping.step2.title">2. Renvoyez l'article</h4>
-          <p data-i18n="shipping.step2.desc">Dans son emballage d'origine, avec l'étiquette de retour fournie</p>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon">💳</span>
-          <h4 data-i18n="shipping.step3.title">3. Remboursement</h4>
-          <p data-i18n="shipping.step3.desc">Sous 5 à 7 jours ouvrés après réception de votre retour</p>
-        </div>
-      </div>
-      <p style="text-align:center; margin-top:24px; font-size:.85rem;" data-i18n="shipping.exclusions">Les articles soldés à -50% ou plus, les sous-vêtements et les cadeaux personnalisés ne sont pas repris pour des raisons d'hygiène.</p>
     </div>
   </section>
 
