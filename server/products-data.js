@@ -20,6 +20,7 @@ const ICONS = {
   lampe: `<svg viewBox="0 0 100 100"><path d="M32 10h36l10 30H22z" fill="#fff"/><rect x="47" y="40" width="6" height="34" fill="#fff" opacity=".8"/><rect x="30" y="74" width="40" height="8" rx="4" fill="#fff"/></svg>`,
   coussin: `<svg viewBox="0 0 100 100"><rect x="14" y="14" width="72" height="72" rx="18" fill="#fff"/><path d="M30 30q20 20 40 0M30 70q20 -20 40 0" stroke="#4a4358" stroke-width="2" opacity=".15" fill="none"/></svg>`,
   bougie: `<svg viewBox="0 0 100 100"><ellipse cx="50" cy="24" rx="8" ry="12" fill="#fff" opacity=".85"/><rect x="32" y="34" width="36" height="52" rx="6" fill="#fff"/><line x1="50" y1="34" x2="50" y2="20" stroke="#4a4358" stroke-width="2" opacity=".2"/></svg>`,
+  tablechevet: `<svg viewBox="0 0 100 100"><rect x="20" y="18" width="60" height="16" rx="2" fill="#fff"/><rect x="25" y="38" width="50" height="30" rx="2" fill="#fff" opacity=".85"/><rect x="32" y="44" width="36" height="18" rx="2" fill="#4a4358" opacity=".15"/><circle cx="50" cy="53" r="3" fill="#4a4358" opacity=".3"/><path d="M30 68 24 90M70 68 76 90" stroke="#fff" stroke-width="5" stroke-linecap="round"/></svg>`,
   soin: `<svg viewBox="0 0 100 100"><rect x="24" y="30" width="52" height="56" rx="10" fill="#fff"/><rect x="30" y="16" width="40" height="18" rx="6" fill="#fff" opacity=".8"/></svg>`,
   palette: `<svg viewBox="0 0 100 100"><rect x="10" y="34" width="80" height="40" rx="10" fill="#fff"/><circle cx="28" cy="54" r="8" fill="#4a4358" opacity=".2"/><circle cx="50" cy="54" r="8" fill="#4a4358" opacity=".2"/><circle cx="72" cy="54" r="8" fill="#4a4358" opacity=".2"/></svg>`,
   brume: `<svg viewBox="0 0 100 100"><rect x="38" y="34" width="24" height="54" rx="8" fill="#fff"/><rect x="42" y="14" width="16" height="22" rx="4" fill="#fff" opacity=".8"/><line x1="62" y1="20" x2="78" y2="12" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".8"/></svg>`,
@@ -445,6 +446,23 @@ const PRODUCTS = [
     care_en: 'Trim the wick to 5mm before each use for a clean burn.',
     sizeGuide: [ ['Durée de combustion', 'Poids'], ['40h', '220 g'] ],
     sizeGuide_en: [ ['Burn time', 'Weight'], ['40h', '220 g'] ]
+  },
+  {
+    id: 'm4', category: 'maison', universe: null, age: 'all',
+    price: 39.99, oldPrice: null, icon: ICONS.tablechevet, bg: '#f2ead6',
+    colors: ['#c68642', '#2b2620'], sale: false,
+    name: 'Table de chevet bohème', name_en: 'Boho Bedside Table',
+    ageLabel: 'Maison', ageLabel_en: 'Home',
+    description: 'Table de chevet au style bohème, structure en bois et façade en cannage tressé main, pour une chambre chaleureuse et naturelle.',
+    description_en: 'Boho-style bedside table with a wooden frame and hand-woven cane front, for a warm, natural bedroom.',
+    ecoDetails: 'Bois issu de forêts gérées durablement, cannage naturel, finition à l\'huile végétale.',
+    ecoDetails_en: 'Wood from sustainably managed forests, natural cane, plant-oil finish.',
+    safety: 'Structure stable testée à la charge, angles arrondis.',
+    safety_en: 'Load-tested stable structure, rounded corners.',
+    care: 'Dépoussiérer avec un chiffon sec. Éviter l\'humidité prolongée sur le cannage.',
+    care_en: 'Dust with a dry cloth. Avoid prolonged moisture on the cane panel.',
+    sizeGuide: [ ['Dimensions', 'Hauteur'], ['40 x 35 cm', '55 cm'] ],
+    sizeGuide_en: [ ['Dimensions', 'Height'], ['40 x 35 cm', '55 cm'] ]
   },
 
   /* ===== BEAUTÉ & BIEN-ÊTRE ===== */
