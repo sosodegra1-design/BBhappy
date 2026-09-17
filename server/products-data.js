@@ -37,7 +37,13 @@ const ICONS = {
   boitekraft: `<svg viewBox="0 0 100 100"><path d="M10 30 50 12 90 30 50 48 10 30Z" fill="#fff"/><path d="M10 30v40l40 18 40-18V30" fill="#fff" opacity=".85"/><line x1="50" y1="48" x2="50" y2="88" stroke="#4a4358" stroke-width="2" opacity=".2"/></svg>`,
   boitefenetre: `<svg viewBox="0 0 100 100"><path d="M10 30 50 12 90 30 50 48 10 30Z" fill="#fff"/><path d="M10 30v40l40 18 40-18V30" fill="#fff" opacity=".85"/><rect x="38" y="55" width="24" height="24" rx="3" fill="#4a4358" opacity=".18"/></svg>`,
   boitelogo: `<svg viewBox="0 0 100 100"><path d="M10 30 50 12 90 30 50 48 10 30Z" fill="#fff"/><path d="M10 30v40l40 18 40-18V30" fill="#fff" opacity=".85"/><circle cx="50" cy="65" r="10" fill="#4a4358" opacity=".2"/><path d="M46 65l3 3 6-6" stroke="#4a4358" stroke-width="2" fill="none" opacity=".5"/></svg>`,
-  boitecadeau: `<svg viewBox="0 0 100 100"><rect x="15" y="40" width="70" height="45" rx="3" fill="#fff"/><rect x="15" y="28" width="70" height="16" rx="3" fill="#fff" opacity=".9"/><rect x="44" y="28" width="12" height="57" fill="#4a4358" opacity=".2"/><path d="M40 28c-6-10 6-16 10-6 4-10 16-4 10 6" fill="none" stroke="#4a4358" stroke-width="2" opacity=".3"/></svg>`
+  boitecadeau: `<svg viewBox="0 0 100 100"><rect x="15" y="40" width="70" height="45" rx="3" fill="#fff"/><rect x="15" y="28" width="70" height="16" rx="3" fill="#fff" opacity=".9"/><rect x="44" y="28" width="12" height="57" fill="#4a4358" opacity=".2"/><path d="M40 28c-6-10 6-16 10-6 4-10 16-4 10 6" fill="none" stroke="#4a4358" stroke-width="2" opacity=".3"/></svg>`,
+  poupee: `<svg viewBox="0 0 100 100"><circle cx="50" cy="22" r="16" fill="#fff"/><path d="M30 42h40l6 20-10 4v28a4 4 0 0 1-4 4H38a4 4 0 0 1-4-4V66l-10-4z" fill="#fff" opacity=".85"/></svg>`,
+  dinette: `<svg viewBox="0 0 100 100"><path d="M20 50h40a4 4 0 0 1 4 4v6c0 12-10 20-24 20S16 72 16 60v-6a4 4 0 0 1 4-4z" fill="#fff"/><path d="M64 54h10a8 8 0 0 1 0 16h-8" fill="none" stroke="#fff" stroke-width="6"/><rect x="60" y="78" width="16" height="10" rx="2" fill="#fff" opacity=".7"/></svg>`,
+  circuitvoiture: `<svg viewBox="0 0 100 100"><path d="M10 60c0-6 6-10 14-12l8-14 14 2 4 12 30 6c6 2 10 6 10 12v4a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4z" fill="#fff"/><circle cx="26" cy="76" r="8" fill="#4a4358"/><circle cx="74" cy="76" r="8" fill="#4a4358"/><ellipse cx="50" cy="20" rx="30" ry="10" fill="none" stroke="#fff" stroke-width="4" opacity=".4"/></svg>`,
+  epee: `<svg viewBox="0 0 100 100"><path d="M50 6v50" stroke="#fff" stroke-width="8" stroke-linecap="round"/><path d="M34 30h32" stroke="#fff" stroke-width="8" stroke-linecap="round"/><rect x="45" y="56" width="10" height="20" rx="3" fill="#fff"/><path d="M20 50c0 20 12 34 18 38 6-4 18-18 18-38-6 4-30 4-36 0z" fill="#fff" opacity=".7"/></svg>`,
+  hochet: `<svg viewBox="0 0 100 100"><circle cx="50" cy="30" r="22" fill="#fff"/><rect x="46" y="50" width="8" height="40" rx="4" fill="#fff" opacity=".85"/><circle cx="40" cy="24" r="3" fill="#4a4358" opacity=".3"/><circle cx="60" cy="24" r="3" fill="#4a4358" opacity=".3"/><circle cx="50" cy="36" r="3" fill="#4a4358" opacity=".3"/></svg>`,
+  tapisveil: `<svg viewBox="0 0 100 100"><rect x="10" y="30" width="80" height="50" rx="10" fill="#fff"/><circle cx="30" cy="50" r="8" fill="#4a4358" opacity=".2"/><circle cx="55" cy="55" r="10" fill="#4a4358" opacity=".15"/><circle cx="75" cy="45" r="6" fill="#4a4358" opacity=".2"/><path d="M20 25c4-8 10-12 16-8" stroke="#fff" stroke-width="4" fill="none"/><path d="M80 25c-4-8-10-12-16-8" stroke="#fff" stroke-width="4" fill="none"/></svg>`
 };
 // Icons are purely decorative (the product name already conveys the product); hide them from assistive tech.
 Object.keys(ICONS).forEach(key => {
@@ -873,6 +879,110 @@ const PRODUCTS = [
     care_en: 'Reusable several times if handled with care.',
     sizeGuide: [ ['Format', 'Dimensions'], ['Standard', '18 x 18 x 8 cm'] ],
     sizeGuide_en: [ ['Format', 'Dimensions'], ['Standard', '18 x 18 x 8 cm'] ]
+  },
+
+  /* ===== JOUETS — FILLE / GARÇON / BÉBÉ ===== */
+  {
+    id: 'jf1', category: 'jouets', universe: 'fille', age: '3-5',
+    price: 24.9, oldPrice: null, icon: ICONS.poupee, bg: '#f2ead6',
+    colors: ['#ffcab1', '#ffe066', '#a8e6cf'], sale: false,
+    name: 'Poupée articulée en tissu bio', name_en: 'Organic Fabric Jointed Doll',
+    ageLabel: '3-5 ans', ageLabel_en: '3-5 years',
+    description: 'Poupée souple en coton biologique aux articulations mobiles, pour inventer mille histoires et développer l\'imaginaire.',
+    description_en: 'Soft organic cotton doll with moving joints, perfect for inventing countless stories and nurturing imagination.',
+    ecoDetails: 'Coton biologique certifié GOTS, rembourrage hypoallergénique.',
+    ecoDetails_en: 'GOTS-certified organic cotton, hypoallergenic filling.',
+    safety: 'Conforme CE EN71, aucune petite pièce détachable.',
+    safety_en: 'Complies with CE EN71, no small detachable parts.',
+    care: 'Lavage en machine à 30°C. Séchage à l\'air libre.',
+    care_en: 'Machine wash at 30°C. Air dry.',
+    sizeGuide: [ ['Taille', 'Hauteur'], ['Unique', '35 cm'] ],
+    sizeGuide_en: [ ['Size', 'Height'], ['One size', '35 cm'] ]
+  },
+  {
+    id: 'jf2', category: 'jouets', universe: 'fille', age: '3-5',
+    price: 29.9, oldPrice: 34.9, icon: ICONS.dinette, bg: '#f2ead6',
+    colors: ['#ffcab1', '#a8e6cf', '#ffffff'], sale: true,
+    name: 'Coffret dînette en bois', name_en: 'Wooden Tea Party Playset',
+    ageLabel: '3-5 ans', ageLabel_en: '3-5 years',
+    description: 'Coffret dînette en bois avec théière, tasses et assiettes, pour organiser de jolis goûters imaginaires.',
+    description_en: 'Wooden tea party set with teapot, cups and plates, for hosting delightful pretend tea times.',
+    ecoDetails: 'Bois FSC, peintures à l\'eau sans solvants.',
+    ecoDetails_en: 'FSC wood, water-based solvent-free paints.',
+    safety: 'Conforme CE EN71, pièces surdimensionnées empêchant l\'ingestion.',
+    safety_en: 'Complies with CE EN71, oversized pieces preventing ingestion.',
+    care: 'Essuyer avec un chiffon sec ou légèrement humide.',
+    care_en: 'Wipe with a dry or slightly damp cloth.',
+    sizeGuide: [ ['Âge', 'Pièces'], ['3-5 ans', '12 pièces'] ],
+    sizeGuide_en: [ ['Age', 'Pieces'], ['3-5 years', '12 pieces'] ]
+  },
+  {
+    id: 'jg1', category: 'jouets', universe: 'garcon', age: '3-5',
+    price: 27.9, oldPrice: null, icon: ICONS.circuitvoiture, bg: '#f2ead6',
+    colors: ['#a8e6cf', '#ffe066', '#4a4358'], sale: false,
+    name: 'Circuit de voitures à friction', name_en: 'Friction-Powered Car Race Track',
+    ageLabel: '3-5 ans', ageLabel_en: '3-5 years',
+    description: 'Circuit modulable avec deux voitures à friction, pour des courses endiablées à monter et démonter à volonté.',
+    description_en: 'Modular race track with two friction-powered cars, for exciting races you can build and rearrange freely.',
+    ecoDetails: 'Plastique recyclé, emballage carton sans plastique.',
+    ecoDetails_en: 'Recycled plastic, plastic-free cardboard packaging.',
+    safety: 'Conforme CE EN71, pièces adaptées dès 3 ans.',
+    safety_en: 'Complies with CE EN71, parts suitable from age 3.',
+    care: 'Nettoyage avec un chiffon sec.',
+    care_en: 'Clean with a dry cloth.',
+    sizeGuide: [ ['Âge', 'Longueur du circuit'], ['3-5 ans', '2,4 m assemblé'] ],
+    sizeGuide_en: [ ['Age', 'Track length'], ['3-5 years', '2.4 m assembled'] ]
+  },
+  {
+    id: 'jg2', category: 'jouets', universe: 'garcon', age: '6-12',
+    price: 19.9, oldPrice: null, icon: ICONS.epee, bg: '#f2ead6',
+    colors: ['#a8e6cf', '#4a4358', '#ffe066'], sale: false,
+    name: 'Épée et bouclier en mousse', name_en: 'Foam Sword & Shield Set',
+    ageLabel: '6-12 ans', ageLabel_en: '6-12 years',
+    description: 'Épée et bouclier en mousse dense, légers et sécurisés, pour des duels et aventures imaginaires sans risque.',
+    description_en: 'Lightweight, safe dense foam sword and shield, for imaginative duels and adventures without the risk.',
+    ecoDetails: 'Mousse EVA sans latex ni substances nocives.',
+    ecoDetails_en: 'EVA foam, free of latex and harmful substances.',
+    safety: 'Conforme CE EN71, mousse souple sans arêtes dangereuses.',
+    safety_en: 'Complies with CE EN71, soft foam with no dangerous edges.',
+    care: 'Essuyer avec un chiffon humide si besoin.',
+    care_en: 'Wipe with a damp cloth if needed.',
+    sizeGuide: [ ['Âge', 'Longueur épée'], ['6-12 ans', '55 cm'] ],
+    sizeGuide_en: [ ['Age', 'Sword length'], ['6-12 years', '55 cm'] ]
+  },
+  {
+    id: 'jb1', category: 'jouets', universe: 'bebe', age: '0-2',
+    price: 11.9, oldPrice: null, icon: ICONS.hochet, bg: '#f2ead6',
+    colors: ['#ffffff', '#ffe066', '#a8e6cf'], sale: false,
+    name: 'Hochet en bois naturel', name_en: 'Natural Wood Rattle',
+    ageLabel: '0-2 ans', ageLabel_en: '0-2 years',
+    description: 'Hochet en bois naturel, léger et facile à saisir, pour éveiller la motricité fine et l\'ouïe des tout-petits.',
+    description_en: 'Lightweight, easy-to-grip natural wood rattle, helping develop fine motor skills and hearing in infants.',
+    ecoDetails: 'Bois FSC, finition à l\'huile végétale.',
+    ecoDetails_en: 'FSC wood, plant-oil finish.',
+    safety: 'Conforme CE EN71, sans petites pièces détachables.',
+    safety_en: 'Complies with CE EN71, no small detachable parts.',
+    care: 'Essuyer avec un chiffon légèrement humide. Ne pas immerger.',
+    care_en: 'Wipe with a slightly damp cloth. Do not submerge.',
+    sizeGuide: [ ['Taille', 'Longueur'], ['Unique', '13 cm'] ],
+    sizeGuide_en: [ ['Size', 'Length'], ['One size', '13 cm'] ]
+  },
+  {
+    id: 'jb2', category: 'jouets', universe: 'bebe', age: '0-2',
+    price: 32.9, oldPrice: 39.9, icon: ICONS.tapisveil, bg: '#f2ead6',
+    colors: ['#ffcab1', '#a8e6cf', '#ffe066'], sale: true,
+    name: 'Tapis d\'éveil sensoriel', name_en: 'Sensory Playmat',
+    ageLabel: '0-2 ans', ageLabel_en: '0-2 years',
+    description: 'Tapis d\'éveil moelleux avec textures et reliefs variés, pour stimuler en douceur les sens des tout-petits.',
+    description_en: 'Soft playmat with varied textures and reliefs, gently stimulating infants\' senses.',
+    ecoDetails: 'Coton biologique certifié GOTS, mousse sans substances nocives.',
+    ecoDetails_en: 'GOTS-certified organic cotton, foam free of harmful substances.',
+    safety: 'Conforme CE EN71, lavable en machine.',
+    safety_en: 'Complies with CE EN71, machine washable.',
+    care: 'Lavage en machine à 30°C. Séchage à plat.',
+    care_en: 'Machine wash at 30°C. Dry flat.',
+    sizeGuide: [ ['Format', 'Dimensions'], ['Standard', '90 x 70 cm'] ],
+    sizeGuide_en: [ ['Format', 'Dimensions'], ['Standard', '90 x 70 cm'] ]
   }
 ];
 
