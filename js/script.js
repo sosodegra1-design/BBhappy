@@ -506,7 +506,25 @@ function pf(p, field) {
 }
 
 function productVisual(p) {
-  return p.image ? `<img src="${p.image}" alt="" loading="lazy">` : p.icon;
+  const src = p.images && p.images.length ? p.images[0] : p.image;
+  return src ? `<img src="${src}" alt="" loading="lazy">` : p.icon;
+}
+
+function modalImageMarkup(p, index) {
+  if (p.images && p.images.length) return `<img src="${p.images[index] || p.images[0]}" alt="" loading="lazy">`;
+  return productVisual(p);
+}
+
+function renderModalPhotoThumbs(p) {
+  const wrap = document.getElementById('modalPhotoThumbs');
+  if (!wrap) return;
+  if (p.images && p.images.length > 1) {
+    wrap.hidden = false;
+    wrap.innerHTML = p.images.map((img, i) => `<button type="button" class="photo-thumb ${i === 0 ? 'selected' : ''}" data-photo-index="${i}" aria-label="Photo ${i + 1}"><img src="${img}" alt=""></button>`).join('');
+  } else {
+    wrap.hidden = true;
+    wrap.innerHTML = '';
+  }
 }
 
 /* ===================== RENDER PRODUCTS ===================== */
@@ -591,9 +609,11 @@ function openProductModal(id) {
   if (!alreadyOpen) lastFocusedElement = document.activeElement;
   state.currentModalProduct = p;
   state.currentModalColor = p.colors[0];
+  state.currentModalPhotoIndex = 0;
 
-  document.getElementById('modalImage').innerHTML = productVisual(p);
+  document.getElementById('modalImage').innerHTML = modalImageMarkup(p, 0);
   document.getElementById('modalImage').style.background = p.bg;
+  renderModalPhotoThumbs(p);
   document.getElementById('modalAge').textContent = pf(p, 'ageLabel');
   document.getElementById('modalProductName').textContent = pf(p, 'name');
   document.getElementById('modalPrice').innerHTML = `${fmtPrice(p.price)}${p.oldPrice ? `<span class="old-price">${fmtPrice(p.oldPrice)}</span>` : ''}`;
@@ -1270,6 +1290,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     sw.classList.add('selected');
     sw.setAttribute('aria-pressed', 'true');
   });
+
+  const modalPhotoThumbsEl = document.getElementById('modalPhotoThumbs');
+  if (modalPhotoThumbsEl) {
+    modalPhotoThumbsEl.addEventListener('click', (e) => {
+      const thumb = e.target.closest('[data-photo-index]');
+      if (!thumb) return;
+      const p = state.currentModalProduct;
+      if (!p) return;
+      const index = parseInt(thumb.dataset.photoIndex, 10);
+      state.currentModalPhotoIndex = index;
+      document.getElementById('modalImage').innerHTML = modalImageMarkup(p, index);
+      modalPhotoThumbsEl.querySelectorAll('.photo-thumb').forEach(t => t.classList.remove('selected'));
+      thumb.classList.add('selected');
+    });
+  }
 
   document.getElementById('qtyMinus').addEventListener('click', () => {
     const input = document.getElementById('modalQty');
