@@ -515,7 +515,11 @@ function productVisual(p) {
 }
 
 function modalImageMarkup(p, index) {
-  if (p.images && p.images.length) return `<img src="${p.images[index] || p.images[0]}" alt="" loading="lazy">`;
+  // No loading="lazy" here: this image is the focal point of a modal that
+  // just appeared via a CSS opacity/visibility toggle, not real scrolling —
+  // Firefox's native lazy-load never detects it as "in view" in that case
+  // and the fetch gets aborted (NS_BINDING_ABORTED), leaving it blank forever.
+  if (p.images && p.images.length) return `<img src="${p.images[index] || p.images[0]}" alt="">`;
   return productVisual(p);
 }
 
