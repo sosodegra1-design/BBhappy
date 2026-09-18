@@ -483,6 +483,22 @@ ul { list-style: none; margin: 0; padding: 0; }
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 26px;
 }
+.product-grid.is-grouped { display: block; }
+.search-category-group { margin-bottom: 40px; }
+.search-category-group:last-child { margin-bottom: 0; }
+.search-category-heading {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  color: var(--gold-deep);
+  margin-bottom: 18px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+.search-category-group .product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 26px;
+}
 .product-card {
   background: var(--surface);
   border-radius: var(--radius-lg);

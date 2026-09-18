@@ -569,6 +569,7 @@ function renderProducts() {
   const empty = document.getElementById('emptyState');
   const list = getFilteredProducts();
   grid.innerHTML = '';
+  grid.classList.toggle('is-grouped', !!state.searchTerm);
   if (empty) empty.hidden = list.length !== 0;
 
   // Reflect the "universal search" state in the products section heading,
@@ -591,7 +592,7 @@ function renderProducts() {
     }
   }
 
-  list.forEach(p => {
+  const buildCardEl = (p) => {
     const isFav = state.favorites.includes(p.id);
     const badge = p.lot
       ? `<span class="product-badge lot-badge">${t('badge.lot')}</span>`
@@ -614,8 +615,34 @@ function renderProducts() {
         <button class="add-cart-btn" data-add="${p.id}">${t('modal.addtocart')}</button>
       </div>
     `;
-    grid.appendChild(card);
-  });
+    return card;
+  };
+
+  if (state.searchTerm) {
+    // Search spans every category, so results are grouped under a heading
+    // per category instead of one undifferentiated grid.
+    const order = ['jouets', 'vetements', 'maison', 'beaute', 'electronique', 'sport', 'bijoux', 'box', 'destockage'];
+    const byCategory = new Map();
+    list.forEach(p => {
+      if (!byCategory.has(p.category)) byCategory.set(p.category, []);
+      byCategory.get(p.category).push(p);
+    });
+    order.filter(cat => byCategory.has(cat)).forEach(cat => {
+      const group = document.createElement('div');
+      group.className = 'search-category-group';
+      const heading = document.createElement('h3');
+      heading.className = 'search-category-heading';
+      heading.textContent = CATEGORY_LABEL_KEYS[cat] ? t(CATEGORY_LABEL_KEYS[cat]) : cat;
+      group.appendChild(heading);
+      const subGrid = document.createElement('div');
+      subGrid.className = 'product-grid';
+      byCategory.get(cat).forEach(p => subGrid.appendChild(buildCardEl(p)));
+      group.appendChild(subGrid);
+      grid.appendChild(group);
+    });
+  } else {
+    list.forEach(p => grid.appendChild(buildCardEl(p)));
+  }
 }
 
 /* ===================== MODAL ===================== */
@@ -1129,6 +1156,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   applyLanguage();
+
+  // A search redirects here from another page with the results as the whole
+  // point of the visit — jump straight to them instead of leaving the visitor
+  // stranded at the top, behind the hero banner and category tiles.
+  if (state.searchTerm) {
+    const resultsSection = document.getElementById('produits');
+    if (resultsSection) resultsSection.scrollIntoView({ behavior: 'auto', block: 'start' });
+  }
 
   // Returning from Stripe Checkout: confirm the payment and show the order
   // confirmation, or let the visitor know a payment was cancelled.
