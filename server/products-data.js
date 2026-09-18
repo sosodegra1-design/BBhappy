@@ -1025,6 +1025,25 @@ const PRODUCTS = [
     care_en: 'Machine wash at 30°C. Dry flat.',
     sizeGuide: [ ['Format', 'Dimensions'], ['Standard', '90 x 70 cm'] ],
     sizeGuide_en: [ ['Format', 'Dimensions'], ['Standard', '90 x 70 cm'] ]
+  },
+
+  /* ===== BIJOUX & ACCESSOIRES ===== */
+  {
+    id: 'bj1', category: 'bijoux', universe: 'collier', age: 'all',
+    price: 9.99, oldPrice: null, icon: ICONS.collier, image: 'images/products/bj1.jpg', bg: '#f2ead6',
+    colors: ['#e8b4a0', '#ffffff'], sale: false,
+    name: 'Collier personnalisé pierre de naissance & pendentif cœur', name_en: 'Custom Birthstone & Heart Pendant Necklace',
+    ageLabel: 'Bijoux', ageLabel_en: 'Jewelry',
+    description: 'Collier personnalisable en cuivre plaqué or rose, avec pendentif cœur serti d\'un cristal façon diamant. 12 pierres de naissance au choix (une par mois de naissance) et logo à graver en DIY, pour un bijou unique à offrir ou à porter au quotidien.',
+    description_en: 'Customizable copper necklace with rose gold-tone plating, featuring a heart pendant set with a diamond-style crystal. Choose from 12 birthstones (one per birth month) and a DIY engraved logo, for a one-of-a-kind piece to gift or wear every day.',
+    ecoDetails: 'Cuivre plaqué or rose, certifié REACH (sans substances nocives).',
+    ecoDetails_en: 'Rose gold-plated copper, REACH certified (free of harmful substances).',
+    safety: 'Certifié CE, sans nickel ajouté, chaîne croisée à fermoir sécurisé.',
+    safety_en: 'CE certified, no added nickel, secure cross-chain clasp.',
+    care: 'Évitez le contact avec l\'eau, les parfums et les cosmétiques. Rangez-le à l\'abri de l\'air dans sa pochette.',
+    care_en: 'Avoid contact with water, perfume and cosmetics. Store away from air exposure in its pouch.',
+    sizeGuide: [ ['Matériau', 'Pierre principale', 'Emballage'], ['Cuivre plaqué or rose', 'Cristal façon diamant', '10 x 5 x 5 cm'] ],
+    sizeGuide_en: [ ['Material', 'Main stone', 'Packaging'], ['Rose gold-plated copper', 'Diamond-style crystal', '10 x 5 x 5 cm'] ]
   }
 ];
 

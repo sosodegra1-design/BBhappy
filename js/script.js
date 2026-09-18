@@ -505,6 +505,10 @@ function pf(p, field) {
   return p[field];
 }
 
+function productVisual(p) {
+  return p.image ? `<img src="${p.image}" alt="" loading="lazy">` : p.icon;
+}
+
 /* ===================== RENDER PRODUCTS ===================== */
 function getFilteredProducts() {
   // A search term is a universal, cross-category lookup (like a marketplace
@@ -563,7 +567,7 @@ function renderProducts() {
       <div class="product-media" style="--product-bg:${p.bg}" data-open="${p.id}">
         ${badge}
         <button class="product-fav ${isFav ? 'active' : ''}" data-fav="${p.id}" aria-label="${isFav ? t('fav.removeAria') : t('fav.addAria')}" aria-pressed="${isFav}">${isFav ? '❤️' : '🤍'}</button>
-        <div class="product-icon">${p.icon}</div>
+        <div class="product-icon">${productVisual(p)}</div>
       </div>
       <div class="product-body">
         <span class="product-age">${pf(p, 'ageLabel')}</span>
@@ -588,7 +592,7 @@ function openProductModal(id) {
   state.currentModalProduct = p;
   state.currentModalColor = p.colors[0];
 
-  document.getElementById('modalImage').innerHTML = p.icon;
+  document.getElementById('modalImage').innerHTML = productVisual(p);
   document.getElementById('modalImage').style.background = p.bg;
   document.getElementById('modalAge').textContent = pf(p, 'ageLabel');
   document.getElementById('modalProductName').textContent = pf(p, 'name');
@@ -699,7 +703,7 @@ function renderCart() {
       if (!p) return '';
       return `
       <div class="cart-item">
-        <div class="cart-item-media" style="background:${p.bg}">${p.icon}</div>
+        <div class="cart-item-media" style="background:${p.bg}">${productVisual(p)}</div>
         <div class="cart-item-info">
           <h5>${pf(p, 'name')}</h5>
           <p><span class="swatch" aria-hidden="true" style="display:inline-block;width:12px;height:12px;background:${item.color};vertical-align:middle;margin-right:4px;"></span>${fmtPrice(p.price)}</p>
@@ -762,7 +766,7 @@ function renderFavorites() {
   }
   wrap.innerHTML = favProducts.map(p => `
     <div class="cart-item">
-      <div class="cart-item-media" style="background:${p.bg}">${p.icon}</div>
+      <div class="cart-item-media" style="background:${p.bg}">${productVisual(p)}</div>
       <div class="cart-item-info">
         <h5><button type="button" class="fav-item-name" data-open="${p.id}">${pf(p, 'name')}</button></h5>
         <p>${fmtPrice(p.price)}</p>
