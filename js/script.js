@@ -655,8 +655,10 @@ function openProductModal(id) {
   state.currentModalColor = p.colors[0];
   state.currentModalPhotoIndex = 0;
 
-  document.getElementById('modalImage').innerHTML = modalImageMarkup(p, 0);
-  document.getElementById('modalImage').style.background = p.bg;
+  const modalImageEl = document.getElementById('modalImage');
+  modalImageEl.innerHTML = modalImageMarkup(p, 0);
+  modalImageEl.style.background = p.bg;
+  modalImageEl.classList.toggle('zoomable', hasPhoto(p));
   renderModalPhotoThumbs(p);
   document.getElementById('modalAge').textContent = pf(p, 'ageLabel');
   document.getElementById('modalProductName').textContent = pf(p, 'name');
@@ -673,8 +675,9 @@ function openProductModal(id) {
   favBtn.setAttribute('aria-label', isFav ? t('fav.removeAria') : t('fav.addAria'));
   favBtn.setAttribute('aria-pressed', String(isFav));
 
+  const descriptionHtml = pf(p, 'description').split('\n\n').map(para => `<p>${para}</p>`).join('');
   document.getElementById('panelDescription').innerHTML = `
-    <p>${pf(p, 'description')}</p>
+    ${descriptionHtml}
     <h4 style="margin-top:16px;font-size:.95rem;">${t('modal.eco')}</h4>
     <p>${pf(p, 'ecoDetails')}</p>
     <h4 style="margin-top:16px;font-size:.95rem;">${t('modal.safety')}</h4>
@@ -1372,6 +1375,29 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('modalImage').innerHTML = modalImageMarkup(p, index);
       modalPhotoThumbsEl.querySelectorAll('.photo-thumb').forEach(t => t.classList.remove('selected'));
       thumb.classList.add('selected');
+    });
+  }
+
+  // Let shoppers zoom into a real product photo to check quality/detail,
+  // like clicking the main image on any serious e-commerce PDP.
+  const imageLightbox = document.getElementById('imageLightbox');
+  const modalImageEl2 = document.getElementById('modalImage');
+  if (imageLightbox && modalImageEl2) {
+    modalImageEl2.addEventListener('click', () => {
+      if (!modalImageEl2.classList.contains('zoomable')) return;
+      const img = modalImageEl2.querySelector('img');
+      if (!img) return;
+      document.getElementById('imageLightboxImg').src = img.src;
+      imageLightbox.classList.add('open');
+    });
+    const closeLightbox = () => imageLightbox.classList.remove('open');
+    imageLightbox.addEventListener('click', closeLightbox);
+    document.getElementById('imageLightboxClose')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
     });
   }
 
