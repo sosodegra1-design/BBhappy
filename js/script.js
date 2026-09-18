@@ -531,6 +531,12 @@ function renderModalPhotoThumbs(p) {
   }
 }
 
+const CATEGORY_LABEL_KEYS = {
+  jouets: 'nav.toys', vetements: 'nav.clothing', electronique: 'nav.tech',
+  maison: 'nav.home2', beaute: 'nav.beauty', sport: 'nav.sport',
+  bijoux: 'nav.brands', box: 'nav.box2', destockage: 'footer.destock'
+};
+
 /* ===================== RENDER PRODUCTS ===================== */
 function getFilteredProducts() {
   // A search term is a universal, cross-category lookup (like a marketplace
@@ -539,7 +545,14 @@ function getFilteredProducts() {
   // product regardless of which page or category it lives in.
   if (state.searchTerm) {
     const term = state.searchTerm.toLowerCase();
-    return PRODUCTS.filter(p => pf(p, 'name').toLowerCase().includes(term));
+    return PRODUCTS.filter(p => {
+      const categoryLabel = CATEGORY_LABEL_KEYS[p.category] ? t(CATEGORY_LABEL_KEYS[p.category]) : '';
+      return pf(p, 'name').toLowerCase().includes(term)
+        || pf(p, 'description').toLowerCase().includes(term)
+        || pf(p, 'ageLabel').toLowerCase().includes(term)
+        || p.category.toLowerCase().includes(term)
+        || categoryLabel.toLowerCase().includes(term);
+    });
   }
   return PRODUCTS.filter(p => {
     if (state.categoryFilter === 'soldes' && !p.sale) return false;
@@ -1225,14 +1238,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!val.trim()) return;
     window.location.href = 'index.html?q=' + encodeURIComponent(val.trim());
   };
+  let searchDebounceTimer = null;
   [document.getElementById('searchInput'), document.getElementById('searchInputMobile')].forEach(input => {
     if (!input) return;
     input.value = state.searchTerm;
     input.addEventListener('input', (e) => {
-      if (isHome) doSearch(e.target.value);
+      if (isHome) {
+        doSearch(e.target.value);
+      } else {
+        // On category/other pages there's no cross-category grid to live-filter,
+        // so typing alone did nothing until Enter was pressed — which felt like
+        // a broken search bar. Auto-navigate to results after a short pause,
+        // so search works the same way no matter which page it's used from.
+        clearTimeout(searchDebounceTimer);
+        const val = e.target.value;
+        if (val.trim()) {
+          searchDebounceTimer = setTimeout(() => goToSearchResults(val), 700);
+        }
+      }
     });
     input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') { e.preventDefault(); goToSearchResults(e.target.value); }
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        clearTimeout(searchDebounceTimer);
+        goToSearchResults(e.target.value);
+      }
     });
   });
   document.querySelector('.search-bar button')?.addEventListener('click', () => {
