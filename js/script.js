@@ -505,9 +505,13 @@ function pf(p, field) {
   return p[field];
 }
 
+function hasPhoto(p) {
+  return !!((p.images && p.images.length) || p.image);
+}
+
 function productVisual(p) {
   const src = p.images && p.images.length ? p.images[0] : p.image;
-  return src ? `<img src="${src}" alt="" loading="lazy">` : p.icon;
+  return src ? `<img class="product-photo" src="${src}" alt="" loading="lazy">` : p.icon;
 }
 
 function modalImageMarkup(p, index) {
@@ -582,10 +586,10 @@ function renderProducts() {
     const card = document.createElement('article');
     card.className = 'product-card';
     card.innerHTML = `
-      <div class="product-media" style="--product-bg:${p.bg}" data-open="${p.id}">
+      <div class="product-media ${hasPhoto(p) ? 'has-photo' : ''}" style="--product-bg:${p.bg}" data-open="${p.id}">
         ${badge}
         <button class="product-fav ${isFav ? 'active' : ''}" data-fav="${p.id}" aria-label="${isFav ? t('fav.removeAria') : t('fav.addAria')}" aria-pressed="${isFav}">${isFav ? '❤️' : '🤍'}</button>
-        <div class="product-icon">${productVisual(p)}</div>
+        ${hasPhoto(p) ? productVisual(p) : `<div class="product-icon">${p.icon}</div>`}
       </div>
       <div class="product-body">
         <span class="product-age">${pf(p, 'ageLabel')}</span>
