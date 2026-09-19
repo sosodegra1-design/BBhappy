@@ -1143,6 +1143,17 @@ async function showOrderSuccess(order) {
   document.getElementById('checkoutPointsEarned').textContent = order.pointsEarned;
   document.getElementById('checkoutForm').hidden = true;
 
+  // Spell out exactly what's being shipped, color included — the order
+  // number alone left customers unable to confirm they'd get the rose-gold
+  // piece they picked rather than the gold one.
+  const itemsWrap = document.getElementById('checkoutOrderItems');
+  if (itemsWrap) {
+    itemsWrap.innerHTML = (order.items || []).map(item => {
+      const colorSuffix = item.colorName ? ` — ${item.colorName}` : '';
+      return `<div class="checkout-line"><span>${item.name}${colorSuffix} × ${item.qty}</span><span>${fmtPrice(item.price * item.qty)}</span></div>`;
+    }).join('');
+  }
+
   if (order.email) {
     try {
       sessionStorage.setItem('bbvoltex_last_order', JSON.stringify({ orderNumber: order.orderNumber, email: order.email }));

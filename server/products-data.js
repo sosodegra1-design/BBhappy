@@ -58,19 +58,6 @@ Object.keys(ICONS).forEach(key => {
   ICONS[key] = ICONS[key].replace('<svg viewBox="0 0 100 100">', '<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">');
 });
 
-/* Human-readable names for the swatch colors used across the catalog (for screen readers). */
-const COLOR_NAMES = {
-  '#a8e6cf': { fr: 'Vert menthe', en: 'Mint green' },
-  '#ffcab1': { fr: 'Pêche', en: 'Peach' },
-  '#ffe066': { fr: 'Jaune soleil', en: 'Sun yellow' },
-  '#ffffff': { fr: 'Blanc', en: 'White' }
-};
-function colorName(hex) {
-  const entry = COLOR_NAMES[hex.toLowerCase()];
-  if (!entry) return hex;
-  return state.lang === 'en' ? entry.en : entry.fr;
-}
-
 /* ===================== DATA ===================== */
 const PRODUCTS = [
   {
@@ -1172,4 +1159,15 @@ const LOYALTY_TIERS = [
   { threshold: 500, reward: 'Cadeau premium surprise 🎉', reward_en: 'A free premium surprise gift 🎉' }
 ];
 
-module.exports = { ICONS, PRODUCTS, LOYALTY_TIERS };
+/* Human-readable color names, kept in sync with js/script.js's COLOR_NAMES —
+   used server-side so an order confirmation or a Stripe line item never
+   shows a raw hex code like "#e8b4a8" to the customer. */
+const SERVER_COLOR_NAMES = {
+  '#a8e6cf': 'Vert menthe', '#ffcab1': 'Pêche', '#ffe066': 'Jaune soleil', '#ffffff': 'Blanc',
+  '#d4af37': 'Or', '#e8b4a8': 'Or rose'
+};
+function colorLabel(hex) {
+  return SERVER_COLOR_NAMES[(hex || '').toLowerCase()] || hex;
+}
+
+module.exports = { ICONS, PRODUCTS, LOYALTY_TIERS, colorLabel };

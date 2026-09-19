@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const crypto = require('crypto');
 const db = require('./db');
-const { PRODUCTS, LOYALTY_TIERS } = require('./products-data');
+const { PRODUCTS, LOYALTY_TIERS, colorLabel } = require('./products-data');
 
 const stripe = process.env.STRIPE_SECRET_KEY
   ? require('stripe')(process.env.STRIPE_SECRET_KEY)
@@ -278,7 +278,38 @@ async function createOrder(cartId, customer, stripeSessionId = null) {
   await db.client.execute({ sql: 'DELETE FROM cart_items WHERE cart_id = ?', args: [cartId] });
   await addLoyaltyPoints(cartId, pointsEarned);
 
-  return { orderNumber: orderId, email, pointsEarned, total };
+  // Named explicitly in the response so the confirmation screen can spell
+  // out exactly what's being shipped — a swatch dot alone left customers
+  // unsure whether they'd receive the gold or rose-gold version.
+  const orderItems = items.map(item => ({
+    name: item.product.name,
+    color: item.color,
+    colorName: item.product.colors.length > 1 ? colorLabel(item.color) : null,
+    qty: item.qty,
+    price: item.product.price
+  }));
+
+  return { orderNumber: orderId, email, pointsEarned, total, items: orderItems };
+}
+
+/* Rebuilds the same { name, color, colorName, qty, price } shape as
+   createOrder()'s response, for the idempotent "already recorded" replies
+   below (a refresh of the success page must show the same confirmation). */
+async function orderItemsFor(orderId) {
+  const res = await db.client.execute({
+    sql: 'SELECT product_id, color, qty, price FROM order_items WHERE order_id = ?',
+    args: [orderId]
+  });
+  return res.rows.map(row => {
+    const product = PRODUCTS_BY_ID.get(row.product_id);
+    return {
+      name: product ? product.name : row.product_id,
+      color: row.color,
+      colorName: product && product.colors.length > 1 ? colorLabel(row.color) : null,
+      qty: Number(row.qty),
+      price: Number(row.price)
+    };
+  });
 }
 
 app.post('/api/checkout', async (req, res, next) => {
@@ -306,7 +337,7 @@ app.post('/api/checkout', async (req, res, next) => {
           price_data: {
             currency: 'eur',
             unit_amount: Math.round(item.product.price * 100),
-            product_data: { name: `${item.product.name} (${item.color})` }
+            product_data: { name: item.product.colors.length > 1 ? `${item.product.name} (${colorLabel(item.color)})` : item.product.name }
           }
         })),
         metadata: { cartId: req.cartId, name, email, address, zip, city },
@@ -337,7 +368,10 @@ app.get('/api/checkout/confirm', async (req, res, next) => {
     });
     if (existing.rows.length) {
       const row = existing.rows[0];
-      return res.json({ orderNumber: row.id, email: row.email, pointsEarned: Number(row.points_earned), total: Number(row.total) });
+      return res.json({
+        orderNumber: row.id, email: row.email, pointsEarned: Number(row.points_earned), total: Number(row.total),
+        items: await orderItemsFor(row.id)
+      });
     }
 
     const session = await stripe.checkout.sessions.retrieve(session_id);
