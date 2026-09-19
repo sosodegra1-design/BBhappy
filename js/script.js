@@ -115,7 +115,7 @@ const TRANSLATIONS = {
     'trust.eco.title': 'Emballage éco-responsable', 'trust.eco.desc': 'Cartons recyclés, zéro plastique à usage unique',
     'trust.safe.title': 'Matériaux 100% sûrs', 'trust.safe.desc': 'Certifiés CE, testés et approuvés par nos experts',
     'trust.payment.title': 'Paiement sécurisé', 'trust.payment.desc': 'Vos données protégées, transactions cryptées',
-    'tab.description': 'Description', 'tab.care': 'Entretien', 'tab.sizes': 'Tailles/Âges',
+    'tab.description': 'Description', 'tab.care': 'Entretien', 'tab.sizes': 'Tailles/Âges', 'tab.packaging': 'Emballage & Fabricant',
     'modal.eco': 'Détails écologiques', 'modal.safety': 'Normes de sécurité',
     'modal.qty': 'Quantité', 'modal.addtocart': 'Ajouter au panier',
     'cart.title': 'Votre panier', 'cart.empty': 'Votre panier est vide pour le moment 🧺',
@@ -318,7 +318,7 @@ const TRANSLATIONS = {
     'trust.eco.title': 'Eco-friendly packaging', 'trust.eco.desc': 'Recycled boxes, zero single-use plastic',
     'trust.safe.title': '100% safe materials', 'trust.safe.desc': 'CE certified, tested and approved by our experts',
     'trust.payment.title': 'Secure payment', 'trust.payment.desc': 'Your data protected, encrypted transactions',
-    'tab.description': 'Description', 'tab.care': 'Care', 'tab.sizes': 'Sizes/Ages',
+    'tab.description': 'Description', 'tab.care': 'Care', 'tab.sizes': 'Sizes/Ages', 'tab.packaging': 'Packaging & Maker',
     'modal.eco': 'Eco-friendly details', 'modal.safety': 'Safety standards',
     'modal.qty': 'Quantity', 'modal.addtocart': 'Add to cart',
     'cart.title': 'Your cart', 'cart.empty': 'Your cart is empty for now 🧺',
@@ -613,9 +613,9 @@ function renderProducts() {
         <span class="product-age">${pf(p, 'ageLabel')}</span>
         <h3><button type="button" class="product-name" data-open="${p.id}">${pf(p, 'name')}</button></h3>
         <p class="product-price">${fmtPrice(p.price)}${p.oldPrice ? `<span class="old-price">${fmtPrice(p.oldPrice)}</span>` : ''}</p>
-        <div class="color-swatches">
+        ${p.colors.length ? `<div class="color-swatches">
           ${p.colors.map((c, i) => `<button type="button" class="swatch ${i === 0 ? 'selected' : ''}" style="background:${c}" data-color="${c}" data-product="${p.id}" aria-label="${colorName(c)}" aria-pressed="${i === 0}"></button>`).join('')}
-        </div>
+        </div>` : ''}
         <button class="add-cart-btn" data-add="${p.id}">${t('modal.addtocart')}</button>
       </div>
     `;
@@ -705,7 +705,11 @@ function openProductModal(id) {
   document.getElementById('modalQty').value = 1;
 
   const colorsWrap = document.getElementById('modalColors');
+  colorsWrap.hidden = p.colors.length === 0;
   colorsWrap.innerHTML = p.colors.map((c, i) => `<button type="button" class="swatch ${i === 0 ? 'selected' : ''}" style="width:28px;height:28px;background:${c}" data-modal-color="${c}" aria-label="${colorName(c)}" aria-pressed="${i === 0}"></button>`).join('');
+
+  const sizesTabBtn = document.querySelector('.tab-btn[data-tab="tailles"]');
+  if (sizesTabBtn) sizesTabBtn.textContent = p.category === 'bijoux' ? t('tab.packaging') : t('tab.sizes');
 
   const favBtn = document.getElementById('modalFav');
   const isFav = state.favorites.includes(p.id);
@@ -1357,6 +1361,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       state.lang = state.lang === 'fr' ? 'en' : 'fr';
       localStorage.setItem('bbhappy_lang', state.lang);
       applyLanguage();
+      if (state.currentModalProduct) {
+        const sizesTabBtn = document.querySelector('.tab-btn[data-tab="tailles"]');
+        if (sizesTabBtn) sizesTabBtn.textContent = state.currentModalProduct.category === 'bijoux' ? t('tab.packaging') : t('tab.sizes');
+      }
     });
   }
 

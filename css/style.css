@@ -731,6 +731,7 @@ ul { list-style: none; margin: 0; padding: 0; }
   .modal-image { width: 100%; height: auto; aspect-ratio: 1/1; }
 }
 .modal-thumbs { display: flex; gap: 10px; }
+.modal-thumbs[hidden] { display: none; }
 .modal-photo-thumbs { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; justify-content: center; }
 .modal-photo-thumbs[hidden] { display: none; }
 .photo-thumb { width: 48px; height: 48px; border-radius: var(--radius-sm); overflow: hidden; padding: 0; border: 2px solid transparent; cursor: pointer; background: var(--bg); }
