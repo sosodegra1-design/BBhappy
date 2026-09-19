@@ -4,7 +4,6 @@ const COLOR_NAMES = {
   '#ffcab1': { fr: 'Pêche', en: 'Peach' },
   '#ffe066': { fr: 'Jaune soleil', en: 'Sun yellow' },
   '#ffffff': { fr: 'Blanc', en: 'White' },
-  'linear-gradient(135deg, #f7cfd8 50%, #d4af37 50%)': { fr: 'Rose & Or', en: 'Pink & Gold' },
   '#d4af37': { fr: 'Or', en: 'Gold' },
   '#e8b4a8': { fr: 'Or rose', en: 'Rose gold' }
 };
