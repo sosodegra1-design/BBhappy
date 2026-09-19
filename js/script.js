@@ -495,7 +495,8 @@ const state = {
   memberNumber: '',
   physicalCardRequested: false,
   currentModalProduct: null,
-  currentModalColor: null
+  currentModalColor: null,
+  currentModalImages: null
 };
 
 const fmtPrice = (n) => n.toFixed(2).replace('.', ',') + ' €';
@@ -513,26 +514,33 @@ function hasPhoto(p) {
   return !!((p.images && p.images.length) || p.image);
 }
 
+// Some products photograph each color separately (imagesByColor); everything
+// else shares one gallery regardless of which swatch is selected.
+function productImagesForColor(p, color) {
+  if (p.imagesByColor && p.imagesByColor[color] && p.imagesByColor[color].length) return p.imagesByColor[color];
+  return p.images || [];
+}
+
 function productVisual(p) {
   const src = p.images && p.images.length ? p.images[0] : p.image;
   return src ? `<img class="product-photo" src="${src}" alt="" loading="lazy">` : p.icon;
 }
 
-function modalImageMarkup(p, index) {
+function modalImageMarkup(p, images, index) {
   // No loading="lazy" here: this image is the focal point of a modal that
   // just appeared via a CSS opacity/visibility toggle, not real scrolling —
   // Firefox's native lazy-load never detects it as "in view" in that case
   // and the fetch gets aborted (NS_BINDING_ABORTED), leaving it blank forever.
-  if (p.images && p.images.length) return `<img src="${p.images[index] || p.images[0]}" alt="">`;
+  if (images && images.length) return `<img src="${images[index] || images[0]}" alt="">`;
   return productVisual(p);
 }
 
-function renderModalPhotoThumbs(p) {
+function renderModalPhotoThumbs(images) {
   const wrap = document.getElementById('modalPhotoThumbs');
   if (!wrap) return;
-  if (p.images && p.images.length > 1) {
+  if (images && images.length > 1) {
     wrap.hidden = false;
-    wrap.innerHTML = p.images.map((img, i) => `<button type="button" class="photo-thumb ${i === 0 ? 'selected' : ''}" data-photo-index="${i}" aria-label="Photo ${i + 1}"><img src="${img}" alt=""></button>`).join('');
+    wrap.innerHTML = images.map((img, i) => `<button type="button" class="photo-thumb ${i === 0 ? 'selected' : ''}" data-photo-index="${i}" aria-label="Photo ${i + 1}"><img src="${img}" alt=""></button>`).join('');
   } else {
     wrap.hidden = true;
     wrap.innerHTML = '';
@@ -746,13 +754,14 @@ function openProductModal(id) {
   state.currentModalProduct = p;
   state.currentModalColor = p.colors[0];
   state.currentModalPhotoIndex = 0;
+  state.currentModalImages = productImagesForColor(p, state.currentModalColor);
 
   const modalImageEl = document.getElementById('modalImage');
-  modalImageEl.innerHTML = modalImageMarkup(p, 0);
+  modalImageEl.innerHTML = modalImageMarkup(p, state.currentModalImages, 0);
   modalImageEl.style.background = p.bg;
   modalImageEl.classList.toggle('zoomable', hasPhoto(p));
   wireImageRetry(modalImageEl, p);
-  renderModalPhotoThumbs(p);
+  renderModalPhotoThumbs(state.currentModalImages);
   document.getElementById('modalAge').textContent = pf(p, 'ageLabel');
   document.getElementById('modalProductName').textContent = pf(p, 'name');
   document.getElementById('modalPrice').innerHTML = `${fmtPrice(p.price)}${p.oldPrice ? `<span class="old-price">${fmtPrice(p.oldPrice)}</span>` : ''}`;
@@ -1295,6 +1304,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         card.querySelectorAll('.swatch').forEach(s => { s.classList.remove('selected'); s.setAttribute('aria-pressed', 'false'); });
         swatch.classList.add('selected');
         swatch.setAttribute('aria-pressed', 'true');
+
+        // Show that color's own photo on the card too, when we have one,
+        // instead of leaving the picture on whichever color loaded first.
+        const p = PRODUCTS.find(x => x.id === swatch.dataset.product);
+        const media = card.querySelector('.product-media');
+        const cardImg = media && media.querySelector('img.product-photo');
+        if (p && cardImg) {
+          const images = productImagesForColor(p, swatch.dataset.color);
+          if (images.length) {
+            cardImg.src = images[0];
+            wireImageRetry(media, p);
+          }
+        }
         return;
       }
       if (favId) { toggleFavorite(favId.dataset.fav); return; }
@@ -1462,6 +1484,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('#modalColors .swatch').forEach(s => { s.classList.remove('selected'); s.setAttribute('aria-pressed', 'false'); });
     sw.classList.add('selected');
     sw.setAttribute('aria-pressed', 'true');
+
+    // Selecting a color shows that color's own photos, when we have them,
+    // instead of leaving the gallery on whatever color was shown before.
+    const p = state.currentModalProduct;
+    if (p) {
+      state.currentModalImages = productImagesForColor(p, state.currentModalColor);
+      state.currentModalPhotoIndex = 0;
+      const modalImageEl = document.getElementById('modalImage');
+      modalImageEl.innerHTML = modalImageMarkup(p, state.currentModalImages, 0);
+      wireImageRetry(modalImageEl, p);
+      renderModalPhotoThumbs(state.currentModalImages);
+    }
   });
 
   const modalPhotoThumbsEl = document.getElementById('modalPhotoThumbs');
@@ -1473,7 +1507,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!p) return;
       const index = parseInt(thumb.dataset.photoIndex, 10);
       state.currentModalPhotoIndex = index;
-      document.getElementById('modalImage').innerHTML = modalImageMarkup(p, index);
+      const modalImageEl = document.getElementById('modalImage');
+      modalImageEl.innerHTML = modalImageMarkup(p, state.currentModalImages, index);
+      wireImageRetry(modalImageEl, p);
       modalPhotoThumbsEl.querySelectorAll('.photo-thumb').forEach(t => t.classList.remove('selected'));
       thumb.classList.add('selected');
     });
@@ -1490,11 +1526,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   let lightboxIndex = 0;
 
   const showLightboxPhoto = (index) => {
-    const p = state.currentModalProduct;
-    if (!p || !p.images || !p.images.length) return;
-    lightboxIndex = (index + p.images.length) % p.images.length;
-    lightboxImg.src = p.images[lightboxIndex];
-    const multi = p.images.length > 1;
+    const images = state.currentModalImages;
+    if (!images || !images.length) return;
+    lightboxIndex = (index + images.length) % images.length;
+    lightboxImg.src = images[lightboxIndex];
+    const multi = images.length > 1;
     if (lightboxPrev) lightboxPrev.hidden = !multi;
     if (lightboxNext) lightboxNext.hidden = !multi;
   };
