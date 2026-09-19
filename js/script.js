@@ -1418,15 +1418,29 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Let shoppers zoom into a real product photo to check quality/detail,
-  // like clicking the main image on any serious e-commerce PDP.
+  // like clicking the main image on any serious e-commerce PDP. They can
+  // still flip between photos while zoomed, via arrows or the keyboard.
   const imageLightbox = document.getElementById('imageLightbox');
   const modalImageEl2 = document.getElementById('modalImage');
+  const lightboxImg = document.getElementById('imageLightboxImg');
+  const lightboxPrev = document.getElementById('imageLightboxPrev');
+  const lightboxNext = document.getElementById('imageLightboxNext');
+  let lightboxIndex = 0;
+
+  const showLightboxPhoto = (index) => {
+    const p = state.currentModalProduct;
+    if (!p || !p.images || !p.images.length) return;
+    lightboxIndex = (index + p.images.length) % p.images.length;
+    lightboxImg.src = p.images[lightboxIndex];
+    const multi = p.images.length > 1;
+    if (lightboxPrev) lightboxPrev.hidden = !multi;
+    if (lightboxNext) lightboxNext.hidden = !multi;
+  };
+
   if (imageLightbox && modalImageEl2) {
     modalImageEl2.addEventListener('click', () => {
       if (!modalImageEl2.classList.contains('zoomable')) return;
-      const img = modalImageEl2.querySelector('img');
-      if (!img) return;
-      document.getElementById('imageLightboxImg').src = img.src;
+      showLightboxPhoto(state.currentModalPhotoIndex || 0);
       imageLightbox.classList.add('open');
     });
     const closeLightbox = () => imageLightbox.classList.remove('open');
@@ -1435,8 +1449,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       e.stopPropagation();
       closeLightbox();
     });
+    lightboxPrev?.addEventListener('click', (e) => { e.stopPropagation(); showLightboxPhoto(lightboxIndex - 1); });
+    lightboxNext?.addEventListener('click', (e) => { e.stopPropagation(); showLightboxPhoto(lightboxIndex + 1); });
     document.addEventListener('keydown', (e) => {
+      if (!imageLightbox.classList.contains('open')) return;
       if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') showLightboxPhoto(lightboxIndex - 1);
+      if (e.key === 'ArrowRight') showLightboxPhoto(lightboxIndex + 1);
     });
   }
 
