@@ -3,7 +3,8 @@ const COLOR_NAMES = {
   '#a8e6cf': { fr: 'Vert menthe', en: 'Mint green' },
   '#ffcab1': { fr: 'Pêche', en: 'Peach' },
   '#ffe066': { fr: 'Jaune soleil', en: 'Sun yellow' },
-  '#ffffff': { fr: 'Blanc', en: 'White' }
+  '#ffffff': { fr: 'Blanc', en: 'White' },
+  'linear-gradient(135deg, #f7cfd8 50%, #d4af37 50%)': { fr: 'Rose & Or', en: 'Pink & Gold' }
 };
 function colorName(hex) {
   const entry = COLOR_NAMES[hex.toLowerCase()];
