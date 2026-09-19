@@ -123,6 +123,7 @@ const TRANSLATIONS = {
     'modal.qty': 'Quantité', 'modal.addtocart': 'Ajouter au panier',
     'cart.title': 'Votre panier', 'cart.empty': 'Votre panier est vide pour le moment 🧺',
     'cart.total': 'Total', 'cart.checkout': 'Passer la commande', 'cart.remove': 'Retirer',
+    'cart.color': 'Couleur',
     'fav.title': 'Vos favoris', 'fav.empty': 'Aucun favori pour l\'instant 💛<br>Cliquez sur le cœur d\'un produit !',
     'fav.remove': 'Retirer des favoris', 'fav.addAria': 'Ajouter aux favoris', 'fav.removeAria': 'Retirer des favoris',
     'toast.added': 'ajouté au panier 🛒',
@@ -327,6 +328,7 @@ const TRANSLATIONS = {
     'modal.qty': 'Quantity', 'modal.addtocart': 'Add to cart',
     'cart.title': 'Your cart', 'cart.empty': 'Your cart is empty for now 🧺',
     'cart.total': 'Total', 'cart.checkout': 'Checkout', 'cart.remove': 'Remove',
+    'cart.color': 'Color',
     'fav.title': 'Your favorites', 'fav.empty': 'No favorites yet 💛<br>Click the heart on a product!',
     'fav.remove': 'Remove from favorites', 'fav.addAria': 'Add to favorites', 'fav.removeAria': 'Remove from favorites',
     'toast.added': 'added to cart 🛒',
@@ -829,7 +831,8 @@ async function addToCart(productId, color, qty = 1) {
     }));
     renderCart();
     updateCounts();
-    showToast(`${pf(p, 'name')} ${t('toast.added')}`);
+    const colorSuffix = p.colors.length > 1 ? ` (${colorName(color)})` : '';
+    showToast(`${pf(p, 'name')}${colorSuffix} ${t('toast.added')}`);
     bumpCart();
   } catch (err) {
     showToast(err.message || t('error.generic'));
@@ -874,12 +877,19 @@ function renderCart() {
     wrap.innerHTML = state.cart.map(item => {
       const p = PRODUCTS.find(x => x.id === item.id);
       if (!p) return '';
+      // Show the photo and name of the color actually chosen, not just a
+      // generic thumbnail — otherwise a rose-gold order looks identical to
+      // a gold one in the cart and the customer can't tell what they picked.
+      const itemImages = productImagesForColor(p, item.color);
+      const media = itemImages.length ? `<img class="product-photo" src="${itemImages[0]}" alt="">` : productVisual(p);
+      const showColorLabel = p.colors.length > 1;
       return `
       <div class="cart-item">
-        <div class="cart-item-media" style="background:${p.bg}">${productVisual(p)}</div>
+        <div class="cart-item-media" style="background:${p.bg}">${media}</div>
         <div class="cart-item-info">
           <h5>${pf(p, 'name')}</h5>
-          <p><span class="swatch" aria-hidden="true" style="display:inline-block;width:12px;height:12px;background:${item.color};vertical-align:middle;margin-right:4px;"></span>${fmtPrice(p.price)}</p>
+          ${showColorLabel ? `<p class="cart-item-color"><span class="swatch" aria-hidden="true" style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${item.color};vertical-align:middle;margin-right:6px;"></span>${t('cart.color')} : ${colorName(item.color)}</p>` : ''}
+          <p>${fmtPrice(p.price)}</p>
           <div class="cart-item-controls">
             <button data-qty-minus="${item.itemId}">−</button>
             <span>${item.qty}</span>
@@ -1062,7 +1072,8 @@ function renderCheckoutSummary() {
   const lines = state.cart.map(item => {
     const p = PRODUCTS.find(x => x.id === item.id);
     if (!p) return '';
-    return `<div class="checkout-line"><span>${pf(p, 'name')} × ${item.qty}</span><span>${fmtPrice(p.price * item.qty)}</span></div>`;
+    const colorSuffix = p.colors.length > 1 ? ` — ${colorName(item.color)}` : '';
+    return `<div class="checkout-line"><span>${pf(p, 'name')}${colorSuffix} × ${item.qty}</span><span>${fmtPrice(p.price * item.qty)}</span></div>`;
   }).join('');
   summary.innerHTML = `<h4>${t('checkout.summaryTitle')}</h4>${lines}<div class="checkout-line checkout-line-total"><span>${t('cart.total')}</span><span>${fmtPrice(total)}</span></div>`;
 }
