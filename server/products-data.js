@@ -1030,7 +1030,7 @@ const PRODUCTS = [
   /* ===== BIJOUX & ACCESSOIRES ===== */
   {
     id: 'bj1', category: 'bijoux', universe: 'collier', age: 'all',
-    price: 19.99, oldPrice: null, icon: ICONS.collier, images: ['images/products/bj1-1.jpg', 'images/products/bj1-2.jpg', 'images/products/bj1-3.jpg', 'images/products/bj1-4.jpg', 'images/products/bj1-5.jpg'], bg: '#f2ead6',
+    price: 19.99, oldPrice: null, icon: ICONS.collier, images: ['images/products/bj1-1.jpg', 'images/products/bj1-2.jpg', 'images/products/bj1-3.jpg', 'images/products/bj1-4.jpg', 'images/products/bj1-5.jpg', 'images/products/bj2-6.jpg'], bg: '#f2ead6',
     colors: ['linear-gradient(135deg, #f7cfd8 50%, #d4af37 50%)'], sale: false,
     name: 'Collier personnalisé pierre de naissance & pendentif cœur', name_en: 'Custom Birthstone & Heart Pendant Necklace',
     ageLabel: 'Bijoux', ageLabel_en: 'Jewelry',
