@@ -1076,6 +1076,47 @@ const PRODUCTS = [
       ['Certifications', 'CE, REACH'],
       ['Packaging', 'Beige velvet jewelry box, 10 x 5 x 5 cm']
     ]
+  },
+  {
+    id: 'bj2', category: 'bijoux', universe: 'collier', age: 'all',
+    price: 12.99, oldPrice: null, icon: ICONS.collier, images: ['images/products/bj2-7.jpg', 'images/products/bj2-8.jpg', 'images/products/bj2-9.jpg'], bg: '#f2ead6',
+    colors: ['#d4af37', '#e8b4a8'], sale: false,
+    name: 'Collier double cœur entrelacé plaqué or', name_en: 'Interlocking Double Heart Necklace',
+    ageLabel: 'Bijoux', ageLabel_en: 'Jewelry',
+    description: '💕 Collier Double Cœur Entrelacé : le symbole discret de deux âmes unies.\n\nCe collier minimaliste met en scène deux cœurs évidés, entrelacés l\'un dans l\'autre comme deux destins qui se croisent. Fabriqué en acier inoxydable et sublimé d\'un plaquage or 18 carats (disponible aussi en finition or rose), il incarne l\'élégance discrète que l\'on porte au quotidien.\n\n✨ Ce qui rend ce bijou unique :<br>• Design épuré et intemporel : deux cœurs ajourés entrelacés, symbole parfait d\'union à s\'offrir ou à offrir à un être cher.<br>• Acier inoxydable de qualité : résistant à l\'eau, à la transpiration et aux parfums, il ne noircit pas et garde son éclat au fil du temps.<br>• Plaquage or 18 carats : une brillance durable et un rendu luxueux, sans le prix de l\'or massif.<br>• Chaîne fine et légère : confortable du matin au soir, elle se glisse discrètement sous un col ou se porte à la vue de tous.\n\n🎁 Le cadeau parfait pour une déclaration d\'amour, un anniversaire ou simplement pour se faire plaisir — disponible en finition or classique ou or rose selon vos envies.<br>• Sécurité &amp; Qualité : sans nickel ajouté, hypoallergénique, adapté aux peaux sensibles.\n\n👉 Craquez pour ce collier délicat et intemporel, aussi beau porté seul qu\'associé à vos autres bijoux.',
+    description_en: '💕 Interlocking Double Heart Necklace: the quiet symbol of two souls united.\n\nThis minimalist necklace features two open-cut hearts interlocked with one another, like two paths crossing. Made from stainless steel and finished with an 18k gold-tone plating (also available in rose gold), it embodies the understated elegance you can wear every day.\n\n✨ What makes this piece unique:<br>• Timeless, clean design: two interlocked open hearts, the perfect symbol of union to treat yourself with or gift to someone dear.<br>• Quality stainless steel: resistant to water, sweat and perfume, it won\'t tarnish and keeps its shine over time.<br>• 18k gold plating: long-lasting shine and a luxurious look, without the price tag of solid gold.<br>• Light, delicate chain: comfortable from morning to night, worn discreetly under a collar or out in the open.\n\n🎁 The perfect gift for a declaration of love, a birthday, or simply to treat yourself — available in classic gold or rose gold finish.<br>• Safety &amp; Quality: no added nickel, hypoallergenic, gentle on sensitive skin.\n\n👉 Fall for this delicate, timeless necklace, just as beautiful worn alone as layered with your other jewelry.',
+    ecoDetails: 'Acier inoxydable plaqué or 18 carats, résistant à la corrosion et au ternissement. Fabriqué par un fournisseur audité, engagé dans une chaîne d\'approvisionnement traçable.',
+    ecoDetails_en: '18k gold-plated stainless steel, corrosion and tarnish resistant. Made by an audited supplier committed to a traceable supply chain.',
+    safety: 'Sans nickel ajouté, hypoallergénique. Plaquage résistant à l\'eau et aux parfums en usage normal.',
+    safety_en: 'No added nickel, hypoallergenic. Plating resistant to water and perfume under normal use.',
+    care: 'Évitez le contact prolongé avec l\'eau, les parfums, cosmétiques et produits chimiques. Rangez le collier à l\'abri de l\'air et de l\'humidité pour préserver l\'éclat du plaquage.',
+    care_en: 'Avoid prolonged contact with water, perfume, cosmetics and chemicals. Store the necklace away from air and moisture to preserve the shine of the plating.',
+    sizeGuide: [
+      ['Caractéristique', 'Détail'],
+      ['Matériau', 'Acier inoxydable plaqué or 18 carats'],
+      ['Type de chaîne', 'Chaîne maille forçat fine'],
+      ['Pierre principale', 'Aucune'],
+      ['Type de collier', 'Collier avec pendentif'],
+      ['Style', 'Minimaliste'],
+      ['Forme du pendentif', 'Double cœur entrelacé'],
+      ['Genre', 'Femme'],
+      ['Longueur de chaîne', '45 cm (réglable)'],
+      ['Marque', 'U Well'],
+      ['Origine', 'Zhejiang, Chine']
+    ],
+    sizeGuide_en: [
+      ['Feature', 'Detail'],
+      ['Material', '18k gold-plated stainless steel'],
+      ['Chain type', 'Fine cable chain'],
+      ['Main stone', 'None'],
+      ['Necklace type', 'Pendant necklace'],
+      ['Style', 'Minimalist'],
+      ['Pendant shape', 'Interlocking double heart'],
+      ['Gender', 'Women'],
+      ['Chain length', '45 cm (adjustable)'],
+      ['Brand', 'U Well'],
+      ['Origin', 'Zhejiang, China']
+    ]
   }
 ];
 
