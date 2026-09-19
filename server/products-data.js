@@ -1117,6 +1117,45 @@ const PRODUCTS = [
       ['Brand', 'U Well'],
       ['Origin', 'Zhejiang, China']
     ]
+  },
+  {
+    id: 'bj3', category: 'bijoux', universe: 'collier', age: 'all',
+    price: 13.99, oldPrice: null, icon: ICONS.collier, images: ['images/products/bj3-1.jpg'], bg: '#f2ead6',
+    colors: ['#d4af37'], sale: false,
+    name: 'Collier Lune & Étoile serties de zircon', name_en: 'Moon & Star Zircon Necklace',
+    ageLabel: 'Bijoux', ageLabel_en: 'Jewelry',
+    description: '🌙 Collier Lune & Étoile : la touche céleste qui illumine chaque tenue.\n\nCe collier fin et féminin met en scène un délicat croissant de lune et une étoile scintillante, réunis au cœur d\'un cercle entièrement pavé de zircons. Porté seul ou superposé à vos autres colliers, il apporte une note douce et lumineuse à votre quotidien.\n\n✨ Ce qui rend ce bijou unique :<br>• Un symbole plein de poésie : la lune et l\'étoile, pour évoquer les rêves, la protection et les liens qui nous dépassent.<br>• Éclat garanti : un cercle entièrement serti de zircons brillance diamant, pour une lumière qui accroche l\'œil sous toutes les lumières.<br>• Alliage plaqué or : un rendu chaleureux et lumineux, léger à porter toute la journée.<br>• Chaîne fine à maillons : discrète et confortable, elle se marie avec tous les styles, du quotidien à la soirée.\n\n🎁 Un cadeau tout trouvé pour une naissance, un anniversaire ou simplement pour illuminer le quotidien d\'une personne qui compte.<br>• Sécurité &amp; Qualité : sans nickel ajouté, hypoallergénique, adapté aux peaux sensibles.\n\n👉 Craquez pour ce collier céleste, aussi délicat que scintillant, à porter seul ou en accumulation avec vos bijoux préférés.',
+    description_en: '🌙 Moon & Star Necklace: the celestial touch that lights up every outfit.\n\nThis fine, feminine necklace features a delicate crescent moon and a sparkling star, set together inside a circle fully paved with zircon stones. Worn alone or layered with your other necklaces, it adds a soft, luminous touch to your everyday look.\n\n✨ What makes this piece unique:<br>• A symbol full of poetry: the moon and the star, evoking dreams, protection and the bonds that go beyond us.<br>• Guaranteed sparkle: a circle fully set with diamond-cut zircon stones, catching the light from every angle.<br>• Gold-plated alloy: a warm, luminous finish, light enough to wear all day.<br>• Fine link chain: discreet and comfortable, pairing with every style from daywear to evening.\n\n🎁 The perfect gift for a birth, a birthday, or simply to light up the day of someone who matters.<br>• Safety &amp; Quality: no added nickel, hypoallergenic, gentle on sensitive skin.\n\n👉 Fall for this celestial necklace, as delicate as it is sparkly, worn alone or layered with your favorite jewelry.',
+    ecoDetails: 'Alliage plaqué or, orné de zircons taille diamant. Fabriqué par un fournisseur audité, engagé dans une chaîne d\'approvisionnement traçable.',
+    ecoDetails_en: 'Gold-plated alloy, set with diamond-cut zircon stones. Made by an audited supplier committed to a traceable supply chain.',
+    safety: 'Sans nickel ajouté, hypoallergénique. Plaquage résistant à l\'eau et aux parfums en usage normal.',
+    safety_en: 'No added nickel, hypoallergenic. Plating resistant to water and perfume under normal use.',
+    care: 'Évitez le contact prolongé avec l\'eau, les parfums, cosmétiques et produits chimiques. Rangez le collier à l\'abri de l\'air et de l\'humidité pour préserver l\'éclat du plaquage et des zircons.',
+    care_en: 'Avoid prolonged contact with water, perfume, cosmetics and chemicals. Store the necklace away from air and moisture to preserve the shine of the plating and zircon stones.',
+    sizeGuide: [
+      ['Caractéristique', 'Détail'],
+      ['Matériau', 'Alliage plaqué or'],
+      ['Type de chaîne', 'Chaîne fine à maillons'],
+      ['Pierre principale', 'Zircon'],
+      ['Type de collier', 'Collier avec pendentif'],
+      ['Style', 'Minimaliste'],
+      ['Forme du pendentif', 'Lune et étoile dans un cercle'],
+      ['Genre', 'Femme'],
+      ['Marque', 'U Well'],
+      ['Origine', 'Zhejiang, Chine']
+    ],
+    sizeGuide_en: [
+      ['Feature', 'Detail'],
+      ['Material', 'Gold-plated alloy'],
+      ['Chain type', 'Fine link chain'],
+      ['Main stone', 'Zircon'],
+      ['Necklace type', 'Pendant necklace'],
+      ['Style', 'Minimalist'],
+      ['Pendant shape', 'Moon and star inside a circle'],
+      ['Gender', 'Women'],
+      ['Brand', 'U Well'],
+      ['Origin', 'Zhejiang, China']
+    ]
   }
 ];
 
