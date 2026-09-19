@@ -1120,7 +1120,7 @@ const PRODUCTS = [
   },
   {
     id: 'bj3', category: 'bijoux', universe: 'collier', age: 'all',
-    price: 13.99, oldPrice: null, icon: ICONS.collier, images: ['images/products/bj3-1.jpg'], bg: '#f2ead6',
+    price: 13.99, oldPrice: null, icon: ICONS.collier, images: ['images/products/bj3-1.jpg', 'images/products/bj3-2.jpg', 'images/products/bj3-3.jpg'], bg: '#f2ead6',
     colors: ['#d4af37'], sale: false,
     name: 'Collier Lune & Étoile serties de zircon', name_en: 'Moon & Star Zircon Necklace',
     ageLabel: 'Bijoux', ageLabel_en: 'Jewelry',
