@@ -109,6 +109,7 @@ const TRANSLATIONS = {
     'uni.bebe.title': 'Bébé', 'uni.bebe.desc': 'Premiers éveils en douceur',
     'products.eyebrow': 'Coups de cœur', 'products.title': 'Produits vedettes',
     'products.desc': 'Une sélection rigoureuse à travers toutes nos catégories.',
+    'products.other': 'Autres',
     'search.eyebrow': 'Résultats de recherche',
     'search.resultsFor': 'Résultats pour « %s »',
     'search.resultsDesc': '%s produit(s) trouvé(s) dans tout le catalogue.',
@@ -312,6 +313,7 @@ const TRANSLATIONS = {
     'uni.bebe.title': 'Baby', 'uni.bebe.desc': 'Gentle first discoveries',
     'products.eyebrow': 'Favorites', 'products.title': 'Featured products',
     'products.desc': 'A rigorous selection across every category.',
+    'products.other': 'Other',
     'search.eyebrow': 'Search results',
     'search.resultsFor': 'Results for "%s"',
     'search.resultsDesc': '%s product(s) found across the whole catalog.',
@@ -544,6 +546,13 @@ const CATEGORY_LABEL_KEYS = {
   bijoux: 'nav.brands', box: 'nav.box2', destockage: 'footer.destock'
 };
 
+const UNIVERSE_LABEL_KEYS = {
+  fille: 'uni.fille.title', garcon: 'uni.garcon.title', bebe: 'uni.bebe.title', 'plein-air': 'uni.pleinair.title',
+  homme: 'uni.homme.title', femme: 'uni.femme.title', enfant: 'uni.enfant.title', educatif: 'uni.educatif.title',
+  collier: 'uni.collier.title', bracelet: 'uni.bracelet.title', bague: 'uni.bague.title', ceinture: 'uni.ceinture.title',
+  montre: 'uni.montre.title', 'sac-a-main': 'uni.sacamain.title', 'sacoche-sac-a-dos': 'uni.sacados.title'
+};
+
 /* ===================== RENDER PRODUCTS ===================== */
 function getFilteredProducts() {
   // A search term is a universal, cross-category lookup (like a marketplace
@@ -576,7 +585,12 @@ function renderProducts() {
   const empty = document.getElementById('emptyState');
   const list = getFilteredProducts();
   grid.innerHTML = '';
-  grid.classList.toggle('is-grouped', !!state.searchTerm);
+  // When the page offers universe tiles (Collier, Bracelet, ...) and none is
+  // selected, group the products under those same universes instead of
+  // leaving them in one undifferentiated grid below the tiles.
+  const universeCards = Array.from(document.querySelectorAll('button.category-card[data-filter-universe]'));
+  const groupByUniverse = !state.searchTerm && !state.universeFilter && universeCards.length > 0;
+  grid.classList.toggle('is-grouped', !!state.searchTerm || groupByUniverse);
   if (empty) empty.hidden = list.length !== 0;
 
   // Reflect the "universal search" state in the products section heading,
@@ -648,6 +662,44 @@ function renderProducts() {
       group.appendChild(subGrid);
       grid.appendChild(group);
     });
+  } else if (groupByUniverse) {
+    const order = universeCards.map(card => card.dataset.filterUniverse);
+    const byUniverse = new Map();
+    const leftover = [];
+    list.forEach(p => {
+      if (order.includes(p.universe)) {
+        if (!byUniverse.has(p.universe)) byUniverse.set(p.universe, []);
+        byUniverse.get(p.universe).push(p);
+      } else {
+        leftover.push(p);
+      }
+    });
+    order.filter(u => byUniverse.has(u)).forEach(u => {
+      const group = document.createElement('div');
+      group.className = 'search-category-group';
+      const heading = document.createElement('h3');
+      heading.className = 'search-category-heading';
+      heading.textContent = UNIVERSE_LABEL_KEYS[u] ? t(UNIVERSE_LABEL_KEYS[u]) : u;
+      group.appendChild(heading);
+      const subGrid = document.createElement('div');
+      subGrid.className = 'product-grid';
+      byUniverse.get(u).forEach(p => subGrid.appendChild(buildCardEl(p)));
+      group.appendChild(subGrid);
+      grid.appendChild(group);
+    });
+    if (leftover.length) {
+      const group = document.createElement('div');
+      group.className = 'search-category-group';
+      const heading = document.createElement('h3');
+      heading.className = 'search-category-heading';
+      heading.textContent = t('products.other');
+      group.appendChild(heading);
+      const subGrid = document.createElement('div');
+      subGrid.className = 'product-grid';
+      leftover.forEach(p => subGrid.appendChild(buildCardEl(p)));
+      group.appendChild(subGrid);
+      grid.appendChild(group);
+    }
   } else {
     list.forEach(p => grid.appendChild(buildCardEl(p)));
   }
