@@ -619,6 +619,7 @@ function renderProducts() {
         <button class="add-cart-btn" data-add="${p.id}">${t('modal.addtocart')}</button>
       </div>
     `;
+    if (hasPhoto(p)) wireImageRetry(card.querySelector('.product-media'), p);
     return card;
   };
 
@@ -650,6 +651,39 @@ function renderProducts() {
 }
 
 /* ===================== MODAL ===================== */
+// The modal photo has been observed to sometimes fail to load (aborted
+// request) for reasons that don't reproduce locally. Rather than depend on
+// diagnosing that further, make it self-healing: retry a few times with a
+// cache-busting query so a fresh request is made each time, then fall back
+// to the drawn icon if it still won't load, instead of staying blank forever.
+function wireImageRetry(container, p) {
+  const img = container.querySelector('img');
+  if (!img) return;
+  let attempts = 0;
+  let settled = false;
+  const maxAttempts = 4;
+  const baseSrc = img.getAttribute('src').split('?')[0];
+
+  const retry = () => {
+    if (settled) return;
+    attempts++;
+    if (attempts <= maxAttempts) {
+      setTimeout(() => {
+        if (!settled) img.src = `${baseSrc}?retry=${attempts}-${Date.now()}`;
+      }, attempts * 400);
+    } else {
+      settled = true;
+      container.innerHTML = p.icon;
+    }
+  };
+
+  img.addEventListener('load', () => { settled = true; });
+  img.addEventListener('error', retry);
+  // A silently aborted request (e.g. NS_BINDING_ABORTED) doesn't always fire
+  // "error" — if nothing has happened after a few seconds, retry anyway.
+  setTimeout(() => { if (!settled && !img.complete) retry(); }, 3000);
+}
+
 function openProductModal(id) {
   const p = PRODUCTS.find(x => x.id === id);
   if (!p) return;
@@ -663,6 +697,7 @@ function openProductModal(id) {
   modalImageEl.innerHTML = modalImageMarkup(p, 0);
   modalImageEl.style.background = p.bg;
   modalImageEl.classList.toggle('zoomable', hasPhoto(p));
+  wireImageRetry(modalImageEl, p);
   renderModalPhotoThumbs(p);
   document.getElementById('modalAge').textContent = pf(p, 'ageLabel');
   document.getElementById('modalProductName').textContent = pf(p, 'name');
