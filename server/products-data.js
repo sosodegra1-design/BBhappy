@@ -1017,9 +1017,9 @@ const PRODUCTS = [
   /* ===== BIJOUX & ACCESSOIRES ===== */
   {
     id: 'bj1', category: 'bijoux', universe: 'collier', age: 'all',
-    price: 19.99, oldPrice: null, icon: ICONS.collier, images: ['images/products/bj1-1.jpg', 'images/products/bj1-3.jpg', 'images/products/bj1-4.jpg', 'images/products/bj1-5.jpg'], bg: '#f2ead6',
+    price: 19.99, oldPrice: null, icon: ICONS.collier, images: ['images/products/bj1-1.jpg', 'images/products/bj1-2.jpg', 'images/products/bj1-3.jpg', 'images/products/bj1-4.jpg', 'images/products/bj1-5.jpg'], bg: '#f2ead6',
     imagesByColor: {
-      '#d4af37': ['images/products/bj1-1.jpg', 'images/products/bj1-3.jpg', 'images/products/bj1-4.jpg', 'images/products/bj1-5.jpg'],
+      '#d4af37': ['images/products/bj1-1.jpg', 'images/products/bj1-2.jpg', 'images/products/bj1-3.jpg', 'images/products/bj1-4.jpg', 'images/products/bj1-5.jpg'],
       '#e8b4a8': ['images/products/bj2-6.jpg']
     },
     colors: ['#d4af37', '#e8b4a8'], sale: false,
@@ -1111,7 +1111,7 @@ const PRODUCTS = [
   },
   {
     id: 'bj3', category: 'bijoux', universe: 'collier', age: 'all',
-    price: 9.99, oldPrice: null, icon: ICONS.collier, images: ['images/products/bj3-1.jpg', 'images/products/bj3-3.jpg'], bg: '#f2ead6',
+    price: 9.99, oldPrice: null, icon: ICONS.collier, images: ['images/products/bj3-1.jpg', 'images/products/bj3-2.jpg', 'images/products/bj3-3.jpg'], bg: '#f2ead6',
     colors: ['#d4af37'], sale: false,
     name: 'Collier Lune & Étoile serties de zircon', name_en: 'Moon & Star Zircon Necklace',
     ageLabel: 'Bijoux', ageLabel_en: 'Jewelry',
