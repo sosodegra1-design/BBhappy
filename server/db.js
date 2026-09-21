@@ -54,6 +54,66 @@ async function init() {
       price REAL NOT NULL
     );
 
+    /* Product catalog. Previously held only in products-data.js (a source
+       file read into memory at boot), which made products impossible to add
+       at runtime and unsafe to write to on Render's ephemeral filesystem.
+       icon_key indexes the hand-drawn SVG library in products-data.js rather
+       than storing markup, so a row can never introduce arbitrary HTML into
+       the storefront (the icon is injected via innerHTML). */
+    CREATE TABLE IF NOT EXISTS suppliers (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      kind TEXT NOT NULL DEFAULT 'fournisseur',
+      margin_coefficient REAL,
+      status TEXT NOT NULL DEFAULT 'actif',
+      url TEXT,
+      notes TEXT,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS products (
+      id TEXT PRIMARY KEY,
+      category TEXT NOT NULL,
+      universe TEXT,
+      age TEXT NOT NULL,
+      price REAL NOT NULL,
+      old_price REAL,
+      icon_key TEXT NOT NULL,
+      bg TEXT NOT NULL,
+      colors TEXT NOT NULL,
+      sale INTEGER NOT NULL DEFAULT 0,
+      /* JSON-encoded, not a flag: lot is either true or the pack size
+         (2, 3, 5 ... 200), and collapsing it to a boolean would silently lose
+         the quantity the storefront badge is describing. */
+      lot TEXT,
+      name TEXT NOT NULL,
+      name_en TEXT NOT NULL,
+      age_label TEXT NOT NULL,
+      age_label_en TEXT NOT NULL,
+      description TEXT NOT NULL,
+      description_en TEXT NOT NULL,
+      eco_details TEXT NOT NULL,
+      eco_details_en TEXT NOT NULL,
+      safety TEXT NOT NULL,
+      safety_en TEXT NOT NULL,
+      care TEXT NOT NULL,
+      care_en TEXT NOT NULL,
+      size_guide TEXT NOT NULL,
+      size_guide_en TEXT NOT NULL,
+      images TEXT,
+      images_by_color TEXT,
+      source_url TEXT,
+      supplier_id INTEGER REFERENCES suppliers(id) ON DELETE SET NULL,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT,
+      updated_at TEXT
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_products_sort ON products (sort_order);
+    CREATE INDEX IF NOT EXISTS idx_products_source_url ON products (source_url);
+    CREATE INDEX IF NOT EXISTS idx_products_supplier ON products (supplier_id);
+
     CREATE TABLE IF NOT EXISTS physical_card_requests (
       cart_id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
@@ -77,6 +137,19 @@ async function init() {
   await client.execute(
     'CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_stripe_session_id ON orders (stripe_session_id)'
   );
+
+  /* Order lines recorded the product id and price but not the name, so the
+     name was looked up live from the catalog. Once a product can be deleted,
+     that lookup fails and every past order — confirmation screen and customer
+     tracking page included — would show a raw id such as "bj1" instead of
+     "Collier personnalisé". The name is now snapshotted on the line, and the
+     live lookup is only a fallback for rows written before this column
+     existed. */
+  try {
+    await client.execute('ALTER TABLE order_items ADD COLUMN name TEXT');
+  } catch (err) {
+    if (!/duplicate column name/i.test(err.message)) throw err;
+  }
 }
 
 module.exports = { client, init };

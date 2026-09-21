@@ -14,3 +14,7 @@ services:
         sync: false
       - key: STRIPE_SECRET_KEY
         sync: false
+      # Shared secret for the /api/admin/* write routes. If it is absent, those
+      # routes refuse every request (fail closed) rather than defaulting open.
+      - key: ADMIN_API_KEY
+        sync: false

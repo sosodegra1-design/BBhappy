@@ -2,7 +2,9 @@ const express = require('express');
 const path = require('path');
 const crypto = require('crypto');
 const db = require('./db');
-const { PRODUCTS, LOYALTY_TIERS, colorLabel } = require('./products-data');
+const { LOYALTY_TIERS, colorLabel } = require('./products-data');
+const { getProductsByIds, listProducts, getProduct, seedProductsIfEmpty } = require('./products-repo');
+const { admin } = require('./admin');
 
 const stripe = process.env.STRIPE_SECRET_KEY
   ? require('stripe')(process.env.STRIPE_SECRET_KEY)
@@ -10,7 +12,6 @@ const stripe = process.env.STRIPE_SECRET_KEY
 
 const app = express();
 const ROOT = path.join(__dirname, '..');
-const PRODUCTS_BY_ID = new Map(PRODUCTS.map(p => [p.id, p]));
 
 // Render (and most PaaS) terminate TLS at a reverse proxy and forward plain
 // HTTP internally; without this, req.protocol would report "http" and the
@@ -55,10 +56,12 @@ async function getCartRows(cartId) {
 
 async function cartWithProducts(cartId) {
   const rows = await getCartRows(cartId);
+  // One query for the whole cart rather than one per line.
+  const products = await getProductsByIds(rows.map(row => row.product_id));
   const items = [];
   let total = 0;
   for (const row of rows) {
-    const product = PRODUCTS_BY_ID.get(row.product_id);
+    const product = products.get(row.product_id);
     if (!product) continue; // stale reference, ignore
     const qty = Number(row.qty);
     items.push({ itemId: Number(row.id), productId: row.product_id, color: row.color, qty, product });
@@ -85,8 +88,10 @@ async function addLoyaltyPoints(cartId, amount) {
 }
 
 /* ===================== PRODUCTS ===================== */
-app.get('/api/products', (req, res) => {
-  res.json(PRODUCTS);
+app.get('/api/products', async (req, res, next) => {
+  try {
+    res.json(await listProducts());
+  } catch (err) { next(err); }
 });
 
 /* ===================== CART ===================== */
@@ -100,7 +105,7 @@ app.post('/api/cart/items', async (req, res, next) => {
   try {
     const { productId, color, qty } = req.body || {};
     const quantity = Number.isInteger(qty) && qty > 0 ? qty : 1;
-    if (!productId || !PRODUCTS_BY_ID.has(productId)) {
+    if (!productId || !(await getProduct(productId))) {
       return res.status(400).json({ error: 'Unknown productId.' });
     }
     if (!color || typeof color !== 'string') {
@@ -163,7 +168,9 @@ app.get('/api/favorites', async (req, res, next) => {
       sql: 'SELECT product_id FROM favorites WHERE cart_id = ?',
       args: [req.cartId]
     });
-    const productIds = result.rows.map(r => r.product_id).filter(id => PRODUCTS_BY_ID.has(id));
+    const ids = result.rows.map(r => r.product_id);
+    const products = await getProductsByIds(ids);
+    const productIds = ids.filter(id => products.has(id));
     res.json({ productIds });
   } catch (err) { next(err); }
 });
@@ -171,7 +178,7 @@ app.get('/api/favorites', async (req, res, next) => {
 app.post('/api/favorites/:productId', async (req, res, next) => {
   try {
     const { productId } = req.params;
-    if (!PRODUCTS_BY_ID.has(productId)) {
+    if (!(await getProduct(productId))) {
       return res.status(400).json({ error: 'Unknown productId.' });
     }
     await db.client.execute({
@@ -270,8 +277,8 @@ async function createOrder(cartId, customer, stripeSessionId = null) {
 
   for (const item of items) {
     await db.client.execute({
-      sql: 'INSERT INTO order_items (order_id, product_id, color, qty, price) VALUES (?, ?, ?, ?, ?)',
-      args: [orderId, item.productId, item.color, item.qty, item.product.price]
+      sql: 'INSERT INTO order_items (order_id, product_id, color, qty, price, name) VALUES (?, ?, ?, ?, ?, ?)',
+      args: [orderId, item.productId, item.color, item.qty, item.product.price, item.product.name]
     });
   }
 
@@ -294,16 +301,20 @@ async function createOrder(cartId, customer, stripeSessionId = null) {
 
 /* Rebuilds the same { name, color, colorName, qty, price } shape as
    createOrder()'s response, for the idempotent "already recorded" replies
-   below (a refresh of the success page must show the same confirmation). */
+   below (a refresh of the success page must show the same confirmation).
+   The name is read from the snapshotted column, so a product deleted after the
+   sale still shows its real name; the catalog lookup is only a fallback for
+   lines written before that column existed. */
 async function orderItemsFor(orderId) {
   const res = await db.client.execute({
-    sql: 'SELECT product_id, color, qty, price FROM order_items WHERE order_id = ?',
+    sql: 'SELECT product_id, color, qty, price, name FROM order_items WHERE order_id = ?',
     args: [orderId]
   });
+  const products = await getProductsByIds(res.rows.map(row => row.product_id));
   return res.rows.map(row => {
-    const product = PRODUCTS_BY_ID.get(row.product_id);
+    const product = products.get(row.product_id);
     return {
-      name: product ? product.name : row.product_id,
+      name: row.name || (product ? product.name : row.product_id),
       color: row.color,
       colorName: product && product.colors.length > 1 ? colorLabel(row.color) : null,
       qty: Number(row.qty),
@@ -440,6 +451,11 @@ app.get('/api/track', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
+/* ===================== ADMIN API ===================== */
+// Authenticated write access to the catalog and to the supplier/distributor
+// lists. Mounted before the error handler so admin errors share one shape.
+app.use('/api/admin', admin);
+
 /* ===================== ERROR HANDLING ===================== */
 app.use('/api', (err, req, res, next) => {
   console.error(err);
@@ -447,10 +463,18 @@ app.use('/api', (err, req, res, next) => {
 });
 
 /* ===================== STATIC FRONTEND ===================== */
-// Keep the server source and package files from being served alongside the site.
-const BLOCKED_PREFIXES = ['/server', '/node_modules', '/package.json', '/package-lock.json'];
+// Keep the server source, the local import tooling and the internal project
+// documents from being served alongside the site. express.static() serves the
+// whole repository root, so anything not listed here is downloadable by anyone
+// who guesses the path. Compared case-insensitively so that a hit on a
+// case-insensitive filesystem (local dev on macOS/Windows) behaves exactly like
+// production, where the filesystem is case-sensitive.
+const BLOCKED_PREFIXES = ['/server', '/node_modules', '/scripts', '/.github', '/package.json', '/package-lock.json'];
+const BLOCKED_FILES = ['/readme.md', '/bbvoltex.md', '/bbvoltex.pdf'];
 app.use((req, res, next) => {
-  if (BLOCKED_PREFIXES.some(prefix => req.path === prefix || req.path.startsWith(prefix + '/'))) {
+  const path = req.path.toLowerCase();
+  if (BLOCKED_PREFIXES.some(prefix => path === prefix || path.startsWith(prefix + '/')) ||
+      BLOCKED_FILES.includes(path)) {
     return res.status(404).end();
   }
   next();
@@ -461,13 +485,24 @@ const PORT = process.env.PORT || 3000;
 
 async function start() {
   await db.init();
-  app.listen(PORT, () => {
+  // First run against an empty database: import the historical catalog so the
+  // live shop is unchanged by the migration. No-op afterwards.
+  const seeded = await seedProductsIfEmpty();
+  if (seeded.seeded) {
+    console.log(`Seeded ${seeded.seeded} products from products-data.js (empty database).`);
+  }
+  return app.listen(PORT, () => {
     console.log(`BBVOLTEX running at http://localhost:${PORT}`);
     console.log(`Database: ${process.env.TURSO_DATABASE_URL ? 'Turso (' + process.env.TURSO_DATABASE_URL + ')' : 'local SQLite file (server/bbhappy.db)'}`);
   });
 }
 
-start().catch(err => {
-  console.error('Failed to start BBVOLTEX server:', err);
-  process.exit(1);
-});
+// Only listen when executed directly, so tests can mount the app themselves.
+if (require.main === module) {
+  start().catch(err => {
+    console.error('Failed to start BBVOLTEX server:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = { app, start };
