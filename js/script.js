@@ -72,7 +72,7 @@ const TRANSLATIONS = {
   fr: {
     'topbar.text': '🎃 Édition spéciale Halloween : -15% sur la catégorie Box avec le code CITROUILLE — jusqu\'au 31 octobre',
     'nav.home': 'Accueil', 'nav.toys': 'Jouets', 'nav.clothing': 'Vêtements', 'nav.brands': 'Bijoux & Accessoires', 'nav.brands.l1': 'Bijoux', 'nav.brands.l2': 'Accessoires', 'nav.sales': 'Soldes 🔥',
-    'nav.box': 'Box <svg width="16" height="16" viewBox="0 0 100 100" style="vertical-align:-2px;margin-left:2px;"><path d="M50 8 88 28 50 48 12 28Z" fill="#e8c896"/><path d="M12 28v42l38 22V50Z" fill="#c68642"/><path d="M88 28v42L50 92V50Z" fill="#9c6a34"/><path d="M44 31v61l6 3.5V34.5Z" fill="#d4af37"/></svg>', 'nav.box2': 'Box',
+    'nav.box': 'Spécial Halloween <svg width="16" height="16" viewBox="0 0 100 100" style="vertical-align:-2px;margin-left:2px;"><path d="M50 8 88 28 50 48 12 28Z" fill="#e8c896"/><path d="M12 28v42l38 22V50Z" fill="#c68642"/><path d="M88 28v42L50 92V50Z" fill="#9c6a34"/><path d="M44 31v61l6 3.5V34.5Z" fill="#d4af37"/></svg>', 'nav.box2': 'Spécial Halloween',
     'nav.categories': 'Catégories ▾', 'nav.tech': 'Électronique', 'nav.home2': 'Maison &amp; Déco',
     'nav.beauty': 'Beauté', 'nav.sport': 'Sport &amp; Loisirs',
     'mega.kids': 'Enfants', 'mega.home': 'Maison &amp; Bien-être', 'mega.techsport': 'Tech &amp; Sport',
@@ -84,7 +84,7 @@ const TRANSLATIONS = {
     'beaute.hero.desc': 'Des soins et cosmétiques formulés avec des ingrédients naturels, pour prendre soin de vous chaque jour.',
     'sport.hero.title': 'L\'univers Sport &amp; Loisirs',
     'sport.hero.desc': 'Du matériel simple et durable pour bouger à la maison ou en extérieur, à tout âge et à tout niveau.',
-    'box.hero.title': 'Box — Édition spéciale Halloween 🎃',
+    'box.hero.title': 'Édition spéciale Halloween 🎃',
     'box.hero.desc': "Nos boîtes en carton pour snacks, pâtisseries et cadeaux se mettent à l'heure d'Halloween : parfaites pour vos gourmandises et petites surprises, en petite ou grande quantité. Code CITROUILLE, -15%, jusqu'au 31 octobre.",
     'search.placeholder': 'Rechercher un jouet, un vêtement...',
     'hero.tag': '✨ Sélection premium',
@@ -237,7 +237,7 @@ const TRANSLATIONS = {
     'faq.q5': 'Comment fonctionne la carte de fidélité ?',
     'faq.a5': 'Chaque euro dépensé vous rapporte 1 point. Vos points débloquent automatiquement des récompenses par palier. Détails sur votre <a href="carte-fidelite.html">carte de fidélité</a>.',
     'faq.q6': 'Puis-je personnaliser une boîte carton avec mon logo ?',
-    'faq.a6': 'Oui, plusieurs formats de la rubrique <a href="box.html">Box</a> sont personnalisables avec votre logo, avec un délai de personnalisation de 5 à 7 jours ouvrés.',
+    'faq.a6': 'Oui, plusieurs formats de la rubrique <a href="box.html">Spécial Halloween</a> sont personnalisables avec votre logo, avec un délai de personnalisation de 5 à 7 jours ouvrés.',
     'faq.q7': 'Comment vous contacter ?',
     'faq.a7': 'Par e-mail à <a href="mailto:bbvoltex@gmail.com">bbvoltex@gmail.com</a>, nous répondons sous 48h ouvrées.',
 
@@ -277,7 +277,7 @@ const TRANSLATIONS = {
   en: {
     'topbar.text': '🎃 Halloween Special Edition: -15% on the Box category with code PUMPKIN — until October 31st',
     'nav.home': 'Home', 'nav.toys': 'Toys', 'nav.clothing': 'Clothing', 'nav.brands': 'Jewelry & Accessories', 'nav.brands.l1': 'Jewelry', 'nav.brands.l2': 'Accessories', 'nav.sales': 'Sale 🔥',
-    'nav.box': 'Box <svg width="16" height="16" viewBox="0 0 100 100" style="vertical-align:-2px;margin-left:2px;"><path d="M50 8 88 28 50 48 12 28Z" fill="#e8c896"/><path d="M12 28v42l38 22V50Z" fill="#c68642"/><path d="M88 28v42L50 92V50Z" fill="#9c6a34"/><path d="M44 31v61l6 3.5V34.5Z" fill="#d4af37"/></svg>', 'nav.box2': 'Box',
+    'nav.box': 'Halloween Special <svg width="16" height="16" viewBox="0 0 100 100" style="vertical-align:-2px;margin-left:2px;"><path d="M50 8 88 28 50 48 12 28Z" fill="#e8c896"/><path d="M12 28v42l38 22V50Z" fill="#c68642"/><path d="M88 28v42L50 92V50Z" fill="#9c6a34"/><path d="M44 31v61l6 3.5V34.5Z" fill="#d4af37"/></svg>', 'nav.box2': 'Halloween Special',
     'nav.categories': 'Categories ▾', 'nav.tech': 'Electronics', 'nav.home2': 'Home &amp; Decor',
     'nav.beauty': 'Beauty', 'nav.sport': 'Sport &amp; Leisure',
     'mega.kids': 'Kids', 'mega.home': 'Home &amp; Wellness', 'mega.techsport': 'Tech &amp; Sport',
@@ -289,7 +289,7 @@ const TRANSLATIONS = {
     'beaute.hero.desc': 'Skincare and cosmetics formulated with natural ingredients, to take care of you every day.',
     'sport.hero.title': 'The Sport &amp; Leisure universe',
     'sport.hero.desc': 'Simple, durable gear to stay active at home or outdoors, at any age and any level.',
-    'box.hero.title': 'Box — Halloween Special Edition 🎃',
+    'box.hero.title': 'Halloween Special Edition 🎃',
     'box.hero.desc': "Our cardboard boxes for snacks, pastries and gifts are getting into the Halloween spirit — perfect for treats and little surprises, in small or large quantities. Use code CITROUILLE for -15% until October 31.",
     'search.placeholder': 'Search for a toy, an outfit...',
     'hero.tag': '✨ Premium selection',
@@ -442,7 +442,7 @@ const TRANSLATIONS = {
     'faq.q5': 'How does the loyalty card work?',
     'faq.a5': 'Every euro spent earns you 1 point. Your points automatically unlock rewards by tier. Details on your <a href="carte-fidelite.html">loyalty card</a>.',
     'faq.q6': 'Can I customize a cardboard box with my logo?',
-    'faq.a6': 'Yes, several formats in the <a href="box.html">Box</a> section can be customized with your logo, with a 5 to 7 business day customization lead time.',
+    'faq.a6': 'Yes, several formats in the <a href="box.html">Halloween Special</a> section can be customized with your logo, with a 5 to 7 business day customization lead time.',
     'faq.q7': 'How can I contact you?',
     'faq.a7': 'By email at <a href="mailto:bbvoltex@gmail.com">bbvoltex@gmail.com</a>, we reply within 48 business hours.',
 
