@@ -1318,6 +1318,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     showToast(t('checkout.cancelled'));
   }
 
+  // Deep link to a single product (e.g. shared from Megalomarket): open its
+  // modal straight away instead of leaving the visitor to find it themselves.
+  const openProductId = params.get('product');
+  if (openProductId) {
+    history.replaceState(null, '', location.pathname);
+    openProductModal(openProductId);
+  }
+
   // Product grid delegation
   const productGrid = document.getElementById('productGrid');
   if (productGrid) {
