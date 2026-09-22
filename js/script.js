@@ -790,13 +790,11 @@ function openProductModal(id) {
   favBtn.setAttribute('aria-pressed', String(isFav));
 
   const descriptionHtml = pf(p, 'description').split('\n\n').map(para => `<p>${para}</p>`).join('');
-  document.getElementById('panelDescription').innerHTML = `
-    ${descriptionHtml}
-    <h4 style="margin-top:16px;font-size:.95rem;">${t('modal.eco')}</h4>
-    <p>${pf(p, 'ecoDetails')}</p>
-    <h4 style="margin-top:16px;font-size:.95rem;">${t('modal.safety')}</h4>
-    <p>${pf(p, 'safety')}</p>
-  `;
+  const ecoDetails = pf(p, 'ecoDetails');
+  const safety = pf(p, 'safety');
+  document.getElementById('panelDescription').innerHTML = descriptionHtml
+    + (ecoDetails ? `<h4 style="margin-top:16px;font-size:.95rem;">${t('modal.eco')}</h4><p>${ecoDetails}</p>` : '')
+    + (safety ? `<h4 style="margin-top:16px;font-size:.95rem;">${t('modal.safety')}</h4><p>${safety}</p>` : '');
   document.getElementById('panelEntretien').innerHTML = `<p>${pf(p, 'care')}</p>`;
   const rows = pf(p, 'sizeGuide');
   document.getElementById('panelTailles').innerHTML = `
