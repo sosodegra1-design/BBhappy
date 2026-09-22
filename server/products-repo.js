@@ -29,7 +29,7 @@ const CATEGORIES = [
 
 const UNIVERSES = [
   'bebe', 'collier', 'educatif', 'enfant', 'femme',
-  'fille', 'garcon', 'homme', 'plein-air'
+  'fille', 'garcon', 'homme', 'plein-air', 'decoration', 'autre'
 ];
 
 const ICON_KEYS = Object.keys(ICONS);
