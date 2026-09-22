@@ -70,7 +70,7 @@ async function loadLoyalty() {
 /* ===================== TRANSLATIONS ===================== */
 const TRANSLATIONS = {
   fr: {
-    'topbar.text': '🚚 Livraison offerte dès 20€ d\'achat &nbsp;•&nbsp; ✨ -20% sur les soldes avec le code SOLEIL',
+    'topbar.text': '🎃 Édition spéciale Halloween : -15% sur la catégorie Box avec le code CITROUILLE — jusqu\'au 31 octobre',
     'nav.home': 'Accueil', 'nav.toys': 'Jouets', 'nav.clothing': 'Vêtements', 'nav.brands': 'Bijoux & Accessoires', 'nav.brands.l1': 'Bijoux', 'nav.brands.l2': 'Accessoires', 'nav.sales': 'Soldes 🔥',
     'nav.box': 'Box <svg width="16" height="16" viewBox="0 0 100 100" style="vertical-align:-2px;margin-left:2px;"><path d="M50 8 88 28 50 48 12 28Z" fill="#e8c896"/><path d="M12 28v42l38 22V50Z" fill="#c68642"/><path d="M88 28v42L50 92V50Z" fill="#9c6a34"/><path d="M44 31v61l6 3.5V34.5Z" fill="#d4af37"/></svg>', 'nav.box2': 'Box',
     'nav.categories': 'Catégories ▾', 'nav.tech': 'Électronique', 'nav.home2': 'Maison &amp; Déco',
@@ -275,7 +275,7 @@ const TRANSLATIONS = {
     'carrieres.cta': 'Envoyer une candidature spontanée →'
   },
   en: {
-    'topbar.text': '🚚 Free delivery from €20 &nbsp;•&nbsp; ✨ -20% on sale items with code SOLEIL',
+    'topbar.text': '🎃 Halloween Special Edition: -15% on the Box category with code PUMPKIN — until October 31st',
     'nav.home': 'Home', 'nav.toys': 'Toys', 'nav.clothing': 'Clothing', 'nav.brands': 'Jewelry & Accessories', 'nav.brands.l1': 'Jewelry', 'nav.brands.l2': 'Accessories', 'nav.sales': 'Sale 🔥',
     'nav.box': 'Box <svg width="16" height="16" viewBox="0 0 100 100" style="vertical-align:-2px;margin-left:2px;"><path d="M50 8 88 28 50 48 12 28Z" fill="#e8c896"/><path d="M12 28v42l38 22V50Z" fill="#c68642"/><path d="M88 28v42L50 92V50Z" fill="#9c6a34"/><path d="M44 31v61l6 3.5V34.5Z" fill="#d4af37"/></svg>', 'nav.box2': 'Box',
     'nav.categories': 'Categories ▾', 'nav.tech': 'Electronics', 'nav.home2': 'Home &amp; Decor',
