@@ -20,6 +20,13 @@ const {
   updateProduct,
   deleteProduct
 } = require('./products-repo');
+const {
+  listOrders,
+  getOrder,
+  markShipped,
+  markDelivered,
+  markReturnHandled
+} = require('./orders-repo');
 
 const KINDS = ['fournisseur', 'distributeur'];
 const STATUSES = ['actif', 'inactif'];
@@ -247,5 +254,36 @@ for (const kind of KINDS) {
     res.json({ ok: true });
   }));
 }
+
+/* ===================== ORDERS =====================
+   Read + lifecycle-advancing routes for Megalomarket: it polls the list to
+   sync, and drives ship/deliver/return through the three write routes below
+   after a genuine Sendcloud shipment, a genuine carrier webhook, or after
+   handling a genuine return request — never on a schedule or a guess. */
+
+admin.get('/orders', asyncRoute(async (req, res) => {
+  const { since, status } = req.query;
+  res.json(await listOrders({ since, status }));
+}));
+
+admin.get('/orders/:id', asyncRoute(async (req, res) => {
+  const order = await getOrder(req.params.id);
+  if (!order) return res.status(404).json({ error: 'Order not found.' });
+  res.json(order);
+}));
+
+admin.patch('/orders/:id/ship', asyncRoute(async (req, res) => {
+  const { carrier, trackingNumber, trackingUrl, labelUrl } = req.body || {};
+  res.json(await markShipped(req.params.id, { carrier, trackingNumber, trackingUrl, labelUrl }));
+}));
+
+admin.patch('/orders/:id/deliver', asyncRoute(async (req, res) => {
+  res.json(await markDelivered(req.params.id));
+}));
+
+admin.patch('/orders/:id/return', asyncRoute(async (req, res) => {
+  const { returnStatus, returnLabelUrl } = req.body || {};
+  res.json(await markReturnHandled(req.params.id, { returnStatus, returnLabelUrl }));
+}));
 
 module.exports = { admin, requireAdmin };

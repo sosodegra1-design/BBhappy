@@ -116,7 +116,23 @@
       <div class="tracking-result" id="trackResult" hidden tabindex="-1">
         <p class="tracking-result-order"><strong data-i18n="checkout.orderNumber">Numéro de commande</strong> : <span id="trackResultOrder"></span></p>
         <span class="tracking-number" id="trackResultNumber" hidden></span>
+        <p class="tracking-carrier-link" id="trackResultCarrier" hidden></p>
         <ol class="tracking-steps" id="trackSteps"></ol>
+
+        <div id="trackReturnSection" hidden>
+          <button type="button" class="btn btn-ghost" id="trackReturnButton" data-i18n="tracking.return.button">Demander un retour</button>
+          <p id="trackReturnPending" hidden data-i18n="tracking.return.pending"></p>
+
+          <form id="trackReturnForm" class="checkout-form tracking-form" hidden>
+            <label for="trackReturnReason" data-i18n="tracking.return.reasonLabel">Pourquoi souhaitez-vous retourner ce colis ?</label>
+            <textarea id="trackReturnReason" rows="3" required data-i18n-placeholder="tracking.return.reasonPlaceholder" placeholder="Ex. : la taille ne convient pas, le produit est arrivé abîmé…"></textarea>
+            <div class="tracking-return-actions">
+              <button type="submit" class="btn btn-primary" data-i18n="tracking.return.submit">Envoyer la demande</button>
+              <button type="button" class="btn btn-ghost" id="trackReturnCancel" data-i18n="tracking.return.cancel">Annuler</button>
+            </div>
+          </form>
+          <p class="tracking-return-message" id="trackReturnMessage" hidden></p>
+        </div>
       </div>
     </div>
   </section>

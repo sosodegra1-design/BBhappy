@@ -927,6 +927,20 @@ ul { list-style: none; margin: 0; padding: 0; }
 .tracking-step h4 { font-size: .95rem; margin: 0 0 2px; color: var(--text-soft); }
 .tracking-step.done h4 { color: var(--gold-deep); }
 .tracking-step p { font-size: .8rem; color: var(--text-soft); margin: 0; }
+.tracking-carrier-link { font-size: .85rem; color: var(--text-soft); margin: 0 0 8px; }
+.tracking-carrier-link[hidden] { display: none; }
+
+#trackReturnSection { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--bg-alt); }
+#trackReturnSection[hidden] { display: none; }
+/* .btn sets display: inline-flex, which otherwise beats the UA [hidden]
+   rule for this button — same fix already applied to .tracking-number. */
+#trackReturnButton[hidden] { display: none; }
+#trackReturnForm { padding: 0; box-shadow: none; background: none; margin-top: 12px; }
+.tracking-return-actions { display: flex; gap: 10px; margin-top: 12px; }
+.tracking-return-message { font-size: .85rem; margin-top: 12px; }
+.tracking-return-message[hidden] { display: none; }
+#trackReturnPending[hidden] { display: none; }
+#trackReturnPending { font-size: .85rem; color: var(--text-soft); }
 
 /* ===================== TOAST ===================== */
 .toast {

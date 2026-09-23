@@ -138,6 +138,38 @@ async function init() {
     'CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_stripe_session_id ON orders (stripe_session_id)'
   );
 
+  /* Real order lifecycle (shipping, delivery, returns), added for the
+     automated post-purchase emails. Before this, /api/track derived a
+     "shipped"/"delivered" status from elapsed time alone — a fake, ALWAYS-
+     PROGRESSING clock with no relationship to what actually happened to the
+     parcel. These columns hold the real thing: a status only advances when
+     the seller (via Megalomarket, after a genuine carrier shipment) or a
+     genuine carrier webhook says so. `status` starts at 'confirmed' for every
+     existing row — that much is true for all of them, since they only exist
+     because payment was confirmed. */
+  const orderColumns = [
+    ['status', "TEXT NOT NULL DEFAULT 'confirmed'"],
+    ['carrier', 'TEXT'],
+    ['tracking_number', 'TEXT'],
+    ['tracking_url', 'TEXT'],
+    ['label_url', 'TEXT'],
+    ['shipped_at', 'TEXT'],
+    ['delivered_at', 'TEXT'],
+    // return_status: NULL (no return), 'requested', 'label_sent', 'resolved'.
+    ['return_status', 'TEXT'],
+    ['return_reason', 'TEXT'],
+    ['return_requested_at', 'TEXT'],
+    ['return_label_url', 'TEXT'],
+    ['return_handled_at', 'TEXT']
+  ];
+  for (const [name, definition] of orderColumns) {
+    try {
+      await client.execute(`ALTER TABLE orders ADD COLUMN ${name} ${definition}`);
+    } catch (err) {
+      if (!/duplicate column name/i.test(err.message)) throw err;
+    }
+  }
+
   /* Order lines recorded the product id and price but not the name, so the
      name was looked up live from the catalog. Once a product can be deleted,
      that lookup fails and every past order — confirmation screen and customer

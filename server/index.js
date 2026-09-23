@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const db = require('./db');
 const { LOYALTY_TIERS, colorLabel } = require('./products-data');
 const { getProductsByIds, listProducts, getProduct, seedProductsIfEmpty } = require('./products-repo');
+const ordersRepo = require('./orders-repo');
 const { admin } = require('./admin');
 
 const stripe = process.env.STRIPE_SECRET_KEY
@@ -396,21 +397,13 @@ app.get('/api/checkout/confirm', async (req, res, next) => {
 });
 
 /* ===================== ORDER TRACKING =====================
-   No real carrier integration here — the status is derived deterministically
-   from elapsed time since the order was placed, so a lookup always returns
-   a stable, believable progression rather than requiring a live webhook. */
-const TRACKING_STAGES = [
-  { key: 'confirmed', hours: 0, label: 'Commande confirmée', label_en: 'Order confirmed' },
-  { key: 'preparing', hours: 6, label: 'En préparation', label_en: 'Being prepared' },
-  { key: 'shipped', hours: 24, label: 'Expédiée', label_en: 'Shipped' },
-  { key: 'delivered', hours: 96, label: 'Livrée', label_en: 'Delivered' }
-];
-
-function trackingNumberFor(orderId) {
-  const hash = crypto.createHash('sha256').update(orderId).digest('hex').toUpperCase();
-  return `BV${hash.slice(0, 10)}FR`;
-}
-
+   Used to derive "shipped"/"delivered" from elapsed time alone — a clock,
+   not a fact, that would tell a customer their parcel shipped or arrived
+   whether or not it actually had. Real shipping and delivery are recorded by
+   Megalomarket (server/orders-repo.js: markShipped / markDelivered), driven
+   by a genuine Sendcloud shipment and a genuine carrier webhook — this route
+   only ever reports what's actually in that table. A step with no real event
+   yet simply carries no date, rather than a guessed one. */
 app.get('/api/track', async (req, res, next) => {
   try {
     const orderNumber = String(req.query.order || '').trim().toUpperCase();
@@ -419,35 +412,56 @@ app.get('/api/track', async (req, res, next) => {
       return res.status(400).json({ error: 'Order number and email are required.' });
     }
 
-    const result = await db.client.execute({
-      sql: 'SELECT id, email, total, created_at FROM orders WHERE id = ?',
-      args: [orderNumber]
-    });
-    const row = result.rows[0];
-    if (!row || String(row.email || '').trim().toLowerCase() !== email) {
+    const order = await ordersRepo.getOrder(orderNumber);
+    if (!order || String(order.email || '').trim().toLowerCase() !== email) {
       return res.status(404).json({ error: 'No order matches this number and email.' });
     }
 
-    const createdAt = new Date(row.created_at);
-    const hoursElapsed = (Date.now() - createdAt.getTime()) / 3600000;
-    let stageIndex = 0;
-    TRACKING_STAGES.forEach((stage, i) => { if (hoursElapsed >= stage.hours) stageIndex = i; });
-
-    const steps = TRACKING_STAGES.map((stage, i) => ({
-      key: stage.key,
-      label: stage.label,
-      label_en: stage.label_en,
-      done: i <= stageIndex,
-      date: new Date(createdAt.getTime() + stage.hours * 3600000).toISOString()
-    }));
+    const steps = [
+      { key: 'confirmed', label: 'Commande confirmée', label_en: 'Order confirmed', done: true, date: order.createdAt },
+      // "Being prepared" has no real distinct signal of its own — it simply
+      // means "paid, not yet shipped" — so it carries no fabricated date.
+      { key: 'preparing', label: 'En préparation', label_en: 'Being prepared', done: true, date: null },
+      { key: 'shipped', label: 'Expédiée', label_en: 'Shipped', done: order.status === 'shipped' || order.status === 'delivered', date: order.shippedAt },
+      { key: 'delivered', label: 'Livrée', label_en: 'Delivered', done: order.status === 'delivered', date: order.deliveredAt }
+    ];
 
     res.json({
-      orderNumber: row.id,
-      total: Number(row.total),
-      status: TRACKING_STAGES[stageIndex].key,
-      trackingNumber: stageIndex >= 2 ? trackingNumberFor(row.id) : null,
-      steps
+      orderNumber: order.id,
+      total: order.total,
+      status: order.status,
+      carrier: order.carrier,
+      trackingNumber: order.trackingNumber,
+      trackingUrl: order.trackingUrl,
+      steps,
+      // Lets the tracking page offer "request a return" only once delivered
+      // and only if one isn't already in progress — and shows the customer
+      // where an existing request stands instead of a dead end.
+      canRequestReturn: order.status === 'delivered' && !order.returnStatus,
+      returnStatus: order.returnStatus,
+      returnLabelUrl: order.returnLabelUrl
     });
+  } catch (err) { next(err); }
+});
+
+/* Public return request: the customer proves ownership of the order the
+   same way /api/track does (order number + the email used at checkout), no
+   account required. Genuinely creates a "return requested" event that
+   Megalomarket's scheduler picks up to draft return instructions and (when
+   possible) a real return label — nothing here is auto-approved. */
+app.post('/api/returns', async (req, res, next) => {
+  try {
+    const orderNumber = String((req.body || {}).order || '').trim().toUpperCase();
+    const email = String((req.body || {}).email || '').trim().toLowerCase();
+    const reason = String((req.body || {}).reason || '').trim().slice(0, 2000);
+    if (!orderNumber || !email) {
+      return res.status(400).json({ error: 'Order number and email are required.' });
+    }
+    if (!reason) {
+      return res.status(400).json({ error: 'A reason for the return is required.' });
+    }
+    const order = await ordersRepo.requestReturn(orderNumber, email, reason);
+    res.status(201).json({ orderNumber: order.id, returnStatus: order.returnStatus });
   } catch (err) { next(err); }
 });
 

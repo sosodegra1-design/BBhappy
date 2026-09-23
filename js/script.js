@@ -179,6 +179,16 @@ const TRANSLATIONS = {
     'tracking.trackingNumber': 'Numéro de suivi',
     'tracking.step.confirmed': 'Commande confirmée', 'tracking.step.preparing': 'En préparation',
     'tracking.step.shipped': 'Expédiée', 'tracking.step.delivered': 'Livrée',
+    'tracking.carrier': 'Transporteur', 'tracking.trackParcel': 'Suivre le colis sur le site du transporteur →',
+    'tracking.return.button': 'Demander un retour',
+    'tracking.return.title': 'Demander un retour',
+    'tracking.return.reasonLabel': 'Pourquoi souhaitez-vous retourner ce colis ?',
+    'tracking.return.reasonPlaceholder': 'Ex. : la taille ne convient pas, le produit est arrivé abîmé…',
+    'tracking.return.submit': 'Envoyer la demande',
+    'tracking.return.cancel': 'Annuler',
+    'tracking.return.success': 'Votre demande de retour a été envoyée. Vous recevrez un e-mail avec la marche à suivre et l\'étiquette sous peu.',
+    'tracking.return.pending': 'Un retour est en cours pour cette commande. Vous avez reçu (ou allez recevoir) un e-mail avec la marche à suivre.',
+    'tracking.return.error': 'Impossible d\'envoyer la demande de retour.',
     'loyalty.title': 'Carte de fidélité', 'loyalty.aria': 'Carte de fidélité', 'loyalty.points': 'points',
     'loyalty.tiersTitle': 'Récompenses', 'loyalty.maxed': 'Bravo, vous avez débloqué toutes les récompenses ! 🎉',
     'loyalty.viewCard': 'Voir ma carte de fidélité complète →',
@@ -387,6 +397,16 @@ const TRANSLATIONS = {
     'tracking.trackingNumber': 'Tracking number',
     'tracking.step.confirmed': 'Order confirmed', 'tracking.step.preparing': 'Being prepared',
     'tracking.step.shipped': 'Shipped', 'tracking.step.delivered': 'Delivered',
+    'tracking.carrier': 'Carrier', 'tracking.trackParcel': 'Track parcel on carrier website →',
+    'tracking.return.button': 'Request a return',
+    'tracking.return.title': 'Request a return',
+    'tracking.return.reasonLabel': 'Why do you want to return this order?',
+    'tracking.return.reasonPlaceholder': 'E.g.: wrong size, item arrived damaged…',
+    'tracking.return.submit': 'Send request',
+    'tracking.return.cancel': 'Cancel',
+    'tracking.return.success': 'Your return request has been sent. You\'ll receive an e-mail with the return instructions and label shortly.',
+    'tracking.return.pending': 'A return is already in progress for this order. You\'ve received (or will receive) an e-mail with the instructions.',
+    'tracking.return.error': 'Could not send the return request.',
     'loyalty.title': 'Loyalty card', 'loyalty.aria': 'Loyalty card', 'loyalty.points': 'points',
     'loyalty.tiersTitle': 'Rewards', 'loyalty.maxed': 'Congrats, you\'ve unlocked every reward! 🎉',
     'loyalty.viewCard': 'See my full loyalty card →',
@@ -1083,11 +1103,17 @@ function renderCheckoutSummary() {
 }
 
 /* ===================== ORDER TRACKING ===================== */
+/* Current lookup's order number + email, kept only so the return-request
+   form (same panel) can resubmit them without asking the visitor to retype
+   what they already entered above. */
+let lastTrackedOrder = null;
+
 /* Renders the step-by-step timeline returned by GET /api/track on suivi.html.
    No-op if the page doesn't have the tracking result panel. */
-function renderTrackingResult(data) {
+function renderTrackingResult(data, orderNumber, email) {
   const result = document.getElementById('trackResult');
   if (!result) return;
+  lastTrackedOrder = { orderNumber, email };
   document.getElementById('trackResultOrder').textContent = data.orderNumber;
 
   const numberEl = document.getElementById('trackResultNumber');
@@ -1098,17 +1124,61 @@ function renderTrackingResult(data) {
     numberEl.hidden = true;
   }
 
+  const carrierEl = document.getElementById('trackResultCarrier');
+  if (carrierEl) {
+    if (data.carrier && data.trackingUrl) {
+      carrierEl.innerHTML = `${t('tracking.carrier')} : ${data.carrier} — <a href="${data.trackingUrl}" target="_blank" rel="noopener">${t('tracking.trackParcel')}</a>`;
+      carrierEl.hidden = false;
+    } else {
+      carrierEl.hidden = true;
+    }
+  }
+
   const locale = state.lang === 'en' ? 'en-GB' : 'fr-FR';
   document.getElementById('trackSteps').innerHTML = data.steps.map(step => {
-    const date = new Date(step.date).toLocaleDateString(locale, { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+    // A step with no real date yet (not shipped/delivered) shows no date at
+    // all — never a guessed one. "date" itself can be null even when
+    // done=true ("preparing" has no event of its own to point to).
+    const date = step.date ? new Date(step.date).toLocaleDateString(locale, { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
     return `<li class="tracking-step ${step.done ? 'done' : ''}">
       <h4>${t('tracking.step.' + step.key)}</h4>
-      <p>${step.done ? date : ''}</p>
+      <p>${date}</p>
     </li>`;
   }).join('');
 
+  renderReturnSection(data);
+
   result.hidden = false;
   document.getElementById('trackError').hidden = true;
+}
+
+/* Shows exactly one of: nothing (not delivered yet), the "request a return"
+   button, the return form once clicked, or a "return already in progress"
+   notice — never more than one visitor-facing option at a time. */
+function renderReturnSection(data) {
+  const section = document.getElementById('trackReturnSection');
+  if (!section) return;
+  const button = document.getElementById('trackReturnButton');
+  const form = document.getElementById('trackReturnForm');
+  const pending = document.getElementById('trackReturnPending');
+  const message = document.getElementById('trackReturnMessage');
+
+  message.hidden = true;
+  form.hidden = true;
+
+  if (data.returnStatus) {
+    section.hidden = false;
+    button.hidden = true;
+    pending.hidden = false;
+    return;
+  }
+  if (data.canRequestReturn) {
+    section.hidden = false;
+    button.hidden = false;
+    pending.hidden = true;
+    return;
+  }
+  section.hidden = true;
 }
 
 function openCheckout() {
@@ -1756,14 +1826,57 @@ document.addEventListener('DOMContentLoaded', async () => {
       e.preventDefault();
       const submitBtn = trackForm.querySelector('button[type="submit"]');
       submitBtn.disabled = true;
+      const orderNumber = orderInput.value.trim();
+      const email = emailInput.value.trim();
       try {
-        const data = await apiFetch(`/track?order=${encodeURIComponent(orderInput.value.trim())}&email=${encodeURIComponent(emailInput.value.trim())}`);
-        renderTrackingResult(data);
+        const data = await apiFetch(`/track?order=${encodeURIComponent(orderNumber)}&email=${encodeURIComponent(email)}`);
+        renderTrackingResult(data, orderNumber, email);
       } catch (err) {
         document.getElementById('trackResult').hidden = true;
         const errorEl = document.getElementById('trackError');
         errorEl.textContent = err.message || t('tracking.notFound');
         errorEl.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
+  const trackReturnButton = document.getElementById('trackReturnButton');
+  const trackReturnForm = document.getElementById('trackReturnForm');
+  if (trackReturnButton && trackReturnForm) {
+    trackReturnButton.addEventListener('click', () => {
+      trackReturnButton.hidden = true;
+      trackReturnForm.hidden = false;
+      document.getElementById('trackReturnReason').focus();
+    });
+
+    document.getElementById('trackReturnCancel').addEventListener('click', () => {
+      trackReturnForm.hidden = true;
+      trackReturnButton.hidden = false;
+    });
+
+    trackReturnForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!lastTrackedOrder) return;
+      const submitBtn = trackReturnForm.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      const messageEl = document.getElementById('trackReturnMessage');
+      try {
+        await apiFetch('/returns', {
+          method: 'POST',
+          body: JSON.stringify({
+            order: lastTrackedOrder.orderNumber,
+            email: lastTrackedOrder.email,
+            reason: document.getElementById('trackReturnReason').value.trim()
+          })
+        });
+        trackReturnForm.hidden = true;
+        messageEl.textContent = t('tracking.return.success');
+        messageEl.hidden = false;
+      } catch (err) {
+        messageEl.textContent = err.message || t('tracking.return.error');
+        messageEl.hidden = false;
       } finally {
         submitBtn.disabled = false;
       }
