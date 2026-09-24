@@ -114,6 +114,11 @@ const TRANSLATIONS = {
     'search.resultsDesc': '%s produit(s) trouvé(s) dans tout le catalogue.',
     'chip.all': 'Tout voir', 'chip.toys': 'Jouets', 'chip.clothing': 'Vêtements', 'chip.sales': 'Soldes 🔥',
     'empty.state': 'Aucun produit ne correspond à votre recherche 🧐 Essayez un autre filtre !',
+    'filter.category.legend': 'Catégorie', 'filter.sort.legend': 'Prix et tri',
+    'filter.priceMax.label': 'Prix maximum', 'filter.sort.label': 'Trier par',
+    'filter.sort.relevance': 'Pertinence', 'filter.sort.priceAsc': 'Prix croissant',
+    'filter.sort.priceDesc': 'Prix décroissant', 'filter.sort.nameAsc': 'Nom (A → Z)',
+    'results.count': '%s produit(s) affiché(s).',
     'trust.delivery.title': 'Livraison rapide', 'trust.delivery.desc': 'Expédié en 24h, chez vous en 2 à 4 jours',
     'trust.eco.title': 'Emballage éco-responsable', 'trust.eco.desc': 'Cartons recyclés, zéro plastique à usage unique',
     'trust.safe.title': 'Matériaux 100% sûrs', 'trust.safe.desc': 'Certifiés CE, testés et approuvés par nos experts',
@@ -332,6 +337,11 @@ const TRANSLATIONS = {
     'search.resultsDesc': '%s product(s) found across the whole catalog.',
     'chip.all': 'View all', 'chip.toys': 'Toys', 'chip.clothing': 'Clothing', 'chip.sales': 'Sale 🔥',
     'empty.state': 'No products match your search 🧐 Try a different filter!',
+    'filter.category.legend': 'Category', 'filter.sort.legend': 'Price and sorting',
+    'filter.priceMax.label': 'Maximum price', 'filter.sort.label': 'Sort by',
+    'filter.sort.relevance': 'Relevance', 'filter.sort.priceAsc': 'Price: low to high',
+    'filter.sort.priceDesc': 'Price: high to low', 'filter.sort.nameAsc': 'Name (A → Z)',
+    'results.count': '%s product(s) displayed.',
     'trust.delivery.title': 'Fast delivery', 'trust.delivery.desc': 'Shipped within 24h, delivered in 2-4 days',
     'trust.eco.title': 'Eco-friendly packaging', 'trust.eco.desc': 'Recycled boxes, zero single-use plastic',
     'trust.safe.title': '100% safe materials', 'trust.safe.desc': 'CE certified, tested and approved by our experts',
@@ -512,10 +522,21 @@ const TRANSLATIONS = {
    API (see loadCart/loadFavorites/loadLoyalty) once the page has loaded —
    the server is the source of truth for all three, not localStorage. */
 const state = {
-  categoryFilter: document.body.dataset.category || 'all',
+  // A dedicated category page (data-category="jouets" on <body>) always wins:
+  // the URL param only matters on the homepage, where the category is a filter
+  // rather than the page's own identity.
+  categoryFilter: document.body.dataset.category || new URLSearchParams(location.search).get('categorie') || 'all',
   ageFilter: null,
   universeFilter: new URLSearchParams(location.search).get('universe') || null,
   searchTerm: new URLSearchParams(location.search).get('q') || '',
+  // null = pas de plafond (valeur par défaut tant que le vrai prix max du
+  // catalogue n'est pas connu — voir initPriceRange, qui règle aussi le champ).
+  priceMax: (() => {
+    const raw = new URLSearchParams(location.search).get('prixMax');
+    const n = raw != null ? Number(raw) : NaN;
+    return Number.isFinite(n) ? n : null;
+  })(),
+  sortBy: new URLSearchParams(location.search).get('tri') || 'relevance',
   lang: localStorage.getItem('bbhappy_lang') || 'fr',
   cart: [],
   favorites: [],
@@ -588,15 +609,94 @@ const UNIVERSE_LABEL_KEYS = {
   montre: 'uni.montre.title', 'sac-a-main': 'uni.sacamain.title', 'sacoche-sac-a-dos': 'uni.sacados.title'
 };
 
-/* ===================== RENDER PRODUCTS ===================== */
+/* ===================== FILTER UI: PRICE, SORT, URL SYNC ===================== */
+
+/* The slider's ceiling is the real highest price in the catalog, rounded up
+   to a clean step — never a guessed constant that would go stale as the
+   catalog changes. Runs once PRODUCTS is loaded, before the first render. */
+function initPriceRange() {
+  const range = document.getElementById('priceMaxRange');
+  if (!range || !PRODUCTS.length) return;
+  const maxPrice = Math.ceil(Math.max(...PRODUCTS.map(p => p.price)) / 5) * 5;
+  range.max = String(maxPrice);
+  // A cap from the URL that turns out to be at or above the real ceiling is
+  // the same as no cap at all — treated as such so the URL stays clean.
+  if (state.priceMax != null && state.priceMax >= maxPrice) state.priceMax = null;
+  range.value = state.priceMax != null ? String(state.priceMax) : String(maxPrice);
+  updatePriceMaxOutput();
+}
+
+function updatePriceMaxOutput() {
+  const range = document.getElementById('priceMaxRange');
+  const output = document.getElementById('priceMaxOutput');
+  if (range && output) output.textContent = fmtPrice(Number(range.value));
+}
+
+/* Reflects the active filters in the URL (History API) so a filtered view
+   can be bookmarked, shared, or revisited via Back/Forward — no page reload,
+   since PRODUCTS is already loaded client-side and every filter is applied
+   in memory. Only params that actually narrow the view are kept: the
+   "nothing filtered" state is just the page's own clean address. */
+function buildFilterUrl() {
+  const params = new URLSearchParams(location.search);
+  ['categorie', 'prixMax', 'tri'].forEach(key => params.delete(key));
+  if (state.categoryFilter !== 'all' && !document.body.dataset.category) {
+    params.set('categorie', state.categoryFilter);
+  }
+  const range = document.getElementById('priceMaxRange');
+  if (state.priceMax != null && range && state.priceMax < Number(range.max)) {
+    params.set('prixMax', String(state.priceMax));
+  }
+  if (state.sortBy !== 'relevance') params.set('tri', state.sortBy);
+  const query = params.toString();
+  return location.pathname + (query ? '?' + query : '');
+}
+
+function syncUrlFromState() {
+  history.pushState(null, '', buildFilterUrl());
+}
+
+/* Back/Forward restores the filters from the URL, not just the address bar —
+   the controls and the grid both need to catch up, since nothing reloaded. */
+window.addEventListener('popstate', () => {
+  const params = new URLSearchParams(location.search);
+  state.categoryFilter = document.body.dataset.category || params.get('categorie') || 'all';
+  const rawPriceMax = params.get('prixMax');
+  const parsedPriceMax = rawPriceMax != null ? Number(rawPriceMax) : NaN;
+  state.priceMax = Number.isFinite(parsedPriceMax) ? parsedPriceMax : null;
+  state.sortBy = params.get('tri') || 'relevance';
+
+  const range = document.getElementById('priceMaxRange');
+  if (range) {
+    range.value = state.priceMax != null ? String(state.priceMax) : range.max;
+    updatePriceMaxOutput();
+  }
+  const sortSelect = document.getElementById('sortSelect');
+  if (sortSelect) sortSelect.value = state.sortBy;
+
+  renderProducts();
+});
+
+function sortProducts(list) {
+  if (state.sortBy === 'relevance') return list;
+  const sorted = list.slice();
+  if (state.sortBy === 'price-asc') sorted.sort((a, b) => a.price - b.price);
+  else if (state.sortBy === 'price-desc') sorted.sort((a, b) => b.price - a.price);
+  else if (state.sortBy === 'name-asc') sorted.sort((a, b) => pf(a, 'name').localeCompare(pf(b, 'name')));
+  return sorted;
+}
+
 function getFilteredProducts() {
   // A search term is a universal, cross-category lookup (like a marketplace
   // search bar): it overrides the page's own category/age/universe filters
   // instead of narrowing them further, so a search always finds a matching
-  // product regardless of which page or category it lives in.
+  // product regardless of which page or category it lives in. The price cap
+  // and sort order, though, apply on top of either path — they refine
+  // whatever list is already showing, search or not.
+  let list;
   if (state.searchTerm) {
     const term = state.searchTerm.toLowerCase();
-    return PRODUCTS.filter(p => {
+    list = PRODUCTS.filter(p => {
       const categoryLabel = CATEGORY_LABEL_KEYS[p.category] ? t(CATEGORY_LABEL_KEYS[p.category]) : '';
       return pf(p, 'name').toLowerCase().includes(term)
         || pf(p, 'description').toLowerCase().includes(term)
@@ -604,14 +704,17 @@ function getFilteredProducts() {
         || p.category.toLowerCase().includes(term)
         || categoryLabel.toLowerCase().includes(term);
     });
+  } else {
+    list = PRODUCTS.filter(p => {
+      if (state.categoryFilter === 'soldes' && !p.sale) return false;
+      if (state.categoryFilter !== 'all' && state.categoryFilter !== 'soldes' && p.category !== state.categoryFilter) return false;
+      if (state.ageFilter && p.age !== state.ageFilter && p.age !== 'all') return false;
+      if (state.universeFilter && p.universe !== state.universeFilter) return false;
+      return true;
+    });
   }
-  return PRODUCTS.filter(p => {
-    if (state.categoryFilter === 'soldes' && !p.sale) return false;
-    if (state.categoryFilter !== 'all' && state.categoryFilter !== 'soldes' && p.category !== state.categoryFilter) return false;
-    if (state.ageFilter && p.age !== state.ageFilter && p.age !== 'all') return false;
-    if (state.universeFilter && p.universe !== state.universeFilter) return false;
-    return true;
-  });
+  if (state.priceMax != null) list = list.filter(p => p.price <= state.priceMax);
+  return sortProducts(list);
 }
 
 function renderProducts() {
@@ -646,6 +749,27 @@ function renderProducts() {
       if (desc) desc.textContent = t('products.desc');
       if (chips) chips.hidden = false;
     }
+  }
+
+  // Chips reflect state.categoryFilter from a single place, whatever changed
+  // it (a click, or the Back/Forward buttons restoring a filtered URL) —
+  // aria-pressed is real assistive-tech state, not just a visual class.
+  if (chips) {
+    chips.querySelectorAll('.chip').forEach(chip => {
+      const active = chip.dataset.filter === state.categoryFilter;
+      chip.classList.toggle('active', active);
+      chip.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  // Announced to screen readers (role="status"): the visible count already
+  // changes above for a search, but a category/price/sort change alone
+  // never touched any visible text before, so it went unannounced.
+  const resultsStatus = document.getElementById('resultsStatus');
+  if (resultsStatus) {
+    resultsStatus.textContent = list.length
+      ? t('results.count').replace('%s', list.length)
+      : t('empty.state');
   }
 
   const buildCardEl = (p) => {
@@ -1360,6 +1484,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     showToast(t('error.offline'));
   }
 
+  // The price slider's ceiling comes from the real catalog, never a guessed
+  // constant — it must run once PRODUCTS is loaded, before the first render.
+  initPriceRange();
+
   applyLanguage();
 
   // A search redirects here from another page with the results as the whole
@@ -1435,16 +1563,43 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Filter chips (category)
+  // Filter chips (category) — the active class and aria-pressed are now set
+  // by renderProducts() itself from state.categoryFilter, so both stay in
+  // sync however the state changes (a click here, or Back/Forward).
   const filterChips = document.getElementById('filterChips');
   if (filterChips) {
     filterChips.addEventListener('click', (e) => {
       const chip = e.target.closest('.chip');
       if (!chip) return;
-      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
       state.categoryFilter = chip.dataset.filter;
       renderProducts();
+      syncUrlFromState();
+    });
+  }
+
+  // Price cap + sort — same instant, no-reload update as the category chips.
+  // The URL sync is debounced: a drag or a run of arrow-key presses fires
+  // many "input" events in a row, and pushing one history entry per event
+  // would turn a single gesture into dozens of Back-button presses to undo.
+  const priceMaxRange = document.getElementById('priceMaxRange');
+  if (priceMaxRange) {
+    let priceMaxUrlTimer = null;
+    priceMaxRange.addEventListener('input', () => {
+      updatePriceMaxOutput();
+      const value = Number(priceMaxRange.value);
+      state.priceMax = value >= Number(priceMaxRange.max) ? null : value;
+      renderProducts();
+      clearTimeout(priceMaxUrlTimer);
+      priceMaxUrlTimer = setTimeout(syncUrlFromState, 400);
+    });
+  }
+  const sortSelect = document.getElementById('sortSelect');
+  if (sortSelect) {
+    sortSelect.value = state.sortBy;
+    sortSelect.addEventListener('change', () => {
+      state.sortBy = sortSelect.value;
+      renderProducts();
+      syncUrlFromState();
     });
   }
 

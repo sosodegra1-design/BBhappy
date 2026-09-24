@@ -167,12 +167,37 @@
         <p id="productsDesc" data-i18n="products.desc">Une sélection rigoureuse à travers toutes nos catégories.</p>
       </div>
 
-      <div class="filter-chips" id="filterChips">
-        <button class="chip active" data-filter="all" data-i18n="chip.all">Tout voir</button>
-        <button class="chip" data-filter="jouets" data-i18n="chip.toys">Jouets</button>
-        <button class="chip" data-filter="vetements" data-i18n="chip.clothing">Vêtements</button>
-        <button class="chip" data-filter="soldes" data-i18n="chip.sales">Soldes 🔥</button>
-      </div>
+      <search aria-label="Filtrer les produits vedettes">
+        <fieldset class="filter-fieldset">
+          <legend class="visually-hidden" data-i18n="filter.category.legend">Catégorie</legend>
+          <div class="filter-chips" id="filterChips" role="group" aria-label="Catégorie">
+            <button class="chip active" type="button" data-filter="all" aria-pressed="true" data-i18n="chip.all">Tout voir</button>
+            <button class="chip" type="button" data-filter="jouets" aria-pressed="false" data-i18n="chip.toys">Jouets</button>
+            <button class="chip" type="button" data-filter="vetements" aria-pressed="false" data-i18n="chip.clothing">Vêtements</button>
+            <button class="chip" type="button" data-filter="soldes" aria-pressed="false" data-i18n="chip.sales">Soldes 🔥</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="filter-fieldset filter-row">
+          <legend class="visually-hidden" data-i18n="filter.sort.legend">Prix et tri</legend>
+          <div class="filter-field">
+            <label for="priceMaxRange" data-i18n="filter.priceMax.label">Prix maximum</label>
+            <input type="range" id="priceMaxRange" name="priceMax" min="0" max="0" step="5" value="0">
+            <output for="priceMaxRange" id="priceMaxOutput"></output>
+          </div>
+          <div class="filter-field">
+            <label for="sortSelect" data-i18n="filter.sort.label">Trier par</label>
+            <select id="sortSelect" name="sort">
+              <option value="relevance" data-i18n="filter.sort.relevance">Pertinence</option>
+              <option value="price-asc" data-i18n="filter.sort.priceAsc">Prix croissant</option>
+              <option value="price-desc" data-i18n="filter.sort.priceDesc">Prix décroissant</option>
+              <option value="name-asc" data-i18n="filter.sort.nameAsc">Nom (A → Z)</option>
+            </select>
+          </div>
+        </fieldset>
+      </search>
+
+      <p class="visually-hidden" id="resultsStatus" role="status" aria-live="polite" aria-atomic="true"></p>
 
       <div class="product-grid" id="productGrid"></div>
 
