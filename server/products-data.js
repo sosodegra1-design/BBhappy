@@ -1151,12 +1151,15 @@ const PRODUCTS = [
 ];
 
 /* ===================== LOYALTY TIERS ===================== */
+/* One reward per language: reward (FR, reference) / reward_en / reward_de.
+   The storefront picks the current language and falls back DE -> EN -> FR so a
+   missing German tier never blanks the loyalty page. */
 const LOYALTY_TIERS = [
-  { threshold: 50, reward: 'Code -5€ sur votre prochaine commande', reward_en: '€5 off your next order' },
-  { threshold: 100, reward: 'Petit cadeau offert 🎁', reward_en: 'A free small gift 🎁' },
-  { threshold: 200, reward: '-10% sur votre prochaine commande', reward_en: '10% off your next order' },
-  { threshold: 350, reward: 'Livraison gratuite à vie', reward_en: 'Free shipping for life' },
-  { threshold: 500, reward: 'Cadeau premium surprise 🎉', reward_en: 'A free premium surprise gift 🎉' }
+  { threshold: 50, reward: 'Code -5€ sur votre prochaine commande', reward_en: '€5 off your next order', reward_de: '5€-Code für Ihre nächste Bestellung' },
+  { threshold: 100, reward: 'Petit cadeau offert 🎁', reward_en: 'A free small gift 🎁', reward_de: 'Ein kleines Geschenk 🎁' },
+  { threshold: 200, reward: '-10% sur votre prochaine commande', reward_en: '10% off your next order', reward_de: '-10% auf Ihre nächste Bestellung' },
+  { threshold: 350, reward: 'Livraison gratuite à vie', reward_en: 'Free shipping for life', reward_de: 'Lebenslang kostenloser Versand' },
+  { threshold: 500, reward: 'Cadeau premium surprise 🎉', reward_en: 'A free premium surprise gift 🎉', reward_de: 'Ein exklusives Überraschungsgeschenk 🎉' }
 ];
 
 /* Human-readable color names, kept in sync with js/script.js's COLOR_NAMES —

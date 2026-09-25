@@ -1,16 +1,18 @@
 /* Human-readable names for the swatch colors used across the catalog (for screen readers). */
 const COLOR_NAMES = {
-  '#a8e6cf': { fr: 'Vert menthe', en: 'Mint green' },
-  '#ffcab1': { fr: 'Pêche', en: 'Peach' },
-  '#ffe066': { fr: 'Jaune soleil', en: 'Sun yellow' },
-  '#ffffff': { fr: 'Blanc', en: 'White' },
-  '#d4af37': { fr: 'Or', en: 'Gold' },
-  '#e8b4a8': { fr: 'Or rose', en: 'Rose gold' }
+  '#a8e6cf': { fr: 'Vert menthe', en: 'Mint green', de: 'Minzgrün' },
+  '#ffcab1': { fr: 'Pêche', en: 'Peach', de: 'Pfirsich' },
+  '#ffe066': { fr: 'Jaune soleil', en: 'Sun yellow', de: 'Sonnengelb' },
+  '#ffffff': { fr: 'Blanc', en: 'White', de: 'Weiß' },
+  '#d4af37': { fr: 'Or', en: 'Gold', de: 'Gold' },
+  '#e8b4a8': { fr: 'Or rose', en: 'Rose gold', de: 'Roségold' }
 };
 function colorName(hex) {
   const entry = COLOR_NAMES[hex.toLowerCase()];
   if (!entry) return hex;
-  return state.lang === 'en' ? entry.en : entry.fr;
+  // Repli DE -> EN -> FR : une couleur sans nom allemand reste lisible plutôt
+  // que d'afficher une valeur vide ou le hex brut.
+  return entry[state.lang] || entry.en || entry.fr;
 }
 
 /* ===================== DATA (fetched from the API) ===================== */
@@ -213,6 +215,7 @@ const TRANSLATIONS = {
     'loyalty.physicalCard.confirmed.title': 'Carte physique en préparation ✅',
     'loyalty.physicalCard.confirmed.desc': 'Votre demande a bien été enregistrée, votre carte vous sera envoyée par courrier sous 10 à 15 jours.',
     'lang.toggle': '🇬🇧 EN',
+    'lang.aria': 'Changer de langue',
     'error.generic': 'Un problème est survenu, réessayez.',
     'error.offline': 'Impossible de joindre le serveur BBVOLTEX. Vérifiez qu\'il tourne bien (npm start).',
     'shipping.hero.title': 'Livraison & retours',
@@ -436,6 +439,7 @@ const TRANSLATIONS = {
     'loyalty.physicalCard.confirmed.title': 'Physical card on its way ✅',
     'loyalty.physicalCard.confirmed.desc': 'Your request has been recorded, your card will be mailed to you within 10 to 15 days.',
     'lang.toggle': '🇫🇷 FR',
+    'lang.aria': 'Change language',
     'error.generic': 'Something went wrong, please try again.',
     'error.offline': 'Could not reach the BBVOLTEX server. Make sure it is running (npm start).',
     'shipping.hero.title': 'Shipping & Returns',
@@ -514,8 +518,258 @@ const TRANSLATIONS = {
     'carrieres.open.eyebrow': 'Open positions', 'carrieres.open.title': 'No open positions right now',
     'carrieres.open.desc': 'We have no active listing at the moment, but we\'re happy to consider spontaneous applications.',
     'carrieres.cta': 'Send a spontaneous application →'
+  },
+  de: {
+    'topbar.text': '🎃 Halloween-Special: -15% auf die Kategorie Box mit dem Code CITROUILLE — bis zum 31. Oktober',
+    'nav.home': 'Startseite', 'nav.toys': 'Spielzeug', 'nav.clothing': 'Kleidung', 'nav.brands': 'Schmuck & Accessoires', 'nav.brands.l1': 'Schmuck', 'nav.brands.l2': 'Accessoires', 'nav.sales': 'Sale 🔥',
+    'nav.box': 'Halloween-Special <svg width="16" height="16" viewBox="0 0 100 100" style="vertical-align:-2px;margin-left:2px;"><path d="M50 8 88 28 50 48 12 28Z" fill="#e8c896"/><path d="M12 28v42l38 22V50Z" fill="#c68642"/><path d="M88 28v42L50 92V50Z" fill="#9c6a34"/><path d="M44 31v61l6 3.5V34.5Z" fill="#d4af37"/></svg>', 'nav.box2': 'Halloween-Special',
+    'nav.categories': 'Kategorien ▾', 'nav.tech': 'Elektronik', 'nav.home2': 'Haus &amp; Deko',
+    'nav.beauty': 'Beauty', 'nav.sport': 'Sport &amp; Freizeit',
+    'mega.kids': 'Kinder', 'mega.home': 'Haus &amp; Wohlbefinden', 'mega.techsport': 'Tech &amp; Sport',
+    'electronique.hero.title': 'Die Welt der Elektronik',
+    'electronique.hero.desc': 'Kopfhörer, Lautsprecher und vernetzte Geräte, ausgewählt für ihre Qualität und ihre Zuverlässigkeit im Alltag.',
+    'maison.hero.title': 'Die Welt Haus &amp; Deko',
+    'maison.hero.desc': 'Lampen, Textilien und kleine handwerkliche Aufmerksamkeiten, die Ihr Zuhause jeden Tag verschönern.',
+    'beaute.hero.title': 'Die Welt Beauty &amp; Wohlbefinden',
+    'beaute.hero.desc': 'Pflege und Kosmetik mit natürlichen Inhaltsstoffen, damit Sie sich jeden Tag gut um sich kümmern.',
+    'sport.hero.title': 'Die Welt Sport &amp; Freizeit',
+    'sport.hero.desc': 'Einfache und langlebige Ausrüstung, um sich zu Hause oder draußen zu bewegen – in jedem Alter und auf jedem Niveau.',
+    'box.hero.title': 'Halloween-Special-Edition 🎃',
+    'box.hero.desc': 'Unsere Kartonboxen für Snacks, Gebäck und Geschenke stimmen sich auf Halloween ein: perfekt für Ihre Leckereien und kleinen Überraschungen, in kleiner oder großer Menge. Code CITROUILLE, -15%, bis zum 31. Oktober.',
+    'search.placeholder': 'Spielzeug, Kleidung suchen...',
+    'hero.tag': '✨ Premium-Auswahl',
+    'hero.title': 'Höchste Ansprüche für<br>Ihren <span class="highlight">Alltag</span>',
+    'hero.desc': 'Mode, Technik, Haus, Beauty und Sport: eine sorgfältige Auswahl zuverlässiger Produkte, sicher geliefert.',
+    'hero.cta1': 'Shop entdecken', 'hero.cta2': 'Kategorien ansehen',
+    'hero.stat1': 'zufriedene Kunden', 'hero.stat2': 'sichere Zahlung', 'hero.stat3': 'Durchschnittsbewertung',
+    'hero.visual1': 'Elektronik', 'hero.visual2': 'Mode', 'hero.visual3': 'Haus',
+    'categories.eyebrow': 'Entdecken', 'categories.title': 'Alle unsere Kategorien',
+    'categories.desc': 'Ein einziges Sortiment für alle Ihre Bedürfnisse, mit demselben Qualitätsanspruch ausgewählt.',
+    'sub.byage': 'Nach Alter', 'sub.byuniverse': 'Nach Kategorie',
+    'sub.byage2': 'Nach Alter filtern', 'sub.byuniverse2': 'Nach Kategorie filtern',
+    'age.0-2': '0–2 Jahre', 'age.3-5': '3–5 Jahre', 'age.6-12': '6–12 Jahre',
+    'uni.educatif.title': 'Lernspielzeug', 'uni.educatif.desc': 'Spielend lernen',
+    'uni.pleinair.title': 'Draußen', 'uni.pleinair.desc': 'Abenteuer im Freien',
+    'uni.homme.title': 'Herren', 'uni.homme.desc': 'Herrengarderobe',
+    'uni.femme.title': 'Damen', 'uni.femme.desc': 'Damengarderobe',
+    'uni.enfant.title': 'Kinder', 'uni.enfant.desc': 'Kindergarderobe',
+    'uni.fille.title': 'Mädchen', 'uni.fille.desc': 'Sanfte, kreative Welt',
+    'uni.garcon.title': 'Jungen', 'uni.garcon.desc': 'Welt voller Action und Entdeckungen',
+    'uni.bebe.title': 'Baby', 'uni.bebe.desc': 'Sanfte erste Entdeckungen',
+    'products.eyebrow': 'Favoriten', 'products.title': 'Beliebte Produkte',
+    'products.desc': 'Eine sorgfältige Auswahl aus allen unseren Kategorien.',
+    'products.other': 'Weitere',
+    'search.eyebrow': 'Suchergebnisse',
+    'search.resultsFor': 'Ergebnisse für „%s“',
+    'search.resultsDesc': '%s Produkt(e) im gesamten Sortiment gefunden.',
+    'chip.all': 'Alle ansehen', 'chip.toys': 'Spielzeug', 'chip.clothing': 'Kleidung', 'chip.sales': 'Sale 🔥',
+    'empty.state': 'Kein Produkt entspricht Ihrer Suche 🧐 Versuchen Sie einen anderen Filter!',
+    'trust.delivery.title': 'Schnelle Lieferung', 'trust.delivery.desc': 'Versand innerhalb von 24 Stunden, bei Ihnen in 2 bis 4 Tagen',
+    'trust.eco.title': 'Umweltfreundliche Verpackung', 'trust.eco.desc': 'Recycelte Kartons, kein Einwegplastik',
+    'trust.safe.title': '100% sichere Materialien', 'trust.safe.desc': 'CE-zertifiziert, von unseren Experten getestet und freigegeben',
+    'trust.payment.title': 'Sichere Zahlung', 'trust.payment.desc': 'Ihre Daten sind geschützt, verschlüsselte Transaktionen',
+    'tab.description': 'Beschreibung', 'tab.care': 'Pflege', 'tab.sizes': 'Größen/Alter', 'tab.packaging': 'Verpackung & Hersteller',
+    'modal.eco': 'Ökologische Details', 'modal.safety': 'Sicherheitsnormen',
+    'modal.qty': 'Menge', 'modal.addtocart': 'In den Warenkorb',
+    'cart.title': 'Ihr Warenkorb', 'cart.empty': 'Ihr Warenkorb ist derzeit leer 🧺',
+    'cart.total': 'Gesamt', 'cart.checkout': 'Bestellung aufgeben', 'cart.remove': 'Entfernen',
+    'cart.color': 'Farbe',
+    'fav.title': 'Ihre Favoriten', 'fav.empty': 'Noch keine Favoriten 💛<br>Klicken Sie auf das Herz eines Produkts!',
+    'fav.remove': 'Aus Favoriten entfernen', 'fav.addAria': 'Zu Favoriten hinzufügen', 'fav.removeAria': 'Aus Favoriten entfernen',
+    'toast.added': 'zum Warenkorb hinzugefügt 🛒',
+    'badge.sale': 'Sale', 'badge.lot': 'Set',
+    'newsletter.title': 'Werden Sie Teil der BBVOLTEX-Familie 💌',
+    'newsletter.desc': 'Erhalten Sie -10% auf Ihre erste Bestellung und Neuheiten als Erste(r).',
+    'newsletter.placeholder': 'Ihre E-Mail-Adresse', 'newsletter.button': 'Anmelden',
+    'newsletter.success': 'Danke für Ihre Anmeldung! 🎉 +10 Treuepunkte geschenkt.',
+    'footer.shop': 'Shop', 'footer.destock': 'Restposten-Sets', 'footer.service': 'Kundenservice',
+    'footer.contact': 'Kontaktieren Sie uns', 'footer.shipping': 'Versand &amp; Rückgabe',
+    'footer.tracking': 'Bestellung verfolgen',
+    'footer.sizeguide': 'Größentabelle', 'footer.faq': 'FAQ', 'footer.about': 'Über uns',
+    'footer.story': 'Unsere Geschichte', 'footer.eco': 'Umweltengagement',
+    'footer.safety': 'Sicherheitsnormen', 'footer.careers': 'Karriere',
+    'footer.copy': '© 2026 BBVOLTEX — Alle Rechte vorbehalten.',
+    'breadcrumb.home': 'Startseite',
+    'jouets.hero.title': 'Die Welt des Spielzeugs',
+    'jouets.hero.desc': 'Spielzeug, das lange hält und die Neugier weckt: edle Materialien, sorgfältige Verarbeitung und einwandfreie Sicherheit – in jedem Alter.',
+    'vetements.hero.title': 'Die Welt der Kleidung',
+    'vetements.hero.desc': 'Herren, Damen, Kinder: Kleidung für Komfort und Stil, in jedem Alter und zu jedem Anlass.',
+    'soldes.hero.title': 'BBVOLTEX Sale',
+    'soldes.hero.desc': 'Bis zu -20% mit dem Code <strong>SOLEIL</strong> auf ausgewählte Produkte. Das Angebot ist befristet – greifen Sie zu!',
+    'soldes.destocklink': 'Restposten-Sets ansehen →',
+    'bijoux.hero.title': 'Die Welt Schmuck &amp; Accessoires',
+    'bijoux.hero.desc': 'Ketten, Armbänder, Ringe, Gürtel, Uhren und Taschen: Stücke, ausgewählt für ihre Qualität und nach Ihren Wünschen personalisierbar.',
+    'uni.collier.title': 'Halskette', 'uni.collier.desc': 'Anhänger & Ketten',
+    'uni.bracelet.title': 'Armband', 'uni.bracelet.desc': 'Fein oder Statement',
+    'uni.bague.title': 'Ring', 'uni.bague.desc': 'Ringe & Solitäre',
+    'uni.ceinture.title': 'Gürtel', 'uni.ceinture.desc': 'Leder & Schnallen',
+    'uni.montre.title': 'Uhr', 'uni.montre.desc': 'Klassisch & vernetzt',
+    'uni.sacamain.title': 'Damenhandtasche', 'uni.sacamain.desc': 'Eleganz im Alltag',
+    'uni.sacados.title': 'Umhängetasche / Rucksack', 'uni.sacados.desc': 'Praktisch & unterwegs',
+    'destockage.hero.title': 'Restposten-Sets 📦',
+    'destockage.hero.desc': 'Multi-Produkt-Pakete zu Schnäppchenpreisen, um die ganze Familie günstig auszustatten – solange der Vorrat reicht.',
+    'checkout.title': 'Bestellung abschließen', 'checkout.name': 'Vollständiger Name', 'checkout.email': 'E-Mail',
+    'checkout.address': 'Adresse', 'checkout.zip': 'Postleitzahl', 'checkout.city': 'Stadt',
+    'checkout.submit': 'Bestellung bestätigen', 'checkout.summaryTitle': 'Zusammenfassung',
+    'checkout.success.title': 'Vielen Dank für Ihre Bestellung!',
+    'checkout.success.desc': 'Eine Bestätigungs-E-Mail wurde an Sie gesendet.',
+    'checkout.orderNumber': 'Bestellnummer', 'checkout.pointsEarned': 'Treuepunkte gesammelt!',
+    'checkout.close': 'Schließen', 'checkout.emptyCart': 'Ihr Warenkorb ist leer. Fügen Sie Produkte hinzu, bevor Sie bestellen 🧺',
+    'checkout.cancelled': 'Zahlung abgebrochen, Ihr Warenkorb ist weiterhin da.',
+    'checkout.trackOrder': 'Meine Bestellung verfolgen →',
+    'tracking.title': 'Sendungsverfolgung',
+    'tracking.hero.title': 'Sendungsverfolgung',
+    'tracking.hero.desc': 'Geben Sie Ihre Bestellnummer und Ihre E-Mail ein, um den Status in Echtzeit zu sehen.',
+    'tracking.orderNumber': 'Bestellnummer', 'tracking.email': 'E-Mail',
+    'tracking.submit': 'Mein Paket verfolgen',
+    'tracking.notFound': 'Keine Bestellung entspricht dieser Nummer und dieser E-Mail.',
+    'tracking.trackingNumber': 'Sendungsnummer',
+    'tracking.step.confirmed': 'Bestellung bestätigt', 'tracking.step.preparing': 'In Vorbereitung',
+    'tracking.step.shipped': 'Versandt', 'tracking.step.delivered': 'Zugestellt',
+    'loyalty.title': 'Treuekarte', 'loyalty.aria': 'Treuekarte', 'loyalty.points': 'Punkte',
+    'loyalty.tiersTitle': 'Belohnungen', 'loyalty.maxed': 'Glückwunsch, Sie haben alle Belohnungen freigeschaltet! 🎉',
+    'loyalty.viewCard': 'Meine vollständige Treuekarte ansehen →',
+    'loyalty.hero.title': 'Ihre BBVOLTEX-Treuekarte',
+    'loyalty.hero.desc': 'Sammeln Sie Punkte bei jeder Bestellung (1 € ausgegeben = 1 Punkt) und schalten Sie Belohnungen automatisch frei.',
+    'loyalty.member': 'BBVOLTEX-Mitglied', 'loyalty.memberNew': 'Neues Mitglied',
+    'loyalty.card.number': 'Mitgliedsnr.', 'loyalty.card.points': 'Punkte',
+    'loyalty.table.title': 'Belohnungstabelle',
+    'loyalty.table.status': 'Status', 'loyalty.table.threshold': 'Benötigte Punkte', 'loyalty.table.reward': 'Belohnung',
+    'loyalty.physicalCard.eyebrow': 'Physische Karte',
+    'loyalty.physicalCard.title': 'Erhalten Sie Ihre Karte nach Hause',
+    'loyalty.physicalCard.desc': 'Ihre virtuelle Karte oben ist bereits aktiv und sammelt automatisch Punkte. Zusätzlich können Sie eine physische Karte für Partnerfilialen erhalten – innerhalb von 10 bis 15 Tagen kostenlos per Post.',
+    'loyalty.physicalCard.name': 'Vollständiger Name', 'loyalty.physicalCard.address': 'Adresse',
+    'loyalty.physicalCard.zip': 'Postleitzahl', 'loyalty.physicalCard.city': 'Stadt',
+    'loyalty.physicalCard.submit': 'Meine physische Karte erhalten',
+    'loyalty.physicalCard.toast': 'Anfrage gespeichert! Ihre physische Karte kommt in 10 bis 15 Tagen 📮',
+    'loyalty.physicalCard.confirmed.title': 'Physische Karte wird vorbereitet ✅',
+    'loyalty.physicalCard.confirmed.desc': 'Ihre Anfrage wurde erfasst, Ihre Karte wird Ihnen innerhalb von 10 bis 15 Tagen per Post zugesandt.',
+    // Le bouton affiche la langue SUIVANTE du cycle FR -> EN -> DE, comme le
+    // faisait le bouton FR/EN d'origine (en français il affichait « EN »).
+    'lang.toggle': '🇫🇷 FR', 'lang.aria': 'Sprache wechseln',
+    'error.generic': 'Ein Problem ist aufgetreten, bitte versuchen Sie es erneut.',
+    'error.offline': 'Der BBVOLTEX-Server ist nicht erreichbar. Prüfen Sie, ob er läuft (npm start).',
+    'shipping.hero.title': 'Versand &amp; Rückgabe',
+    'shipping.hero.desc': 'Alles, was Sie wissen müssen, um Ihre Bestellungen beruhigt zu erhalten und bei Bedarf genauso einfach zurückzusenden.',
+    'shipping.delivery.eyebrow': 'Versand', 'shipping.delivery.title': 'Optionen für Ihre Wünsche',
+    'shipping.standard.title': 'Standard', 'shipping.standard.desc': '3 bis 5 Werktage — 4,90 €, ab 20 € Einkauf kostenlos',
+    'shipping.express.title': 'Express', 'shipping.express.desc': '24 bis 48 Werktagsstunden — 9,90 €',
+    'shipping.europe.title': 'Europa', 'shipping.europe.desc': '5 bis 8 Werktage — ab 9,90 €',
+    'shipping.tracking.title': 'Echtzeit-Verfolgung', 'shipping.tracking.desc': 'Ein Tracking-Link wird Ihnen beim Versand Ihres Pakets zugesandt',
+    'shipping.returns.eyebrow': 'Rückgabe', 'shipping.returns.title': '30 Tage, um Ihre Meinung zu ändern',
+    'shipping.returns.desc': 'Passt ein Artikel nicht, können Sie ihn innerhalb von 30 Tagen nach Erhalt ohne Begründung zurücksenden.',
+    'shipping.step1.title': '1. Kontaktieren Sie uns', 'shipping.step1.desc': 'Per E-Mail an <a href="mailto:bbvoltex@gmail.com">bbvoltex@gmail.com</a>, innerhalb von 30 Tagen nach Erhalt',
+    'shipping.step2.title': '2. Senden Sie den Artikel zurück', 'shipping.step2.desc': 'In der Originalverpackung, mit dem beiliegenden Rücksendeetikett',
+    'shipping.step3.title': '3. Rückerstattung', 'shipping.step3.desc': 'Innerhalb von 5 bis 7 Werktagen nach Erhalt Ihrer Rücksendung',
+    'shipping.exclusions': 'Artikel mit -50% oder mehr, Unterwäsche und personalisierte Geschenke sind aus Hygienegründen von der Rückgabe ausgeschlossen.',
+
+    'sizeguide.hero.title': 'Größentabelle', 'sizeguide.hero.desc': 'Finden Sie die ideale Größe für Ihre Kleidung und Schuhe – bei jeder Bestellung.',
+    'sizeguide.adult.eyebrow': 'Herren &amp; Damen', 'sizeguide.adult.title': 'Erwachsenenkleidung',
+    'sizeguide.adult.desc': 'Angaben in Zentimetern, ohne Gewähr. Bei Zweifeln zwischen zwei Größen wählen Sie die größere.',
+    'sizeguide.col.size': 'Größe', 'sizeguide.col.chestWomen': 'Brustumfang (Damen)', 'sizeguide.col.chestMen': 'Brustumfang (Herren)', 'sizeguide.col.waist': 'Taillenumfang',
+    'sizeguide.kids.eyebrow': 'Kinder', 'sizeguide.kids.title': 'Kinderkleidung',
+    'sizeguide.kids.desc': 'Kindergrößen werden nach Alter und Körpergröße angegeben, für eine Passform, die dem Wachstum folgt.',
+    'sizeguide.col.age': 'Alter', 'sizeguide.col.height': 'Körpergröße',
+    'sizeguide.age.0-1m': '0–1 Monat', 'sizeguide.age.2-3m': '2–3 Monate', 'sizeguide.age.6-9m': '6–9 Monate',
+    'sizeguide.age.1-4a': '1–4 Jahre', 'sizeguide.age.5-10a': '5–10 Jahre',
+    'sizeguide.shoes.eyebrow': 'Schuhe', 'sizeguide.shoes.title': 'Schuhgrößen',
+    'sizeguide.shoes.desc': 'Messen Sie die Fußlänge am Ende des Tages, Füße leicht auseinander, für mehr Genauigkeit.',
+    'sizeguide.col.eu': 'EU-Größe', 'sizeguide.col.footlength': 'Fußlänge',
+    'sizeguide.help': 'Unsicher bei Ihrer Größe? <a href="mailto:bbvoltex@gmail.com">Kontaktieren Sie uns</a>, wir helfen Ihnen bei der Wahl.',
+
+    'faq.hero.title': 'Häufige Fragen', 'faq.hero.desc': 'Antworten auf die häufigsten Fragen zu Lieferung, Rückgabe, Zahlung und Ihrem Konto.',
+    'faq.q1': 'Wie sind die Lieferzeiten und -kosten?',
+    'faq.a1': 'Standardlieferung in 3 bis 5 Werktagen (4,90 €, ab 20 € Einkauf kostenlos) oder Express in 24 bis 48 Stunden (9,90 €). Alle Details auf der Seite <a href="livraison-retours.html">Versand &amp; Rückgabe</a>.',
+    'faq.q2': 'Wie sende ich einen Artikel zurück?',
+    'faq.a2': 'Sie haben 30 Tage nach Erhalt Zeit, Ihre Meinung zu ändern – ohne Begründung. Kontaktieren Sie uns per E-Mail, um Ihr Rücksendeetikett zu erhalten. Bedingungen auf der Seite <a href="livraison-retours.html">Versand &amp; Rückgabe</a>.',
+    'faq.q3': 'Welche Zahlungsmittel akzeptieren Sie?',
+    'faq.a3': 'Kreditkarte (Visa, Mastercard), PayPal und Apple Pay, über eine 100% sichere Zahlung.',
+    'faq.q4': 'Wie verfolge ich meine Bestellung?',
+    'faq.a4': 'Gehen Sie auf die Seite <a href="suivi.html">Bestellung verfolgen</a> mit Ihrer Bestellnummer und der beim Kauf verwendeten E-Mail, um den Status in Echtzeit zu sehen.',
+    'faq.q5': 'Wie funktioniert die Treuekarte?',
+    'faq.a5': 'Jeder ausgegebene Euro bringt Ihnen 1 Punkt. Ihre Punkte schalten automatisch Belohnungen nach Stufen frei. Details auf Ihrer <a href="carte-fidelite.html">Treuekarte</a>.',
+    'faq.q6': 'Kann ich eine Kartonbox mit meinem Logo personalisieren?',
+    'faq.a6': 'Ja, mehrere Formate aus dem Bereich <a href="box.html">Halloween-Special</a> sind mit Ihrem Logo personalisierbar, mit einer Bearbeitungszeit von 5 bis 7 Werktagen.',
+    'faq.q7': 'Wie können Sie uns kontaktieren?',
+    'faq.a7': 'Per E-Mail an <a href="mailto:bbvoltex@gmail.com">bbvoltex@gmail.com</a>, wir antworten innerhalb von 48 Werktagsstunden.',
+
+    'histoire.hero.title': 'Unsere Geschichte', 'histoire.hero.desc': 'Von einem einfachen Anspruch zu einem Multi-Kategorie-Marktplatz: die Geschichte von BBVOLTEX.',
+    'histoire.p1': 'BBVOLTEX entstand aus einer einfachen Beobachtung: Wirklich zuverlässige, gut gestaltete und fair bepreiste Produkte zu finden, bedeutet oft, Dutzende Shops zu vergleichen. Wir wollten diesen Anspruch an einem Ort bündeln.',
+    'histoire.p2': 'Was als kleine Auswahl begann, wuchs nach und nach: Kleidung, Elektronik, Haus, Beauty, Sport und sogar die professionellen Verpackungen aus unserem Bereich Box. Bei jeder neuen Kategorie gilt dasselbe Prinzip: echte Qualitäts- und Sicherheitskriterien, bevor ein Produkt in unser Sortiment aufgenommen wird.',
+    'histoire.p3': 'Heute wächst BBVOLTEX mit derselben Überzeugung weiter: ein breites Sortiment anzubieten, ohne jemals bei Qualität, Sicherheit und Service Kompromisse zu machen.',
+    'histoire.values.eyebrow': 'Unsere Werte', 'histoire.values.title': 'Was jede Auswahl leitet',
+    'histoire.value1.title': 'Sicherheit', 'histoire.value1.desc': 'Jedes Produkt erfüllt geprüfte Sicherheitsnormen, bevor es ins Sortiment kommt.',
+    'histoire.value2.title': 'Qualität', 'histoire.value2.desc': 'Materialien und Verarbeitung, ausgewählt für Langlebigkeit – nicht, um nach wenigen Monaten ersetzt zu werden.',
+    'histoire.value3.title': 'Service', 'histoire.value3.desc': 'Ein erreichbares Team, transparente Sendungsverfolgung und vereinfachte Rückgaben.',
+
+    'eco.hero.title': 'Unser Umweltengagement', 'eco.hero.desc': 'Konkrete Entscheidungen zu Materialien, Verpackungen und unseren Partnern – in jeder Kategorie des Sortiments.',
+    'eco.materials.eyebrow': 'Materialien', 'eco.materials.title': 'Sorgfältig ausgewählte Materialien',
+    'eco.mat1.title': 'FSC-Holz', 'eco.mat1.desc': 'Spielzeug und Gegenstände aus Holz stammen aus nachhaltig bewirtschafteten Wäldern.',
+    'eco.mat2.title': 'Bio-Baumwolle', 'eco.mat2.desc': 'Unsere Textilien aus Bio-Baumwolle sind GOTS-zertifiziert, ohne schädliche Behandlungen.',
+    'eco.mat3.title': 'Recycelbarer Karton', 'eco.mat3.desc': 'Die Boxen aus unserem Bereich Box bestehen aus recycelbarem, kompostierbarem Kraftkarton.',
+    'eco.packaging.eyebrow': 'Verpackungen', 'eco.packaging.title': 'Weniger Plastik, weniger Abfall',
+    'eco.packaging.desc': 'Unsere Pakete werden in Verpackungen aus Recyclingkarton versandt, ohne unnötige Umverpackung. Wir reduzieren Plastikfüllmaterial schrittweise zugunsten recycelbarer oder kompostierbarer Materialien.',
+    'eco.sourcing.eyebrow': 'Beschaffung', 'eco.sourcing.title': 'Sorgfältig ausgewählte Partner',
+    'eco.sourcing.desc': 'Wir bevorzugen Lieferanten, die ihre Zertifizierungen (FSC, GOTS, CE) nachweisen können, und prüfen jeden neuen Partner anhand dieser Kriterien, bevor er ins Sortiment aufgenommen wird.',
+
+    'securite.hero.title': 'Sicherheitsnormen', 'securite.hero.desc': 'Jede Kategorie erfüllt geprüfte Sicherheitsanforderungen, bevor sie verkauft wird.',
+    'securite.q1': 'Spielzeug', 'securite.a1': 'Unser Spielzeug entspricht der CE-Kennzeichnung und der europäischen Norm EN71, mit altersgerechten Teilen, um Verschlucken oder Erstickungsgefahr zu vermeiden.',
+    'securite.q2': 'Kleidung &amp; Textilien', 'securite.a2': 'Unsere Textilien erfüllen die CE-Sicherheitsnormen für Textilien: keine gefährlichen Kordeln, nickelfreie Druckknöpfe, geprüfte Nähte.',
+    'securite.q3': 'Box &amp; Lebensmittelverpackungen', 'securite.a3': 'Die Kartonboxen aus unserem Bereich Box werden aus Materialien hergestellt, die den geltenden Normen für Lebensmittelkontakt entsprechen.',
+    'securite.q4': 'Elektronik', 'securite.a4': 'Unsere elektronischen Produkte entsprechen der CE-Kennzeichnung und den europäischen Anforderungen an elektromagnetische Verträglichkeit und die Beschränkung gefährlicher Stoffe.',
+    'securite.q5': 'Qualitätskontrolle', 'securite.a5': 'Jedes neue Produkt wird vor der Veröffentlichung geprüft: Konformitätsdokumentation, Materialien und Verarbeitung werden begutachtet, bevor es ins Sortiment kommt.',
+
+    'carrieres.hero.title': 'Karriere bei BBVOLTEX', 'carrieres.hero.desc': 'Ein Team in menschlicher Größe, anspruchsvoll bei Qualität und Service.',
+    'carrieres.why.eyebrow': 'Warum zu uns kommen', 'carrieres.why.title': 'Ein gemeinsamer Anspruch',
+    'carrieres.why.desc': 'Bei BBVOLTEX teilt jeder im Team dieselbe Überzeugung: Qualität und Sicherheit sind nicht verhandelbar. Wir arbeiten in einem kleinen Team, mit konkreter Verantwortung ab dem ersten Tag.',
+    'carrieres.open.eyebrow': 'Offene Stellen', 'carrieres.open.title': 'Derzeit keine offenen Stellen',
+    'carrieres.open.desc': 'Wir haben aktuell keine aktive Ausschreibung, freuen uns aber über Initiativbewerbungen.',
+    'carrieres.cta': 'Initiativbewerbung senden →',
+    'filter.category.legend': 'Kategorie',
+    'filter.priceMax.label': 'Höchstpreis',
+    'filter.sort.label': 'Sortieren nach',
+    'filter.sort.legend': 'Preis und Sortierung',
+    'filter.sort.relevance': 'Relevanz',
+    'filter.sort.priceAsc': 'Preis aufsteigend',
+    'filter.sort.priceDesc': 'Preis absteigend',
+    'filter.sort.nameAsc': 'Name (A → Z)',
+    'results.count': '%s Produkt(e) angezeigt.',
+    'footer.legal': 'Impressum',
+    'legal.hero.title': 'Impressum',
+    'legal.hero.desc': 'Rechtliche Informationen zum Betrieb und zum Hosting der Website BBVOLTEX.',
+    'tracking.carrier': 'Versanddienstleister',
+    'tracking.trackParcel': 'Paket auf der Website des Versanddienstleisters verfolgen →',
+    'tracking.return.button': 'Rückgabe anfordern',
+    'tracking.return.title': 'Rückgabe anfordern',
+    'tracking.return.reasonLabel': 'Warum möchten Sie dieses Paket zurücksenden?',
+    'tracking.return.reasonPlaceholder': 'z. B.: Die Größe passt nicht, das Produkt ist beschädigt angekommen …',
+    'tracking.return.submit': 'Anfrage senden',
+    'tracking.return.cancel': 'Abbrechen',
+    'tracking.return.success': 'Ihre Rückgabeanfrage wurde gesendet. Sie erhalten in Kürze eine E-Mail mit den nächsten Schritten und dem Rücksendeetikett.',
+    'tracking.return.pending': 'Für diese Bestellung läuft bereits eine Rückgabe. Sie haben (oder erhalten) eine E-Mail mit den nächsten Schritten.',
+    'tracking.return.error': 'Die Rückgabeanfrage konnte nicht gesendet werden.'
   }
 };
+
+/* ===================== LANGUES =====================
+   Trois langues de vitrine. L'ordre est celui que le bouton unique parcourt :
+   il documente donc aussi ce que veut dire « langue suivante ».
+   Ce fichier est aussi chargé par node --test (pour tester la chaîne de repli),
+   où document/localStorage/location/window n'existent pas : chaque lecture d'un
+   global navigateur au chargement passe par une garde ci-dessous. */
+const LANGUAGES = ['fr', 'en', 'de'];
+
+function storedLang() {
+  if (typeof localStorage === 'undefined') return 'fr';
+  const saved = localStorage.getItem('bbhappy_lang');
+  // Une valeur inconnue (ancien localStorage, édition à la main) ne doit pas
+  // laisser la page sans traductions — t() renverrait alors les clés brutes.
+  return LANGUAGES.includes(saved) ? saved : 'fr';
+}
+function queryParam(name) {
+  if (typeof location === 'undefined') return null;
+  return new URLSearchParams(location.search).get(name);
+}
 
 /* ===================== STATE ===================== */
 /* cart, favorites and loyaltyPoints start empty and are filled in from the
@@ -525,19 +779,19 @@ const state = {
   // A dedicated category page (data-category="jouets" on <body>) always wins:
   // the URL param only matters on the homepage, where the category is a filter
   // rather than the page's own identity.
-  categoryFilter: document.body.dataset.category || new URLSearchParams(location.search).get('categorie') || 'all',
+  categoryFilter: (typeof document !== 'undefined' && document.body.dataset.category) || queryParam('categorie') || 'all',
   ageFilter: null,
-  universeFilter: new URLSearchParams(location.search).get('universe') || null,
-  searchTerm: new URLSearchParams(location.search).get('q') || '',
+  universeFilter: queryParam('universe') || null,
+  searchTerm: queryParam('q') || '',
   // null = pas de plafond (valeur par défaut tant que le vrai prix max du
   // catalogue n'est pas connu — voir initPriceRange, qui règle aussi le champ).
   priceMax: (() => {
-    const raw = new URLSearchParams(location.search).get('prixMax');
+    const raw = queryParam('prixMax');
     const n = raw != null ? Number(raw) : NaN;
     return Number.isFinite(n) ? n : null;
   })(),
-  sortBy: new URLSearchParams(location.search).get('tri') || 'relevance',
-  lang: localStorage.getItem('bbhappy_lang') || 'fr',
+  sortBy: queryParam('tri') || 'relevance',
+  lang: storedLang(),
   cart: [],
   favorites: [],
   loyaltyPoints: 0,
@@ -550,13 +804,64 @@ const state = {
 
 const fmtPrice = (n) => n.toFixed(2).replace('.', ',') + ' €';
 
-function t(key) {
-  return (TRANSLATIONS[state.lang] && TRANSLATIONS[state.lang][key]) || TRANSLATIONS.fr[key] || key;
+/* Purement fonction : testable hors navigateur (tests/german-i18n.test.js). */
+function translate(lang, key) {
+  return (TRANSLATIONS[lang] && TRANSLATIONS[lang][key]) || TRANSLATIONS.fr[key] || key;
 }
-/* Returns a product field in the current language, falling back to French. */
+function t(key) {
+  return translate(state.lang, key);
+}
+
+/* Chaîne de repli pour le texte du catalogue : allemand -> anglais -> français
+   -> ''. Les clés absentes sont OMISES par l'API plutôt qu'envoyées à null/""
+   (voir rowToProduct dans server/products-repo.js), donc une page allemande
+   retombe sur le texte anglais AVANT le français : l'anglais et l'allemand sont
+   deux langues germaniques aux nombreuses racines communes, un champ non
+   traduit reste donc bien plus compréhensible pour un client germanophone que
+   l'original français — et le français reste le filet de sécurité final car
+   c'est la seule valeur que chaque ligne est sûre de porter (les colonnes FR
+   sont NOT NULL dans le schéma). */
+const FIELD_FALLBACK = { de: ['de', 'en', 'fr'], en: ['en', 'fr'], fr: ['fr'] };
+
+/* Une valeur est « manquante » quand elle n'a rien d'affichable : null/
+   undefined, une chaîne blanche, ou une liste vide / mal formée. Ce dernier cas
+   compte pour la grille de tailles, où le modal fait rows[0].map(...) et où un
+   tableau vide ferait planter l'ouverture. */
+function missingValue(value) {
+  if (value === undefined || value === null) return true;
+  if (typeof value === 'string') return value.trim() === '';
+  if (Array.isArray(value)) return value.length === 0 || !Array.isArray(value[0]);
+  return false;
+}
+
+function pickLangField(product, field, lang) {
+  const suffixes = FIELD_FALLBACK[lang] || FIELD_FALLBACK.fr;
+  for (const suffix of suffixes) {
+    const key = suffix === 'fr' ? field : `${field}_${suffix}`;
+    const value = product ? product[key] : undefined;
+    if (!missingValue(value)) return value;
+  }
+  return '';
+}
+
+/* Renvoie un champ produit dans la langue courante, avec le repli ci-dessus. */
 function pf(p, field) {
-  if (state.lang === 'en' && p[field + '_en'] !== undefined) return p[field + '_en'];
-  return p[field];
+  return pickLangField(p, field, state.lang);
+}
+
+/* Texte de récompense d'un palier de fidélité (fourni par le serveur) dans la
+   langue courante, avec repli allemand -> anglais -> français. */
+function tierReward(tier) {
+  if (!tier) return '';
+  if (state.lang === 'de') return tier.reward_de || tier.reward_en || tier.reward || '';
+  if (state.lang === 'en') return tier.reward_en || tier.reward || '';
+  return tier.reward || '';
+}
+
+function remainingPointsText(remaining, reward) {
+  if (state.lang === 'de') return `Noch ${remaining} Punkte bis: ${reward}`;
+  if (state.lang === 'en') return `${remaining} more points to unlock: ${reward}`;
+  return `Encore ${remaining} points pour débloquer : ${reward}`;
 }
 
 function hasPhoto(p) {
@@ -657,8 +962,9 @@ function syncUrlFromState() {
 }
 
 /* Back/Forward restores the filters from the URL, not just the address bar —
-   the controls and the grid both need to catch up, since nothing reloaded. */
-window.addEventListener('popstate', () => {
+   the controls and the grid both need to catch up, since nothing reloaded.
+   Garde navigateur : ce fichier est aussi require() par node --test. */
+if (typeof window !== 'undefined') window.addEventListener('popstate', () => {
   const params = new URLSearchParams(location.search);
   state.categoryFilter = document.body.dataset.category || params.get('categorie') || 'all';
   const rawPriceMax = params.get('prixMax');
@@ -940,7 +1246,14 @@ function openProductModal(id) {
     + (ecoDetails ? `<h4 style="margin-top:16px;font-size:.95rem;">${t('modal.eco')}</h4><p>${ecoDetails}</p>` : '')
     + (safety ? `<h4 style="margin-top:16px;font-size:.95rem;">${t('modal.safety')}</h4><p>${safety}</p>` : '');
   document.getElementById('panelEntretien').innerHTML = `<p>${pf(p, 'care')}</p>`;
-  const rows = pf(p, 'sizeGuide');
+  /* pf() renvoie '' quand aucune grille n'est disponible (produit non traduit
+     dans la langue courante). rows[0] sur une chaîne ou un tableau vide ferait
+     planter l'ouverture du modal : la forme est donc re-vérifiée ici, avec un
+     tableau d'une cellule en dernier recours. */
+  const pickedRows = pf(p, 'sizeGuide');
+  const rows = (Array.isArray(pickedRows) && pickedRows.length && Array.isArray(pickedRows[0]))
+    ? pickedRows
+    : [['—']];
   document.getElementById('panelTailles').innerHTML = `
     <table class="size-table">
       <thead><tr>${rows[0].map(h => `<th>${h}</th>`).join('')}</tr></thead>
@@ -1150,10 +1463,8 @@ function renderLoyalty() {
     const pct = Math.min(100, Math.round(((state.loyaltyPoints - prevThreshold) / (nextTier.threshold - prevThreshold)) * 100));
     bars.forEach(bar => { bar.style.width = pct + '%'; });
     const remaining = nextTier.threshold - state.loyaltyPoints;
-    const reward = state.lang === 'en' ? nextTier.reward_en : nextTier.reward;
-    const text = state.lang === 'en'
-      ? `${remaining} more points to unlock: ${reward}`
-      : `Encore ${remaining} points pour débloquer : ${reward}`;
+    const reward = tierReward(nextTier);
+    const text = remainingPointsText(remaining, reward);
     nextTexts.forEach(el => { el.textContent = text; });
   } else {
     bars.forEach(bar => { bar.style.width = '100%'; });
@@ -1164,7 +1475,7 @@ function renderLoyalty() {
   if (tiersList) {
     tiersList.innerHTML = LOYALTY_TIERS.map(tier => {
       const reached = state.loyaltyPoints >= tier.threshold;
-      const reward = state.lang === 'en' ? tier.reward_en : tier.reward;
+      const reward = tierReward(tier);
       return `<li class="loyalty-tier ${reached ? 'reached' : ''}">
         <span class="loyalty-tier-check">${reached ? '✅' : '🔒'}</span>
         <span class="loyalty-tier-info"><strong>${tier.threshold} ${t('loyalty.points')}</strong> — ${reward}</span>
@@ -1195,7 +1506,7 @@ function renderLoyaltyCardPage() {
   if (table) {
     table.innerHTML = LOYALTY_TIERS.map(tier => {
       const reached = state.loyaltyPoints >= tier.threshold;
-      const reward = state.lang === 'en' ? tier.reward_en : tier.reward;
+      const reward = tierReward(tier);
       return `<tr class="${reached ? 'reached' : ''}">
         <td>${reached ? '✅' : '🔒'}</td>
         <td><strong>${tier.threshold}</strong> ${t('loyalty.points')}</td>
@@ -1258,7 +1569,7 @@ function renderTrackingResult(data, orderNumber, email) {
     }
   }
 
-  const locale = state.lang === 'en' ? 'en-GB' : 'fr-FR';
+  const locale = state.lang === 'de' ? 'de-DE' : (state.lang === 'en' ? 'en-GB' : 'fr-FR');
   document.getElementById('trackSteps').innerHTML = data.steps.map(step => {
     // A step with no real date yet (not shipped/delivered) shows no date at
     // all — never a guessed one. "date" itself can be null even when
@@ -1380,7 +1691,12 @@ function applyLanguage() {
     el.setAttribute('placeholder', t(el.dataset.i18nPlaceholder));
   });
   const langBtn = document.getElementById('langToggle');
-  if (langBtn) langBtn.textContent = t('lang.toggle');
+  if (langBtn) {
+    langBtn.textContent = t('lang.toggle');
+    // Les pages statiques codent l'aria-label en français ; il est rafraîchi
+    // ici pour qu'un lecteur d'écran annonce le bouton dans la langue choisie.
+    langBtn.setAttribute('aria-label', t('lang.aria'));
+  }
 
   renderProducts();
   renderCart();
@@ -1460,8 +1776,10 @@ function closeDrawer(drawer, overlay) {
   restoreFocus();
 }
 
-/* ===================== EVENT WIRING ===================== */
-document.addEventListener('DOMContentLoaded', async () => {
+/* ===================== EVENT WIRING =====================
+   Garde navigateur : node --test require() ce fichier pour tester les parties
+   pures (dictionnaire, chaîne de repli), où document n'existe pas. */
+if (typeof document !== 'undefined') document.addEventListener('DOMContentLoaded', async () => {
   // Pre-select the universe card matching the ?universe= query param (deep link from another page)
   if (state.universeFilter) {
     const preselected = document.querySelector(`.category-card[data-filter-universe="${state.universeFilter}"]`);
@@ -1689,11 +2007,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('searchBarMobile').classList.toggle('open');
   });
 
-  // Language toggle
+  // Language toggle — parcourt le cycle FR -> EN -> DE. Le bouton affiche la
+  // langue SUIVANTE (comme avant : « 🇬🇧 EN » tant qu'on est en français), et
+  // le choix est mémorisé dans la même clé localStorage qu'auparavant.
   const langToggle = document.getElementById('langToggle');
   if (langToggle) {
     langToggle.addEventListener('click', () => {
-      state.lang = state.lang === 'fr' ? 'en' : 'fr';
+      const index = LANGUAGES.indexOf(state.lang);
+      state.lang = LANGUAGES[(index + 1) % LANGUAGES.length];
       localStorage.setItem('bbhappy_lang', state.lang);
       applyLanguage();
       if (state.currentModalProduct) {
@@ -2044,3 +2365,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     header.style.boxShadow = window.scrollY > 10 ? '0 4px 20px rgba(0,0,0,0.06)' : 'none';
   });
 });
+
+/* Exporté uniquement pour `node --test` (tests/german-i18n.test.js), qui
+   verrouille la chaîne de repli DE -> EN -> FR et la complétude du dictionnaire
+   allemand. Dans le navigateur `module` est undefined : ce bloc est ignoré. */
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { LANGUAGES, TRANSLATIONS, state, translate, t, pf, pickLangField, tierReward, colorName, COLOR_NAMES };
+}

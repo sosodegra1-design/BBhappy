@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
-    "test": "node --test"
+    "test": "node --test",
+    "translate:de": "node scripts/translate-de.js"
   },
   "engines": {
     "node": ">=22.5.0"
