@@ -101,6 +101,20 @@ async function init() {
       care_en TEXT NOT NULL,
       size_guide TEXT NOT NULL,
       size_guide_en TEXT NOT NULL,
+      /* L'allemand est la troisième langue de la vitrine, ajoutée APRÈS que le
+         catalogue soit passé en base. Ces colonnes sont volontairement
+         nullables et sans valeur par défaut : « pas encore traduit » est un
+         état normal (la vitrine retombe alors sur l'anglais puis le français),
+         et SQLite refuse d'ajouter une colonne NOT NULL sans défaut à une table
+         qui contient déjà des lignes — ce qui est exactement le cas des ~59
+         produits réels. */
+      name_de TEXT,
+      age_label_de TEXT,
+      description_de TEXT,
+      eco_details_de TEXT,
+      safety_de TEXT,
+      care_de TEXT,
+      size_guide_de TEXT,
       images TEXT,
       images_by_color TEXT,
       source_url TEXT,
@@ -121,6 +135,19 @@ async function init() {
       zip TEXT NOT NULL,
       city TEXT NOT NULL,
       requested_at TEXT NOT NULL
+    );
+
+    /* Faits durables concernant la base elle-même, et non un visiteur. Premier
+       usage : le marqueur « le catalogue historique a déjà été importé », qui
+       empêche un déploiement de ressusciter des produits supprimés
+       volontairement (voir seedProductsIfEmpty dans products-repo.js). Une
+       table clé/valeur plutôt qu'une colonne dédiée : tout futur drapeau
+       « une seule fois » (import déjà fait, migration déjà appliquée) a besoin
+       exactement du même stockage, et une nouvelle ligne coûte moins cher et
+       risque moins qu'un ALTER TABLE de plus. */
+    CREATE TABLE IF NOT EXISTS app_state (
+      key TEXT PRIMARY KEY,
+      value TEXT
     );
   `);
 
@@ -181,6 +208,33 @@ async function init() {
     await client.execute('ALTER TABLE order_items ADD COLUMN name TEXT');
   } catch (err) {
     if (!/duplicate column name/i.test(err.message)) throw err;
+  }
+
+  /* L'allemand a été ajouté comme troisième langue après la migration du
+     catalogue en base. Le CREATE TABLE ci-dessus ne s'applique qu'à une table
+     neuve : une base existante (la production en contient ~59 produits réels)
+     a donc besoin d'un ALTER explicite. Deux choix délibérés :
+       - colonnes nullables et SANS défaut, parce que SQLite refuse d'ajouter
+         une colonne NOT NULL sans défaut à une table déjà remplie, et parce
+         que « pas encore traduit » est un état légitime ;
+       - un ALTER par colonne dans un try/catch qui n'ignore QUE
+         « duplicate column name », donc rejouable à chaque démarrage sans
+         risque, tout en laissant remonter une vraie erreur (faute de frappe,
+         droits, disque).
+     Rien n'est renommé, supprimé ni réécrit : aucune ligne produit n'est
+     touchée, donc ids, prix et historique de commandes sont intacts. */
+  const GERMAN_PRODUCT_COLUMNS = [
+    'name_de', 'age_label_de', 'description_de', 'eco_details_de',
+    'safety_de', 'care_de', 'size_guide_de'
+  ];
+  for (const column of GERMAN_PRODUCT_COLUMNS) {
+    try {
+      // Les noms de colonnes viennent de la liste codée en dur ci-dessus,
+      // jamais d'une entrée utilisateur.
+      await client.execute(`ALTER TABLE products ADD COLUMN ${column} TEXT`);
+    } catch (err) {
+      if (!/duplicate column name/i.test(err.message)) throw err;
+    }
   }
 }
 

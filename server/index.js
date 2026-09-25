@@ -499,11 +499,13 @@ const PORT = process.env.PORT || 3000;
 
 async function start() {
   await db.init();
-  // First run against an empty database: import the historical catalog so the
-  // live shop is unchanged by the migration. No-op afterwards.
+  // Importe le catalogue historique UNE SEULE FOIS (marqueur durable
+  // `products_seeded` en base), jamais « quand la table est vide » : sinon un
+  // propriétaire qui supprime volontairement tous ses produits les verrait
+  // réapparaître au déploiement suivant. Voir products-repo.js.
   const seeded = await seedProductsIfEmpty();
   if (seeded.seeded) {
-    console.log(`Seeded ${seeded.seeded} products from products-data.js (empty database).`);
+    console.log(`Seeded ${seeded.seeded} products from products-data.js (first run on this database).`);
   }
   return app.listen(PORT, () => {
     console.log(`BBVOLTEX running at http://localhost:${PORT}`);
