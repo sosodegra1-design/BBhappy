@@ -95,7 +95,8 @@ directement (mode démo, pas de paiement réel).
    - Stripe → **Développeurs** → **Webhooks** → **Ajouter un point de
      terminaison**. URL : `https://<ton-service>.onrender.com/api/stripe/webhook`
    - Événements à écouter : `checkout.session.completed` et
-     `checkout.session.payment_failed`
+     `payment_intent.payment_failed` (un paiement refusé se signale
+     ainsi ; « checkout.session.payment_failed » n'existe pas)
    - Copie le **secret de signature** (`whsec_...`) et ajoute-le en variable
      d'environnement `STRIPE_WEBHOOK_SECRET` (locale et sur Render).
    - Le serveur refuse tout appel dont la signature est invalide : c'est ce qui
