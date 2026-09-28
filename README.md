@@ -90,6 +90,30 @@ directement (mode démo, pas de paiement réel).
    `4242 4242 4242 4242`, avec n'importe quelle date future, n'importe quel
    CVC et n'importe quel code postal.
 
+6. **Crée le webhook** (indispensable : sans lui, un client qui paie puis ferme
+   son navigateur n'a pas de commande enregistrée) :
+   - Stripe → **Développeurs** → **Webhooks** → **Ajouter un point de
+     terminaison**. URL : `https://<ton-service>.onrender.com/api/stripe/webhook`
+   - Événements à écouter : `checkout.session.completed` et
+     `checkout.session.payment_failed`
+   - Copie le **secret de signature** (`whsec_...`) et ajoute-le en variable
+     d'environnement `STRIPE_WEBHOOK_SECRET` (locale et sur Render).
+   - Le serveur refuse tout appel dont la signature est invalide : c'est ce qui
+     garantit qu'un inconnu ne peut pas créer de fausses commandes.
+
+7. Variables d'environnement utiles :
+
+   | Variable | Rôle |
+   |---|---|
+   | `STRIPE_SECRET_KEY` | Clé secrète (`sk_test_...` en test, `sk_live_...` en réel) |
+   | `STRIPE_WEBHOOK_SECRET` | Secret de signature du webhook (`whsec_...`) |
+   | `PUBLIC_BASE_URL` | Adresse publique du site (ex. `https://bbhappy.onrender.com`), pour les URL de retour Stripe |
+   | `STRIPE_TAX_ENABLED` | `true` pour activer le calcul de TVA par Stripe (nécessite les immatriculations renseignées) |
+
+8. **Côté Stripe, active les moyens de paiement** dans *Paramètres → Moyens de
+   paiement* : cartes, **TWINT**, Apple Pay / Google Pay. Le code ne les
+   restreint plus, donc tout ce qui est activé apparaît au paiement.
+
 **Pour accepter de vrais paiements (argent réel) :** il faut passer le
 compte Stripe en mode Live (Stripe demande alors les informations de
 l'entreprise et un compte bancaire), puis remplacer la clé `sk_test_...`

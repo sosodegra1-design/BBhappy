@@ -19,6 +19,51 @@ const ROOT = path.join(__dirname, '..');
 // Stripe success/cancel URLs we build from it would be wrong.
 app.set('trust proxy', 1);
 
+/* ===================== STRIPE WEBHOOK =====================
+   Declared BEFORE express.json() on purpose: verifying the Stripe signature
+   requires the exact raw bytes Stripe sent. Once a JSON parser has rewritten
+   the body, the signature can no longer match and every event is rejected.
+
+   Without this route, an order only existed if the customer came back to the
+   success page: paying and closing the browser charged the card but recorded
+   nothing. Stripe now tells us directly, and retries on its own if we fail. */
+app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  if (!stripe) return res.status(400).send('Stripe is not configured.');
+  const secret = process.env.STRIPE_WEBHOOK_SECRET;
+  if (!secret) return res.status(400).send('STRIPE_WEBHOOK_SECRET is not set.');
+
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(req.body, req.headers['stripe-signature'], secret);
+  } catch (err) {
+    // A wrong signature means the request did not come from Stripe: never act on it.
+    console.warn('[stripe] signature rejected:', err.message);
+    return res.status(400).send('Invalid signature.');
+  }
+
+  const paidEvents = ['checkout.session.completed', 'checkout.session.async_payment_succeeded'];
+  if (!paidEvents.includes(event.type)) return res.json({ received: true, ignored: event.type });
+
+  const session = event.data.object;
+  if (session.payment_status !== 'paid') return res.json({ received: true, ignored: 'not paid yet' });
+
+  try {
+    const order = await ensureOrderForSession(session);
+    console.log(`[stripe] ${event.type} ${session.id} -> commande ${order.orderNumber}` +
+                (order.alreadyRecorded ? ' (déjà enregistrée)' : ''));
+    return res.json({ received: true, orderNumber: order.orderNumber });
+  } catch (err) {
+    if (/UNIQUE|constraint/i.test(err.message || '')) {
+      // Two events for the same payment raced each other: the order exists, all good.
+      return res.json({ received: true, alreadyRecorded: true });
+    }
+    // Anything else: let Stripe retry (5xx). The customer has paid, so the order
+    // must end up recorded.
+    console.error('[stripe] création de commande impossible', session.id, err.message);
+    return res.status(500).send('Order creation failed.');
+  }
+});
+
 app.use(express.json());
 
 /* ===================== CLIENT / CART IDENTIFICATION =====================
@@ -255,6 +300,30 @@ app.post('/api/loyalty/physical-card', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
+/* Creates the order for a paid Checkout session, or returns the one already
+   recorded (webhook and success page can both arrive). Shared so the two paths
+   can never produce two orders for one payment. */
+async function ensureOrderForSession(session) {
+  const existing = await db.client.execute({
+    sql: 'SELECT id, email, points_earned, total FROM orders WHERE stripe_session_id = ?',
+    args: [session.id]
+  });
+  if (existing.rows.length) {
+    const row = existing.rows[0];
+    return {
+      orderNumber: row.id, email: row.email, pointsEarned: Number(row.points_earned),
+      total: Number(row.total), items: await orderItemsFor(row.id), alreadyRecorded: true
+    };
+  }
+  const m = session.metadata || {};
+  if (!m.cartId || !m.name || !m.email) {
+    throw new Error('Checkout session metadata is incomplete (cartId/name/email).');
+  }
+  const order = await createOrder(m.cartId,
+    { name: m.name, email: m.email, address: m.address, zip: m.zip, city: m.city }, session.id);
+  return { ...order, alreadyRecorded: false };
+}
+
 /* ===================== CHECKOUT ===================== */
 /* Records the order, its line items, empties the cart and credits loyalty
    points. Shared by the no-Stripe fallback and the post-payment confirmation
@@ -339,11 +408,18 @@ app.post('/api/checkout', async (req, res, next) => {
       if (items.length === 0) {
         return res.status(400).json({ error: 'Cart is empty.' });
       }
-      const origin = `${req.protocol}://${req.get('host')}`;
+      // PUBLIC_BASE_URL : sur Render, l'adresse vue par le serveur peut différer de
+      // l'adresse publique. La variable lève toute ambiguïté sur les URL de retour.
+      const origin = (process.env.PUBLIC_BASE_URL || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
       const session = await stripe.checkout.sessions.create({
         mode: 'payment',
-        payment_method_types: ['card'],
+        // Pas de payment_method_types : Stripe propose alors tout ce qui est activé
+        // dans le tableau de bord (cartes, TWINT, Apple Pay, Google Pay…).
         customer_email: email,
+        // Facture Stripe pour chaque commande (comptabilité, envoi au client).
+        invoice_creation: { enabled: true },
+        // TVA calculée par Stripe si les immatriculations sont renseignées (8,1 % en Suisse).
+        automatic_tax: { enabled: process.env.STRIPE_TAX_ENABLED === 'true' },
         line_items: items.map(item => ({
           quantity: item.qty,
           price_data: {
@@ -373,26 +449,14 @@ app.get('/api/checkout/confirm', async (req, res, next) => {
     const { session_id } = req.query;
     if (!session_id) return res.status(400).json({ error: 'session_id is required.' });
 
-    // Idempotent: a page refresh on the success URL must not create a second order.
-    const existing = await db.client.execute({
-      sql: 'SELECT id, email, points_earned, total FROM orders WHERE stripe_session_id = ?',
-      args: [session_id]
-    });
-    if (existing.rows.length) {
-      const row = existing.rows[0];
-      return res.json({
-        orderNumber: row.id, email: row.email, pointsEarned: Number(row.points_earned), total: Number(row.total),
-        items: await orderItemsFor(row.id)
-      });
-    }
-
+    // Idempotent: a page refresh on the success URL must not create a second order
+    // (ensureOrderForSession looks for the order before creating it).
     const session = await stripe.checkout.sessions.retrieve(session_id);
     if (session.payment_status !== 'paid') {
       return res.status(402).json({ error: 'Payment not completed.' });
     }
-    const { cartId, name, email, address, zip, city } = session.metadata;
-    const order = await createOrder(cartId, { name, email, address, zip, city }, session_id);
-    res.status(201).json(order);
+    const order = await ensureOrderForSession(session);
+    res.status(order.alreadyRecorded ? 200 : 201).json(order);
   } catch (err) { next(err); }
 });
 
