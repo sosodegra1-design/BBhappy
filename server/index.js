@@ -57,6 +57,12 @@ app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async
       // Two events for the same payment raced each other: the order exists, all good.
       return res.json({ received: true, alreadyRecorded: true });
     }
+    if (err.permanent) {
+      // Inutile de réessayer (événement de test, ou notification sans panier) : on l'ignore
+      // explicitement plutôt que de laisser Stripe la relancer pendant des jours.
+      console.warn('[stripe] notification ignorée:', err.message, session.id);
+      return res.json({ received: true, ignored: err.message });
+    }
     // Anything else: let Stripe retry (5xx). The customer has paid, so the order
     // must end up recorded.
     console.error('[stripe] création de commande impossible', session.id, err.message);
@@ -317,7 +323,15 @@ async function ensureOrderForSession(session) {
   }
   const m = session.metadata || {};
   if (!m.cartId || !m.name || !m.email) {
-    throw new Error('Checkout session metadata is incomplete (cartId/name/email).');
+    // Deux cas très différents, et il faut les distinguer :
+    //  - un vrai paiement dont les métadonnées seraient perdues : on veut que Stripe réessaie
+    //    et qu'on le voie (erreur 500, signalée dans le tableau de bord) ;
+    //  - l'événement de TEST envoyé depuis le tableau de bord Stripe, qui ne contient aucun
+    //    panier : le réessayer ne servira jamais à rien. On répond 200 en l'ignorant, sinon le
+    //    webhook apparaît en échec permanent alors que l'intégration fonctionne.
+    const e = new Error('Notification sans panier exploitable (métadonnées absentes).');
+    e.permanent = true;
+    throw e;
   }
   const order = await createOrder(m.cartId,
     { name: m.name, email: m.email, address: m.address, zip: m.zip, city: m.city }, session.id);
