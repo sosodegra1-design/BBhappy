@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pépites immobilières – Accès aux données</title>
+<style>
+:root{
+  --navy:#16294a; --navy-2:#1f4570; --blue:#2f80d8; --orange:#f0532f;
+  --ink:#1b2430; --muted:#5d6b7c; --line:#dfe5ec; --bg:#fff; --soft:#f1f3f6;
+}
+*{box-sizing:border-box;margin:0}
+body{font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg)}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+.btn{display:inline-block;padding:12px 26px;border-radius:999px;font-weight:600;border:2px solid transparent;cursor:pointer;font-size:1rem}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-orange{background:var(--orange);color:#fff}
+.btn-ghost{border-color:var(--blue);color:var(--blue);background:#fff}
+header .top{display:flex;justify-content:space-between;align-items:center;padding:20px 0;flex-wrap:wrap;gap:12px}
+.logo{font:italic 700 1.9rem Georgia,serif;color:var(--navy)}
+.logo b{color:var(--blue)}
+.top nav{display:flex;gap:20px;align-items:center;color:var(--muted);font-size:.95rem}
+.bar{background:var(--navy)}
+.bar ul{display:flex;gap:36px;list-style:none;padding:14px 0;color:#fff;overflow-x:auto;white-space:nowrap}
+.hero{background:linear-gradient(180deg,var(--navy-2),var(--navy));color:#fff;text-align:center;padding:64px 0 56px}
+.hero h1{font-size:clamp(1.8rem,4vw,2.5rem)}
+.hero p{margin-top:12px;opacity:.9}
+.search{display:flex;gap:12px;align-items:center;max-width:760px;margin:36px auto 0;border-bottom:2px solid rgba(255,255,255,.7);padding-bottom:8px}
+.search input{flex:1;background:none;border:0;color:#fff;font-size:1.1rem;outline:none;min-width:0}
+.search input::placeholder{color:#e6edf6}
+.search .btn{background:#fff;color:var(--navy);padding:8px 18px;font-size:.9rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;margin-top:48px}
+.stats strong{display:block;font-size:2rem}
+.stats span{opacity:.9}
+section{padding:56px 0}
+h2{font-size:1.6rem;margin-bottom:8px}
+.lead{color:var(--muted);margin-bottom:28px;max-width:60ch}
+.plans{display:grid;gap:24px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.plan{border:1px solid var(--line);border-radius:8px;padding:28px;display:flex;flex-direction:column;position:relative}
+.plan.best{border-color:var(--orange);box-shadow:0 6px 24px rgba(240,83,47,.12)}
+.tag{position:absolute;top:-12px;left:24px;background:var(--orange);color:#fff;font-size:.78rem;font-weight:700;padding:3px 12px;border-radius:999px}
+.plan h3{font-size:1.25rem}
+.price{margin:14px 0 4px;font-size:2.1rem;font-weight:700}
+.price small{font-size:.95rem;font-weight:400;color:var(--muted)}
+.from{color:var(--muted);font-size:.9rem}
+.plan ul{margin:18px 0 24px;padding-left:20px;flex:1}
+.plan li{margin-bottom:8px}
+.plan .btn{text-align:center}
+.alt{background:var(--soft)}
+.cols{display:grid;gap:32px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:24px}
+.card .ico{font-size:1.8rem}
+.card h3{margin:10px 0 6px}
+.card p{color:var(--muted)}
+.blue{background:linear-gradient(180deg,var(--navy-2),var(--navy));color:#fff}
+.blue .lead{color:#dbe6f3}
+.communes{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px 24px;margin-top:20px}
+.communes a{color:#9cc8ff}
+.pdf{display:grid;gap:32px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));align-items:center}
+.sheet{background:#fff;border:1px solid var(--line);border-radius:6px;padding:20px;box-shadow:8px 8px 0 #e3e8ef;font-size:.8rem;color:var(--muted)}
+.sheet b{display:block;color:var(--ink);font-size:.95rem;margin-bottom:10px}
+.sheet i{display:block;height:8px;background:var(--line);border-radius:4px;margin:8px 0}
+.sheet i:nth-child(odd){width:80%}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#2fb36b;margin-right:6px}
+footer{background:var(--soft);padding:40px 0;color:var(--muted);font-size:.9rem}
+footer .cols{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+footer h4{color:var(--ink);margin-bottom:8px}
+footer li{list-style:none;margin-bottom:6px}
+footer ul{padding:0}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap top">
+    <a class="logo" href="#">pépites<b>immo</b></a>
+    <nav>
+      <a href="#">Actualités</a><a href="#">Communes</a><a href="#">Aide</a>
+      <a class="btn btn-blue" href="#plans">S’enregistrer gratuitement</a>
+    </nav>
+  </div>
+  <div class="bar"><div class="wrap"><ul>
+    <li>Accès aux données ▾</li><li>Renseignements ▾</li><li>Communes ▾</li><li>Alertes ▾</li>
+  </ul></div></div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1>Les bonnes affaires immobilières, avant tout le monde</h1>
+    <p>Commerces, immeubles, maisons, parcelles et entrepôts : suivez votre commune et recevez une alerte dès qu’une pépite apparaît.</p>
+    <form class="search" onsubmit="return false">
+      <span aria-hidden="true">🔍</span>
+      <input type="search" placeholder="Recherche facile d’une commune, d’un bien ou d’un mot-clé" aria-label="Recherche">
+      <button class="btn">Chercher en détail</button>
+    </form>
+    <div class="stats">
+      <div><strong>1 250</strong><span>biens suivis</span></div>
+      <div><strong>148</strong><span>communes couvertes</span></div>
+      <div><strong>5</strong><span>types de biens</span></div>
+      <div><strong>24 h</strong><span>pour recevoir l’alerte</span></div>
+    </div>
+  </div>
+</div>
+
+<section id="plans">
+  <div class="wrap">
+    <h2>Choisissez votre accès</h2>
+    <p class="lead">Commencez gratuitement, passez à l’accès complet quand vous voulez. Résiliable à tout moment.</p>
+    <div class="plans">
+
+      <article class="plan">
+        <h3>Accès gratuit</h3>
+        <div class="price">CHF 0</div>
+        <div class="from">pour toujours</div>
+        <ul>
+          <li>Compte gratuit</li>
+          <li>2 aperçus de fiches de biens</li>
+          <li>Suivi de 2 communes avec alerte e-mail</li>
+          <li>Aperçu gratuit de chaque page commune</li>
+        </ul>
+        <a class="btn btn-blue" href="#">Découvrir maintenant</a>
+      </article>
+
+      <article class="plan best">
+        <span class="tag">Le plus choisi</span>
+        <h3>Accès complet – Commerces</h3>
+        <div class="from">à partir de</div>
+        <div class="price">CHF 79 <small>/ mois</small></div>
+        <ul>
+          <li>Toutes les fiches de commerces, détail complet</li>
+          <li>Suivi illimité de communes et de mots-clés</li>
+          <li>Alerte e-mail à chaque nouveauté</li>
+          <li>Dossiers PDF prêts à imprimer, illimités</li>
+          <li>Recherche avancée sur toute la base</li>
+          <li>Sans publicité</li>
+        </ul>
+        <a class="btn btn-orange" href="#">Découvrir maintenant</a>
+      </article>
+
+      <article class="plan">
+        <h3>Accès complet – Tous biens</h3>
+        <div class="from">immeubles, maisons, parcelles, entrepôts + commerces</div>
+        <div class="price">CHF 99 <small>/ mois</small></div>
+        <ul>
+          <li>Tout l’accès complet Commerces</li>
+          <li>Immeubles, maisons, parcelles et entrepôts</li>
+          <li>Suivi illimité de communes et de mots-clés</li>
+          <li>Dossiers PDF prêts à imprimer, illimités</li>
+          <li>Sans publicité</li>
+        </ul>
+        <a class="btn btn-orange" href="#">Découvrir maintenant</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>Pourquoi s’abonner</h2>
+    <p class="lead">Suivre plutôt qu’acheter : vous revenez quand il y a du nouveau.</p>
+    <div class="cols">
+      <div class="card"><div class="ico">🔔</div><h3>Suivez, on vous prévient</h3><p>Suivez une commune ou un mot-clé et recevez un e-mail à chaque nouvelle pépite.</p></div>
+      <div class="card"><div class="ico">📍</div><h3>Une page par commune</h3><p>Chaque commune a sa page avec un aperçu gratuit, trouvable sur Google.</p></div>
+      <div class="card"><div class="ico">📄</div><h3>Dossiers PDF</h3><p>Fiches complètes prêtes à imprimer pour vos visites et vos partenaires.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap pdf">
+    <div>
+      <h2>Dossiers complets</h2>
+      <p class="lead">Décidez sur des informations fiables : prix, surface, localisation et potentiel du bien, dans un seul document.</p>
+      <ul style="padding-left:20px;margin-bottom:24px">
+        <li>Résumé du bien et photos</li>
+        <li>Localisation et commune</li>
+        <li>Potentiel et points d’attention</li>
+        <li>Export PDF en un clic</li>
+      </ul>
+      <a class="btn btn-ghost" href="#">En savoir plus</a>
+    </div>
+    <div class="sheet">
+      <b><span class="dot"></span>Dossier – Entrepôt, exemple</b>
+      <i></i><i></i><i></i><i></i><i></i><i></i>
+      <b style="margin-top:14px">Commune</b>
+      <i></i><i></i><i></i>
+    </div>
+  </div>
+</section>
+
+<section class="blue">
+  <div class="wrap">
+    <h2>Pages par commune</h2>
+    <p class="lead">Trouvez les nouveautés de votre région en premier.</p>
+    <div class="communes">
+      <a href="#">Commune Lausanne</a><a href="#">Commune Sion</a><a href="#">Commune Nyon</a><a href="#">Commune Morges</a>
+      <a href="#">Commune Martigny</a><a href="#">Commune Monthey</a><a href="#">Commune Gruyère</a><a href="#">Rechercher ma commune</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap cols">
+    <div><h4>Accès aux données</h4><ul><li>Aperçu des offres</li><li>Accès complet</li><li>Listes de biens</li></ul></div>
+    <div><h4>Renseignements</h4><ul><li>Aperçu</li><li>Dossiers PDF</li><li>Alertes</li></ul></div>
+    <div><h4>Entreprise</h4><ul><li>Qui sommes-nous</li><li>Contact</li><li>Aide</li></ul></div>
+    <div><h4>Langue</h4><ul><li>DE | FR | IT | EN</li></ul></div>
+  </div>
+</footer>
+
+</body>
+</html>
